@@ -1,0 +1,70 @@
+package br.com.sisms.api.controller;
+
+import br.com.sisms.api.filter.PacoteFilter;
+import br.com.sisms.api.filter.PageableFilter;
+import br.com.sisms.api.model.dto.PacoteDTO;
+import br.com.sisms.api.model.enums.MessageEnum;
+import br.com.sisms.api.response.Response;
+import br.com.sisms.api.service.PacoteService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+
+@Api(tags = "Pacote")
+@RestController
+@AllArgsConstructor
+@RequestMapping(path = "/api/pacote", produces = MediaType.APPLICATION_JSON_VALUE)
+public class PacoteController {
+
+    private final PacoteService service;
+
+    @ApiOperation(value = "Retorna uma lista paginada de pacotes por filtros.")
+    @PostMapping(path = "/findByFilter")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    public ResponseEntity<Response<Page<PacoteDTO>>> findByFilter(@RequestBody final PageableFilter<PacoteFilter> pageableFilter) {
+        return ResponseEntity.ok().body(new Response(service.findByFilter(pageableFilter), MessageEnum.SUCESSO.toString()));
+    }
+
+    @ApiOperation(value = "Inclui um pacote.")
+    @PostMapping
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    public ResponseEntity<Response<PacoteDTO>> create(@Valid @RequestBody final PacoteDTO dto) {
+        return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, dto), MessageEnum.SUCESSO.toString()));
+    }
+
+    @ApiOperation(value = "Altera um pacote.")
+    @PutMapping(path = "/{id}")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    public ResponseEntity<Response<PacoteDTO>> update(@PathVariable final Long id, @Valid @RequestBody final PacoteDTO dto) {
+        return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, dto), MessageEnum.SUCESSO.toString()));
+    }
+
+    @ApiOperation(value = "Retorna um pacote por id.")
+    @GetMapping(path = "/{id}")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    public ResponseEntity<Response<PacoteDTO>> findById(@PathVariable final Long id) {
+        return ResponseEntity.ok().body(new Response(service.findById(id), MessageEnum.SUCESSO.toString()));
+    }
+
+    @ApiOperation(value = "Encerra um pacote.")
+    @GetMapping(path = "closePackage/{id}")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    public ResponseEntity<Response<PacoteDTO>> closePackage(@PathVariable final Long id) {
+        return ResponseEntity.ok().body(new Response(service.closePackage(id), MessageEnum.SUCESSO.toString()));
+    }
+
+    @ApiOperation(value = "Retorno o último pacote por filtros.")
+    @GetMapping(path = "findLastOpen/{categoriaAtendimentoId}/{pacienteId}")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    public ResponseEntity<Response<PacoteDTO>> findLast(@PathVariable final Long categoriaAtendimentoId, @PathVariable final Long pacienteId) {
+        return ResponseEntity.ok().body(new Response(service.findLastOpen(categoriaAtendimentoId, pacienteId), MessageEnum.SUCESSO.toString()));
+    }
+
+}
