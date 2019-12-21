@@ -118,6 +118,7 @@ public class UsuarioService {
     public UsuarioDTO createOrUpdate(final Long id, final UsuarioDTO dtoSource) {
         validateResources(dtoSource);
         checkDate(dtoSource.getDataNascimento());
+        validateContato(dtoSource);
         Usuario entity;
         if (Objects.nonNull(id)) {
             UsuarioDTO dtoTarget = findById(id);
@@ -133,10 +134,18 @@ public class UsuarioService {
         return mapper.toDTO(repository.save(entity));
     }
 
+    private void validateContato(final UsuarioDTO dto) {
+        if (StringUtils.isBlank(dto.getContatoCelular()) && StringUtils.isBlank(dto.getContatoCelularRecado())
+                && StringUtils.isBlank(dto.getContatoResidencial()) && StringUtils.isBlank(dto.getContatoComercial())
+                && StringUtils.isBlank(dto.getContatoEmail())) {
+    throw new BusinessException(MessageEnum.MSG0007.toString());
+        }
+    }
+
     private void validateDuplicityByCpf(final Usuario entity) {
         final UsuarioDTO dto = mapper.toDTO(repository.findByCpf(entity.getCpf()));
         if (Objects.nonNull(dto) && !dto.getId().equals(entity.getId())) {
-            throw new BusinessException(MessageEnum.CPF_JA_CADASTRADO.toString());
+            throw new BusinessException(MessageEnum.MSG0006.toString());
         }
     }
 

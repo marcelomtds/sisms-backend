@@ -11,12 +11,13 @@ public enum MessageEnum {
     MSG0002("O campo senha confirmação é obrigatório."),
     MSG0003("As novas senhas não coincidem."),
     MSG0005("A senha atual está incorreta."),
+    MSG0006("Esse cpf já existe na base de dados."),
+    MSG0007("É necessário informar um meio de contato."),
     SUCESSO(Codigo.SUCESSO),
     USUARIO_BLOQUEADO(Codigo.USUARIO_BLOQUEADO),
     REGISTRO_JA_CADASTRADO(Codigo.REGISTRO_JA_CADASTRADO),
     CAMPOS_INVALIDOS(Codigo.CAMPOS_INVALIDOS),
     CAMPOS_INCONSISTENTES(Codigo.CAMPOS_INCONSISTENTES),
-    CPF_JA_CADASTRADO(Codigo.CPF_JA_CADASTRADO),
     USUARIO_SEM_PERMISSAO(Codigo.USUARIO_SEM_PERMISSAO),
     CPF_INVALIDO(Codigo.CPF_INVALIDO),
     DATA_NASCIMENTO_MAIOR_ATUAL(Codigo.DATA_NASCIMENTO_MAIOR_ATUAL),
@@ -63,7 +64,6 @@ public enum MessageEnum {
         public static final String CAMPOS_INCONSISTENTES = "A requisição possui campo(s) inconsistênte(s).";
         public static final String REGISTRO_JA_CADASTRADO = "Esse registro já existe na base de dados.";
         public static final String RECURSO_NAO_ENCONTRADO = "Recurso não encontrado.";
-        public static final String CPF_JA_CADASTRADO = "Esse CPF já existe na base de dados.";
         public static final String CPF_INVALIDO = "Número de cpf inválido.";
         public static final String ERRO_INESPERADO = "Ocorreu um erro inesperado. Contate o administrador do Sistema.";
         public static final String USUARIO_NAO_AUTENTICADO = "Usuário não autenticado.";

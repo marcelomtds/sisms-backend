@@ -105,7 +105,7 @@ public class PacienteService {
         if (StringUtils.isNotBlank(entity.getCpf())) {
             final PacienteDTO dto = mapper.toDTO(repository.findByCpf(entity.getCpf()));
             if (Objects.nonNull(dto) && !dto.getId().equals(entity.getId())) {
-                throw new BusinessException(MessageEnum.CPF_JA_CADASTRADO.toString());
+                throw new BusinessException(MessageEnum.MSG0006.toString());
             }
         }
     }
