@@ -6,7 +6,7 @@ import br.com.sisms.api.model.dto.UsuarioDTO;
 import br.com.sisms.api.model.entity.Usuario;
 import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.model.enums.PerfilEnum;
-import br.com.sisms.api.model.request.UpdatePasswordDTO;
+import br.com.sisms.api.model.request.SenhaDTO;
 import br.com.sisms.api.response.Response;
 import br.com.sisms.api.service.UsuarioService;
 import io.swagger.annotations.Api;
@@ -73,7 +73,7 @@ public class UsuarioController {
     @ApiOperation(value = "Altera a senha do usuário.")
     @PutMapping(path = "/updatePassword")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
-    public ResponseEntity<Response<UsuarioDTO>> updatePassword(@Valid @RequestBody final UpdatePasswordDTO request) {
+    public ResponseEntity<Response<UsuarioDTO>> updatePassword(@Valid @RequestBody final SenhaDTO request) {
         return ResponseEntity.ok().body(new Response(service.updatePassword(request), MessageEnum.SUCESSO.toString()));
     }
 

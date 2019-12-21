@@ -10,20 +10,21 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class UpdatePasswordDTO implements Serializable {
+public class SenhaDTO implements Serializable {
 
     private static final long serialVersionUID = 1245639500763063184L;
-
-    @NotBlank(message = "{senha.vazio}")
-    @Senha(message = "{senha.tamanho}")
-    private String senha;
-
-    @NotBlank(message = "{senha.confirmacao.vazio}")
-    @Senha(message = "{senha.confirmacao.tamanho}")
-    private String senhaConfirmacao;
 
     @NotBlank(message = "{senha.atual.vazio}")
     @Size(max = 20, message = "{senha.atual.tamanho}")
     private String senhaAtual;
+
+    @NotBlank(message = "{nova.senha.vazio}")
+    @Senha(message = "{nova.senha.tamanho}")
+    private String novaSenha;
+
+    @NotBlank(message = "{nova.senha.confirmacao.vazio}")
+    @Senha(message = "{nova.senha.confirmacao.tamanho}")
+    private String novaSenhaConfirmacao;
+
 
 }

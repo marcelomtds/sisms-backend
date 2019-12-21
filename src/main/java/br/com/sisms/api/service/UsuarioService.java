@@ -9,7 +9,7 @@ import br.com.sisms.api.model.entity.Usuario;
 import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.model.enums.PerfilEnum;
 import br.com.sisms.api.model.mapper.UsuarioMapper;
-import br.com.sisms.api.model.request.UpdatePasswordDTO;
+import br.com.sisms.api.model.request.SenhaDTO;
 import br.com.sisms.api.repository.UsuarioRepository;
 import br.com.sisms.api.util.Util;
 import lombok.AllArgsConstructor;
@@ -105,13 +105,13 @@ public class UsuarioService {
         return mapper.toDTO(repository.save(mapper.toEntity(dto)));
     }
 
-    public UsuarioDTO updatePassword(final UpdatePasswordDTO request) {
-        validateRequiredPasswords(request.getSenha(), request.getSenhaConfirmacao());
+    public UsuarioDTO updatePassword(final SenhaDTO dto) {
+        validateRequiredPasswords(dto.getNovaSenha(), dto.getNovaSenhaConfirmacao());
         UsuarioDTO sessionUserDTO = mapper.toDTO(getCurrentSessionUser());
-        if (!passwordEncoder.matches(request.getSenhaAtual(), sessionUserDTO.getSenha())) {
+        if (!passwordEncoder.matches(dto.getSenhaAtual(), sessionUserDTO.getSenha())) {
             throw new BusinessException(MessageEnum.MSG0005.toString());
         }
-        sessionUserDTO.setSenha(passwordEncoder.encode(request.getSenha()));
+        sessionUserDTO.setSenha(passwordEncoder.encode(dto.getNovaSenha()));
         return mapper.toDTO(repository.save(mapper.toEntity(sessionUserDTO)));
     }
 

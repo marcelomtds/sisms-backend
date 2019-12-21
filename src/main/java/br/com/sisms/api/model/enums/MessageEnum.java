@@ -9,8 +9,7 @@ public enum MessageEnum {
 
     MSG0001("O campo senha é obrigatório."),
     MSG0002("O campo senha confirmação é obrigatório."),
-    MSG0003("As senhas não coincidem."),
-    MSG0004("A senha deve conter no mínimo 6 caracteres."),
+    MSG0003("As novas senhas não coincidem."),
     MSG0005("A senha atual está incorreta."),
     SUCESSO(Codigo.SUCESSO),
     USUARIO_BLOQUEADO(Codigo.USUARIO_BLOQUEADO),
