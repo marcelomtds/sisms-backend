@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class CurrentAuthentication {
+public class CurrentAuthenticationDTO {
 
     private String token;
     private UsuarioDTO usuario;

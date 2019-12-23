@@ -138,7 +138,7 @@ public class UsuarioService {
         if (StringUtils.isBlank(dto.getContatoCelular()) && StringUtils.isBlank(dto.getContatoCelularRecado())
                 && StringUtils.isBlank(dto.getContatoResidencial()) && StringUtils.isBlank(dto.getContatoComercial())
                 && StringUtils.isBlank(dto.getContatoEmail())) {
-    throw new BusinessException(MessageEnum.MSG0007.toString());
+            throw new BusinessException(MessageEnum.MSG0007.toString());
         }
     }
 

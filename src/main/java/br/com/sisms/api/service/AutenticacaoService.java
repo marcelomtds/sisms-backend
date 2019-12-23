@@ -2,11 +2,10 @@ package br.com.sisms.api.service;
 
 import br.com.sisms.api.exception.BusinessException;
 import br.com.sisms.api.model.dto.UsuarioDTO;
-import br.com.sisms.api.model.entity.Usuario;
 import br.com.sisms.api.model.enums.MessageEnum;
-import br.com.sisms.api.security.jwt.AuthenticationRequest;
+import br.com.sisms.api.security.jwt.AutenticacaoDTO;
 import br.com.sisms.api.security.jwt.JwtTokenUtil;
-import br.com.sisms.api.security.model.CurrentAuthentication;
+import br.com.sisms.api.security.model.CurrentAuthenticationDTO;
 import br.com.sisms.api.util.Util;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +23,7 @@ import java.util.Objects;
 @Service
 @Transactional
 @AllArgsConstructor
-public class AuthenticationService {
+public class AutenticacaoService {
 
     private final AuthenticationManager authenticationManager;
 
@@ -34,7 +33,7 @@ public class AuthenticationService {
 
     private final UsuarioService usuarioService;
 
-    public CurrentAuthentication createAuthenticationToken(final AuthenticationRequest request) {
+    public CurrentAuthenticationDTO createAuthenticationToken(final AutenticacaoDTO request) {
         validateCpf(request.getCpf());
         final Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getCpf(), request.getSenha()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -44,7 +43,7 @@ public class AuthenticationService {
             throw new BusinessException(MessageEnum.USUARIO_BLOQUEADO.toString());
         }
         final String token = jwtTokenUtil.generateToken(userDetails);
-        return new CurrentAuthentication(token, dto);
+        return new CurrentAuthenticationDTO(token, dto);
     }
 
     private void validateCpf(final String cpf) {
