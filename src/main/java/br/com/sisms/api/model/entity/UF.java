@@ -13,7 +13,7 @@ public class UF implements Serializable {
     private static final long serialVersionUID = 3360573701016546383L;
 
     @Id
-    @SequenceGenerator(name = "uf_generator", sequenceName = "uf_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "uf_generator", sequenceName = "uf_id_seq", allocationSize = 1, initialValue = 2)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "uf_generator")
     private Long id;
 

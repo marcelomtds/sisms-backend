@@ -7,7 +7,6 @@ import br.com.sisms.api.model.dto.LocalidadeDTO;
 import br.com.sisms.api.model.entity.Localidade;
 import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.model.mapper.LocalidadeMapper;
-import br.com.sisms.api.model.request.LocalidadeRequest;
 import br.com.sisms.api.repository.LocalidadeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -50,15 +49,15 @@ public class LocalidadeService {
         return repository.findAll(pageable).map(mapper::toDTO);
     }
 
-    public LocalidadeDTO createOrUpdate(final Long id, final LocalidadeRequest request) {
-        validateResource(request);
+    public LocalidadeDTO createOrUpdate(final Long id, final LocalidadeDTO dtoSource) {
+        validateResource(dtoSource);
         Localidade entity;
         if (Objects.nonNull(id)) {
-            LocalidadeDTO dto = findById(id);
-            BeanUtils.copyProperties(mapper.toDTO(request), dto, "id");
-            entity = mapper.toEntity(dto);
+            LocalidadeDTO dtoTarget = findById(id);
+            BeanUtils.copyProperties(dtoSource, dtoTarget, "id");
+            entity = mapper.toEntity(dtoTarget);
         } else {
-            entity = mapper.toEntity(request);
+            entity = mapper.toEntity(dtoSource);
         }
         validateDuplicityByDescriptionAndUF(entity);
         return mapper.toDTO(repository.save(entity));
@@ -69,8 +68,8 @@ public class LocalidadeService {
         return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.LOCALIDADE_NAO_ENCONTRADA.toString())));
     }
 
-    private void validateResource(final LocalidadeRequest request) {
-        ufService.findById(request.getUfId());
+    private void validateResource(final LocalidadeDTO dto) {
+        ufService.findById(dto.getUfId());
     }
 
     private void validateDuplicityByDescriptionAndUF(final Localidade entity) {

@@ -17,7 +17,7 @@ INSERT INTO perfil (id, descricao, role) VALUES (2, 'Usuário', 'ROLE_USUARIO');
 INSERT INTO sexo (id, descricao) VALUES (1, 'Masculino');
 INSERT INTO sexo (id, descricao) VALUES (2, 'Feminino');
 
-INSERT INTO tipo_atendimento (id, descricao) VALUES (1, 'Sessão');
+INSERT INTO tipo_atendimento (id, descricao) VALUES (1, 'Sessão Avulsa');
 INSERT INTO tipo_atendimento (id, descricao) VALUES (2, 'Pacote');
 
 INSERT INTO tipo_lancamento (id, descricao) VALUES (1, 'Entrada');

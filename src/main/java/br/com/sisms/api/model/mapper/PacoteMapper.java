@@ -2,7 +2,6 @@ package br.com.sisms.api.model.mapper;
 
 import br.com.sisms.api.model.dto.PacoteDTO;
 import br.com.sisms.api.model.entity.Pacote;
-import br.com.sisms.api.model.request.PacoteRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

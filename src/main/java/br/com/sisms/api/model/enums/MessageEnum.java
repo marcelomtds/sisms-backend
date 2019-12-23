@@ -12,7 +12,7 @@ public enum MessageEnum {
     MSG0003("As novas senhas não coincidem."),
     MSG0005("A senha atual está incorreta."),
     MSG0006("Esse cpf já existe na base de dados."),
-    MSG0007("É necessário informar um meio de contato."),
+    MSG0007("É necessário informar pelo menos um telefone de contato."),
     SUCESSO(Codigo.SUCESSO),
     USUARIO_BLOQUEADO(Codigo.USUARIO_BLOQUEADO),
     REGISTRO_JA_CADASTRADO(Codigo.REGISTRO_JA_CADASTRADO),

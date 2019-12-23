@@ -1,5 +1,6 @@
 package br.com.sisms.api.model.dto;
 
+import br.com.sisms.api.validation.constraint.PressaoArterial;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,7 +40,7 @@ public class AtendimentoDTO implements Serializable {
     @NotNull(message = "{pre.atendimento.data.vazio}")
     private LocalDateTime preAtendimentoData;
 
-    @Pattern(regexp = "^[0-9]{3}\\/[0-9]{3}$", message = "{pre.atendimento.pressao.arterial.formato}")
+    @PressaoArterial(message = "{pre.atendimento.pressao.arterial.formato}")
     @Size(max = 7, message = "{pre.atendimento.pressao.arterial.tamanho}")
     private String preAtendimentoPressaoArterial;
 
@@ -66,7 +67,7 @@ public class AtendimentoDTO implements Serializable {
 
     private LocalDateTime posAtendimentoData;
 
-    @Pattern(regexp = "^[0-9]{3}\\/[0-9]{3}$", message = "{pos.atendimento.pressao.arterial.formato}")
+    @PressaoArterial(message = "{pos.atendimento.pressao.arterial.formato}")
     @Size(max = 7, message = "{pos.atendimento.pressao.arterial.tamanho}")
     private String posAtendimentoPressaoArterial;
 
