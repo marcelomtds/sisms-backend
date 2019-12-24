@@ -3,6 +3,10 @@ package br.com.sisms.api.model.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,22 +19,36 @@ public class LancamentoDTO implements Serializable {
 
     private Long id;
 
+    @NotNull(message = "{lancamento.data.vazio}")
     private LocalDate data;
 
+    @NotNull(message = "{valor.vazio}")
+    @DecimalMin(value = "0.0", inclusive = false, message = "{valor.tamanho}")
+    @DecimalMax(value = "999999.99", message = "{valor.tamanho}")
     private BigDecimal valor;
 
+    @Column(length = 200)
     private String observacao;
 
-    private UsuarioDTO usuarioDTO;
+    private Long usuarioId;
 
-    private AtendimentoDTO atendimento;
+    private String usuarioDescricao;
 
-    private PacoteDTO pacote;
+    private Long atendimentoId;
 
-    private CategoriaLancamentoDTO categoriaLancamento;
+    private Long pacoteId;
 
-    private FormaPagamentoDTO formaPagamento;
+    private Long categoriaLancamentoId;
 
-    private TipoLancamentoDTO tipoLancamento;
+    private String categoriaLancamentoDescricao;
+
+    @NotNull(message = "{forma.pagamento.vazio}")
+    private Long formaPagamentoId;
+
+    private String formaPagamentoDescricao;
+
+    private Long tipoLancamentoId;
+
+    private String tipoLancamentoDescricao;
 
 }
