@@ -3,7 +3,6 @@ package br.com.sisms.api.controller;
 import br.com.sisms.api.filter.PageableFilter;
 import br.com.sisms.api.model.dto.LocalidadeDTO;
 import br.com.sisms.api.model.enums.MessageEnum;
-import br.com.sisms.api.model.request.LocalidadeRequest;
 import br.com.sisms.api.response.Response;
 import br.com.sisms.api.service.LocalidadeService;
 import io.swagger.annotations.Api;
@@ -36,15 +35,15 @@ public class LocalidadeController {
     @ApiOperation(value = "Inclui uma localidade.")
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
-    public ResponseEntity<Response<LocalidadeDTO>> create(@Valid @RequestBody final LocalidadeRequest request) {
-        return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, request), MessageEnum.SUCESSO.toString()));
+    public ResponseEntity<Response<LocalidadeDTO>> create(@Valid @RequestBody final LocalidadeDTO dto) {
+        return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, dto), MessageEnum.SUCESSO.toString()));
     }
 
     @ApiOperation(value = "Altera uma localidade.")
     @PutMapping(path = "/{id}")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
-    public ResponseEntity<Response<LocalidadeDTO>> update(@PathVariable final Long id, @Valid @RequestBody final LocalidadeRequest request) {
-        return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, request), MessageEnum.SUCESSO.toString()));
+    public ResponseEntity<Response<LocalidadeDTO>> update(@PathVariable final Long id, @Valid @RequestBody final LocalidadeDTO dto) {
+        return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, dto), MessageEnum.SUCESSO.toString()));
     }
 
     @ApiOperation(value = "Retorna uma lista com todas localidades.")

@@ -39,7 +39,6 @@ public class UsuarioDTO implements Serializable {
 
     @CPF(message = "{cpf.invalido}")
     @NotBlank(message = "{cpf.vazio}")
-    @Size(max = 11, message = "{cpf.invalido}")
     private String cpf;
 
     private Boolean ativo;
@@ -99,19 +98,15 @@ public class UsuarioDTO implements Serializable {
     private Long contatoId;
 
     @Celular(message = "{celular.invalido}")
-    @Size(max = 11, message = "{celular.tamanho}")
     private String contatoCelular;
 
     @Celular(message = "{celular.recado.invalido}")
-    @Size(max = 11, message = "{celular.recado.tamanho}")
     private String contatoCelularRecado;
 
     @Fixo(message = "{residencial.invalido}")
-    @Size(max = 10, message = "{residencial.tamanho}")
     private String contatoResidencial;
 
     @Fixo(message = "{comercial.invalido}")
-    @Size(max = 10, message = "{comercial.tamanho}")
     private String contatoComercial;
 
     @Email(message = "{email.invalido}")

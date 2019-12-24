@@ -4,7 +4,6 @@ import br.com.sisms.api.filter.PacienteUsuarioFilter;
 import br.com.sisms.api.filter.PageableFilter;
 import br.com.sisms.api.model.dto.PacienteDTO;
 import br.com.sisms.api.model.enums.MessageEnum;
-import br.com.sisms.api.model.request.PacienteRequest;
 import br.com.sisms.api.response.Response;
 import br.com.sisms.api.service.PacienteService;
 import io.swagger.annotations.Api;
@@ -30,22 +29,22 @@ public class PacienteController {
     @ApiOperation(value = "Retorna uma lista paginada de pacientes por filtros.")
     @PostMapping(path = "/findByFilter")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
-    public ResponseEntity<Response<Page<PacienteDTO>>> findByFilter(@RequestBody final PageableFilter<PacienteUsuarioFilter> filter) {
+    public ResponseEntity<Response<Page<PacienteDTO>>> findByFilter(@RequestBody @Valid final PageableFilter<PacienteUsuarioFilter> filter) {
         return ResponseEntity.ok().body(new Response(service.findByFilter(filter), MessageEnum.SUCESSO.toString()));
     }
 
     @ApiOperation(value = "Inclui um paciente.")
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
-    public ResponseEntity<Response<PacienteDTO>> create(@Valid @RequestBody final PacienteRequest request) {
-        return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, request), MessageEnum.SUCESSO.toString()));
+    public ResponseEntity<Response<PacienteDTO>> create(@Valid @RequestBody final PacienteDTO dto) {
+        return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, dto), MessageEnum.SUCESSO.toString()));
     }
 
     @ApiOperation(value = "Altera um paciente.")
     @PutMapping(path = "/{id}")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
-    public ResponseEntity<Response<PacienteDTO>> update(@PathVariable final Long id, @Valid @RequestBody final PacienteRequest request) {
-        return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, request), MessageEnum.SUCESSO.toString()));
+    public ResponseEntity<Response<PacienteDTO>> update(@PathVariable final Long id, @Valid @RequestBody final PacienteDTO dto) {
+        return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, dto), MessageEnum.SUCESSO.toString()));
     }
 
     @ApiOperation(value = "Retorna uma lista com todos pacientes ativos.")

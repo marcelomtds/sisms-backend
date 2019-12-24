@@ -9,7 +9,7 @@ import br.com.sisms.api.model.entity.Usuario;
 import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.model.enums.PerfilEnum;
 import br.com.sisms.api.model.mapper.UsuarioMapper;
-import br.com.sisms.api.model.request.SenhaDTO;
+import br.com.sisms.api.model.dto.SenhaDTO;
 import br.com.sisms.api.repository.UsuarioRepository;
 import br.com.sisms.api.util.Util;
 import lombok.AllArgsConstructor;
@@ -118,7 +118,7 @@ public class UsuarioService {
     public UsuarioDTO createOrUpdate(final Long id, final UsuarioDTO dtoSource) {
         validateResources(dtoSource);
         checkDate(dtoSource.getDataNascimento());
-        validateContato(dtoSource);
+        validateTelefoneContato(dtoSource);
         Usuario entity;
         if (Objects.nonNull(id)) {
             UsuarioDTO dtoTarget = findById(id);
@@ -134,10 +134,9 @@ public class UsuarioService {
         return mapper.toDTO(repository.save(entity));
     }
 
-    private void validateContato(final UsuarioDTO dto) {
+    private void validateTelefoneContato(final UsuarioDTO dto) {
         if (StringUtils.isBlank(dto.getContatoCelular()) && StringUtils.isBlank(dto.getContatoCelularRecado())
-                && StringUtils.isBlank(dto.getContatoResidencial()) && StringUtils.isBlank(dto.getContatoComercial())
-                && StringUtils.isBlank(dto.getContatoEmail())) {
+                && StringUtils.isBlank(dto.getContatoResidencial()) && StringUtils.isBlank(dto.getContatoComercial())) {
             throw new BusinessException(MessageEnum.MSG0007.toString());
         }
     }

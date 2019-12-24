@@ -6,7 +6,7 @@ import br.com.sisms.api.model.dto.UsuarioDTO;
 import br.com.sisms.api.model.entity.Usuario;
 import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.model.enums.PerfilEnum;
-import br.com.sisms.api.model.request.SenhaDTO;
+import br.com.sisms.api.model.dto.SenhaDTO;
 import br.com.sisms.api.response.Response;
 import br.com.sisms.api.service.UsuarioService;
 import io.swagger.annotations.Api;
@@ -45,7 +45,7 @@ public class UsuarioController {
     @ApiOperation(value = "Retorna uma lista paginada de usuários por filtros.")
     @PostMapping(path = "/findByFilter")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR')")
-    public ResponseEntity<Response<Page<UsuarioDTO>>> findByFilter(@RequestBody final PageableFilter<PacienteUsuarioFilter> filter) {
+    public ResponseEntity<Response<Page<UsuarioDTO>>> findByFilter(@RequestBody @Valid final PageableFilter<PacienteUsuarioFilter> filter) {
         return ResponseEntity.ok().body(new Response(service.findByFilter(filter), MessageEnum.SUCESSO.toString()));
     }
 

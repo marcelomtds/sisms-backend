@@ -8,7 +8,6 @@ import br.com.sisms.api.model.dto.PacienteDTO;
 import br.com.sisms.api.model.entity.Paciente;
 import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.model.mapper.PacienteMapper;
-import br.com.sisms.api.model.request.PacienteRequest;
 import br.com.sisms.api.repository.PacienteRepository;
 import br.com.sisms.api.util.Util;
 import lombok.AllArgsConstructor;
@@ -82,23 +81,30 @@ public class PacienteService {
         return mapper.toDTO(repository.save(mapper.toEntity(dto)));
     }
 
-    public PacienteDTO createOrUpdate(final Long id, final PacienteRequest request) {
-        validateResources(request);
-        checkDate(request.getDataNascimento());
+    public PacienteDTO createOrUpdate(final Long id, final PacienteDTO dtoSource) {
+        validateResources(dtoSource);
+        checkDate(dtoSource.getDataNascimento());
+        validateTelefoneContato(dtoSource);
         Paciente entity;
         if (!ObjectUtils.isEmpty(id)) {
-            PacienteDTO dto = findById(id);
-            BeanUtils.copyProperties(mapper.toDTO(request), dto, "id", "cpf", "rg", "ativo", "contatoId", "enderecoId");
-            entity = mapper.toEntity(dto);
+            PacienteDTO dtoTarget = findById(id);
+            BeanUtils.copyProperties(dtoSource, dtoTarget, "id", StringUtils.isBlank(dtoSource.getCpf()) ? "cpf" : "", "rg", "ativo", "contatoId", "enderecoId");
+            entity = mapper.toEntity(dtoTarget);
         } else {
-            entity = mapper.toEntity(request);
+            entity = mapper.toEntity(dtoSource);
         }
-        validateCpf(entity.getCpf());
         validateDuplicityByCpf(entity);
         if (Objects.isNull(entity.getProfissao().getId())) {
             entity.setProfissao(null);
         }
         return mapper.toDTO(repository.save(entity));
+    }
+
+    private void validateTelefoneContato(final PacienteDTO dto) {
+        if (StringUtils.isBlank(dto.getContatoCelular()) && StringUtils.isBlank(dto.getContatoCelularRecado())
+                && StringUtils.isBlank(dto.getContatoResidencial()) && StringUtils.isBlank(dto.getContatoComercial())) {
+            throw new BusinessException(MessageEnum.MSG0007.toString());
+        }
     }
 
     private void validateDuplicityByCpf(final Paciente entity) {
@@ -110,18 +116,12 @@ public class PacienteService {
         }
     }
 
-    private void validateCpf(final String cpf) {
-        if (StringUtils.isNotBlank(cpf) && !Util.isValidCpf(cpf)) {
-            throw new BusinessException(MessageEnum.CPF_INVALIDO.toString());
+    private void validateResources(final PacienteDTO dto) {
+        if (!ObjectUtils.isEmpty(dto.getProfissaoId())) {
+            profissaoService.findById(dto.getProfissaoId());
         }
-    }
-
-    private void validateResources(final PacienteRequest request) {
-        if (!ObjectUtils.isEmpty(request.getProfissaoId())) {
-            profissaoService.findById(request.getProfissaoId());
-        }
-        sexoService.findById(request.getSexoId());
-        localidadeService.findById(request.getEnderecoLocalidadeId());
+        sexoService.findById(dto.getSexoId());
+        localidadeService.findById(dto.getEnderecoLocalidadeId());
     }
 
     private void checkDate(final LocalDate date) {

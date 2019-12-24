@@ -1,4 +1,4 @@
-package br.com.sisms.api.model.request;
+package br.com.sisms.api.model.dto;
 
 import br.com.sisms.api.validation.constraint.Senha;
 import lombok.Getter;

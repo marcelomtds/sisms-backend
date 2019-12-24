@@ -33,23 +33,16 @@ public class AutenticacaoService {
 
     private final UsuarioService usuarioService;
 
-    public CurrentAuthenticationDTO createAuthenticationToken(final AutenticacaoDTO request) {
-        validateCpf(request.getCpf());
-        final Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getCpf(), request.getSenha()));
+    public CurrentAuthenticationDTO createAuthenticationToken(final AutenticacaoDTO autenticacaoDTO) {
+        final Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(autenticacaoDTO.getCpf(), autenticacaoDTO.getSenha()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getCpf());
-        final UsuarioDTO dto = usuarioService.findByCpfAndAtivoIsTrue(request.getCpf());
-        if (Objects.isNull(dto)) {
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(autenticacaoDTO.getCpf());
+        final UsuarioDTO usuarioDTO = usuarioService.findByCpfAndAtivoIsTrue(autenticacaoDTO.getCpf());
+        if (Objects.isNull(usuarioDTO)) {
             throw new BusinessException(MessageEnum.USUARIO_BLOQUEADO.toString());
         }
         final String token = jwtTokenUtil.generateToken(userDetails);
-        return new CurrentAuthenticationDTO(token, dto);
-    }
-
-    private void validateCpf(final String cpf) {
-        if (StringUtils.isNotBlank(cpf) && !Util.isValidCpf(cpf)) {
-            throw new BusinessException(MessageEnum.CPF_INVALIDO.toString());
-        }
+        return new CurrentAuthenticationDTO(token, usuarioDTO);
     }
 
 }
