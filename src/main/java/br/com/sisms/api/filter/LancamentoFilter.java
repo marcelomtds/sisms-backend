@@ -11,11 +11,12 @@ public class LancamentoFilter {
 
     private Long atendimentoId;
     private Long pacoteId;
-    private String tipoLancamento;
-    private String tipoAtendimento;
     private Long categoriaAtendimentoId;
-    private Long pacienteId;
     private Long formaPagamentoId;
+    private Long tipoLancamentoId;
+    private Long tipoAtendimentoId;
+    private Long pacienteId;
+    private Long usuarioId;
     private LocalDate dataInicio;
     private LocalDate dataFim;
 

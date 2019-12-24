@@ -21,19 +21,21 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
             + "WHERE 1 = 1 "
             + "AND (:pacoteId IS NULL OR paco.id = :pacoteId) "
             + "AND (:atendimentoId IS NULL OR at.id = :atendimentoId) "
-            + "AND (:tipoLancamento IS NULL OR :tipoLancamento = '' OR lanc.tipoLancamento = UPPER (:tipoLancamento)) "
+            + "AND (:tipoLancamentoId IS NULL OR lanc.tipoLancamento.id = :tipoLancamentoId) "
             + "AND (:pacienteId IS NULL OR pac.id = :pacienteId) "
             + "AND (:formaPagamentoId IS NULL OR fp.id = :formaPagamentoId) "
             + "AND (:categoriaAtendimentoId IS NULL OR ca.id = :categoriaAtendimentoId) "
+            + "AND (:usuarioId IS NULL OR lanc.usuario.id = :usuarioId) "
             + "AND (CAST(:dataInicio AS date) IS NULL OR lanc.data >= :dataInicio) "
             + "AND (CAST(:dataFim AS date) IS NULL OR lanc.data <= :dataFim)")
     Page<Lancamento> findByFilter(
             final Long pacoteId,
             final Long atendimentoId,
-            final String tipoLancamento,
+            final Long tipoLancamentoId,
             final Long pacienteId,
             final Long formaPagamentoId,
             final Long categoriaAtendimentoId,
+            final Long usuarioId,
             final LocalDate dataInicio,
             final LocalDate dataFim,
             final Pageable pageable);

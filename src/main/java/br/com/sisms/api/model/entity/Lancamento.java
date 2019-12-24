@@ -29,15 +29,15 @@ public class Lancamento implements Serializable {
     private String observacao;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "id_usuario", nullable = false, updatable = false)
     private Usuario usuario;
 
     @ManyToOne
-    @JoinColumn(name = "id_atendimento")
+    @JoinColumn(name = "id_atendimento", updatable = false)
     private Atendimento atendimento;
 
     @ManyToOne
-    @JoinColumn(name = "id_pacote")
+    @JoinColumn(name = "id_pacote", updatable = false)
     private Pacote pacote;
 
     @ManyToOne
@@ -49,7 +49,7 @@ public class Lancamento implements Serializable {
     private FormaPagamento formaPagamento;
 
     @ManyToOne
-    @JoinColumn(name = "id_tipo_lancamento", nullable = false)
+    @JoinColumn(name = "id_tipo_lancamento", nullable = false, updatable = false)
     private TipoLancamento tipoLancamento;
 
 }

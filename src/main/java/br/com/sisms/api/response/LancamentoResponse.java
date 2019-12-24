@@ -1,19 +1,29 @@
 package br.com.sisms.api.response;
 
-import br.com.sisms.api.model.dto.LancamentoDTO;
 import br.com.sisms.api.model.dto.LancamentoTotalResultDTO;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.domain.Page;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 public class LancamentoResponse<T> {
 
-    private T body;
-    private LancamentoTotalResultDTO total;
-    private String message;
+    public LancamentoResponse(final T result, final LancamentoTotalResultDTO total, final String message, final List<String> errors) {
+        this.result = result;
+        this.total = total;
+        this.message = message;
+        this.errors = errors;
+    }
+
+    private T result = (T) new Object();
+    private LancamentoTotalResultDTO total = new LancamentoTotalResultDTO();
+    private String message = StringUtils.EMPTY;
+    private List<String> errors = new ArrayList<>();
 
 }

@@ -13,6 +13,8 @@ public enum MessageEnum {
     MSG0005("A senha atual está incorreta."),
     MSG0006("Esse cpf já existe na base de dados."),
     MSG0007("É necessário informar pelo menos um telefone de contato."),
+    MSG0008("A data início não pode ser maior que a data fim."),
+    MSG0009("Tipo de lançamento não encontrada."),
     SUCESSO(Codigo.SUCESSO),
     USUARIO_BLOQUEADO(Codigo.USUARIO_BLOQUEADO),
     REGISTRO_JA_CADASTRADO(Codigo.REGISTRO_JA_CADASTRADO),
@@ -45,7 +47,6 @@ public enum MessageEnum {
     PERMISSAO_CRIAR_PACOTE(Codigo.PERMISSAO_CRIAR_PACOTE),
     TIPO_ATENDIMENTO_NAO_ENCONTRADO(Codigo.TIPO_ATENDIMENTO_NAO_ENCONTRADO),
     DATA_HORA_POS_ATENDIMENTO_OBRIGATORIO(Codigo.DATA_HORA_POS_ATENDIMENTO_OBRIGATORIO),
-    PERIODO_DATA_INVALIDO(Codigo.PERIODO_DATA_INVALIDO),
     ATIVAR_INATIVAR_PROPRIO_USUARIO(Codigo.ATIVAR_INATIVAR_PROPRIO_USUARIO);
 
     private final String codigo;
@@ -88,7 +89,6 @@ public enum MessageEnum {
         public static final String DATA_HORA_PRE_POS_ATENDIMENTO_INTERVALO = "A data/hora do pré-atendimento não pode ser maior que a data/hora do pós-atendimento.";
         public static final String DATA_HORA_PRE_ATENDIMENTO_MAIOR_ATUAL = "A Data/Hora do pré-atendimento não pode ser maior que a Data/Hora atual.";
         public static final String DATA_HORA_POS_ATENDIMENTO_OBRIGATORIO = "O campo data em pós-atendimento é obrigatório.";
-        public static final String PERIODO_DATA_INVALIDO = "A data início não pode ser maior que a data fim.";
         public static final String ALTERAR_PACOTE_ENCERRADO = "Não é possível alterar um pacote encerrado.";
         public static final String PERMISSAO_CRIAR_PACOTE = "Não é possível criar um novo pacote para esse paciente com essa categoria de atendimento porque existe um pacote em aberto criado por outro usuário.";
 

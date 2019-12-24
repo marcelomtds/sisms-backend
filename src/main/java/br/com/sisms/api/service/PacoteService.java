@@ -131,7 +131,7 @@ public class PacoteService {
 
     private void validatePeriod(final LocalDate startDate, final LocalDate endDate) {
         if (Objects.nonNull(startDate) && Objects.nonNull(endDate) && Util.isInvalidPeriod(startDate, endDate)) {
-            throw new BusinessException(MessageEnum.PERIODO_DATA_INVALIDO.toString());
+            throw new BusinessException(MessageEnum.MSG0008.toString());
         }
     }
 
