@@ -5,11 +5,12 @@ import br.com.sisms.api.exception.ResourceNotFoundException;
 import br.com.sisms.api.filter.LancamentoFilter;
 import br.com.sisms.api.filter.PageableFilter;
 import br.com.sisms.api.model.dto.LancamentoDTO;
-import br.com.sisms.api.model.dto.LancamentoTotalResultDTO;
+import br.com.sisms.api.model.dto.LancamentoTotalDTO;
 import br.com.sisms.api.model.entity.Lancamento;
 import br.com.sisms.api.model.entity.Usuario;
 import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.model.enums.PerfilEnum;
+import br.com.sisms.api.model.enums.TipoAtendimentoEnum;
 import br.com.sisms.api.model.enums.TipoLancamentoEnum;
 import br.com.sisms.api.model.mapper.LancamentoMapper;
 import br.com.sisms.api.repository.LancamentoRepository;
@@ -26,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Service
@@ -47,11 +47,16 @@ public class LancamentoService {
         Lancamento entity;
         if (Objects.nonNull(id)) {
             LancamentoDTO dtoTarget = findById(id);
-            BeanUtils.copyProperties(dtoSource, dtoTarget, "id", "usuarioId", "atendimentoId", "pacoteId", "formaPagamentoId", "tipoLancamentoId");
+            BeanUtils.copyProperties(dtoSource, dtoTarget, "id", "usuarioId", "atendimentoId", "pacoteId", "formaPagamentoId", "tipoLancamentoId", "tipoAtendimentoId");
             entity = mapper.toEntity(dtoTarget);
         } else {
             dtoSource.setUsuarioId(usuarioService.getCurrentSessionUser().getId());
-            dtoSource.setTipoLancamentoId(Objects.isNull(dtoSource.getCategoriaLancamentoId()) ? TipoLancamentoEnum.ENTRADA.getTipoLancamento() : TipoLancamentoEnum.SAIDA.getTipoLancamento());
+            if (Objects.isNull(dtoSource.getCategoriaLancamentoId())) {
+                dtoSource.setTipoLancamentoId(TipoLancamentoEnum.ENTRADA.getTipoLancamento());
+                dtoSource.setTipoAtendimentoId(Objects.nonNull(dtoSource.getPacoteId()) ? TipoAtendimentoEnum.PACOTE.getTipoAtendimento() : TipoAtendimentoEnum.SESSAO.getTipoAtendimento());
+            } else {
+                dtoSource.setTipoLancamentoId(TipoLancamentoEnum.SAIDA.getTipoLancamento());
+            }
             entity = mapper.toEntity(dtoSource);
         }
         if (Objects.isNull(entity.getAtendimento().getId())) {
@@ -62,6 +67,9 @@ public class LancamentoService {
         }
         if (Objects.isNull(entity.getCategoriaLancamento().getId())) {
             entity.setCategoriaLancamento(null);
+        }
+        if (Objects.isNull(entity.getTipoAtendimento().getId())) {
+            entity.setTipoAtendimento(null);
         }
         return mapper.toDTO(repository.save(entity));
     }
@@ -78,27 +86,27 @@ public class LancamentoService {
 
     @Transactional(readOnly = true)
     public Page<LancamentoDTO> findByFilter(final PageableFilter<LancamentoFilter> filter) {
-        return find(filter, filter.getPageSize());
+        return find(filter, filter.getPageSize(), filter.getCurrentPage());
     }
 
     @Transactional(readOnly = true)
-    public LancamentoTotalResultDTO findTotalByFilter(final PageableFilter<LancamentoFilter> filter) {
+    public LancamentoTotalDTO findTotalByFilter(final PageableFilter<LancamentoFilter> filter) {
         BigDecimal entrada = new BigDecimal(0);
         BigDecimal saida = new BigDecimal(0);
-        for (LancamentoDTO dto : find(filter, Integer.MAX_VALUE).getContent()) {
+        for (LancamentoDTO dto : find(filter, Integer.MAX_VALUE, 0).getContent()) {
             if (dto.getTipoLancamentoId().equals(TipoLancamentoEnum.ENTRADA.getTipoLancamento())) {
                 entrada = entrada.add(dto.getValor());
             } else {
                 saida = saida.add(dto.getValor());
             }
         }
-        return new LancamentoTotalResultDTO(entrada, saida, entrada.subtract(saida));
+        return new LancamentoTotalDTO(entrada, saida, entrada.subtract(saida));
     }
 
-    private Page<LancamentoDTO> find(final PageableFilter<LancamentoFilter> filter, final Integer size) {
+    private Page<LancamentoDTO> find(final PageableFilter<LancamentoFilter> filter, final Integer size, final Integer currentPage) {
         filter.setOrderBy(StringUtils.isBlank(filter.getOrderBy()) ? "id" : filter.getOrderBy());
         Pageable pageable = PageRequest.of(
-                filter.getCurrentPage(),
+                currentPage,
                 size,
                 Sort.Direction.valueOf(filter.getDirection()),
                 filter.getOrderBy());
@@ -109,6 +117,7 @@ public class LancamentoService {
             filter.getFilter().setUsuarioId(user.getId());
         }
         return repository.findByFilter(
+                filter.getFilter().getTipoAtendimentoId(),
                 filter.getFilter().getPacoteId(),
                 filter.getFilter().getAtendimentoId(),
                 filter.getFilter().getTipoLancamentoId(),
@@ -116,6 +125,7 @@ public class LancamentoService {
                 filter.getFilter().getFormaPagamentoId(),
                 filter.getFilter().getCategoriaAtendimentoId(),
                 filter.getFilter().getUsuarioId(),
+                filter.getFilter().getCategoriaLancamentoId(),
                 filter.getFilter().getDataInicio(),
                 filter.getFilter().getDataFim(),
                 pageable).map(mapper::toDTO);

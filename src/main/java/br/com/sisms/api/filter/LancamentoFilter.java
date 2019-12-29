@@ -17,6 +17,7 @@ public class LancamentoFilter {
     private Long tipoAtendimentoId;
     private Long pacienteId;
     private Long usuarioId;
+    private Long categoriaLancamentoId;
     private LocalDate dataInicio;
     private LocalDate dataFim;
 

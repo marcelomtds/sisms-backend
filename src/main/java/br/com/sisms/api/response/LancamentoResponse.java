@@ -1,6 +1,6 @@
 package br.com.sisms.api.response;
 
-import br.com.sisms.api.model.dto.LancamentoTotalResultDTO;
+import br.com.sisms.api.model.dto.LancamentoTotalDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class LancamentoResponse<T> {
 
-    public LancamentoResponse(final T result, final LancamentoTotalResultDTO total, final String message, final List<String> errors) {
+    public LancamentoResponse(final T result, final LancamentoTotalDTO total, final String message, final List<String> errors) {
         this.result = result;
         this.total = total;
         this.message = message;
@@ -22,7 +22,7 @@ public class LancamentoResponse<T> {
     }
 
     private T result = (T) new Object();
-    private LancamentoTotalResultDTO total = new LancamentoTotalResultDTO();
+    private LancamentoTotalDTO total = new LancamentoTotalDTO();
     private String message = StringUtils.EMPTY;
     private List<String> errors = new ArrayList<>();
 

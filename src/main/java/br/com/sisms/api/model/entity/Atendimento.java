@@ -17,13 +17,14 @@ public class Atendimento implements Serializable {
 
     private static final long serialVersionUID = -213944903903696401L;
 
-    public Atendimento(final Long id, final Paciente paciente, final Usuario usuario, final Pacote pacote, final PreAtendimento preAtendimento, final PosAtendimento posAtendimento, final TipoAtendimento tipoAtendimento,final Long numero, final Boolean aberto){
+    public Atendimento(final Long id, final Paciente paciente, final Usuario usuario, final Pacote pacote, final PreAtendimento preAtendimento, final PosAtendimento posAtendimento, final CategoriaAtendimento categoriaAtendimento, final TipoAtendimento tipoAtendimento, final Long numero, final Boolean aberto) {
         this.id = id;
         this.paciente = paciente;
         this.usuario = usuario;
         this.pacote = pacote;
         this.preAtendimento = preAtendimento;
         this.posAtendimento = posAtendimento;
+        this.categoriaAtendimento = categoriaAtendimento;
         this.tipoAtendimento = tipoAtendimento;
         this.numero = numero;
         this.aberto = aberto;

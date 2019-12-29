@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public interface AtendimentoRepository extends JpaRepository<Atendimento, Long> {
 
-    @Query("SELECT new br.com.sisms.api.model.entity.Atendimento(a.id, a.paciente, a.usuario, a.pacote, a.preAtendimento, a.posAtendimento, a.tipoAtendimento, a.numero, a.aberto) FROM Atendimento a "
+    @Query("SELECT new br.com.sisms.api.model.entity.Atendimento(a.id, a.paciente, a.usuario, a.pacote, a.preAtendimento, a.posAtendimento, a.categoriaAtendimento, a.tipoAtendimento, a.numero, a.aberto) FROM Atendimento a "
             + "LEFT JOIN a.preAtendimento pre "
             + "LEFT JOIN a.posAtendimento pos "
             + "LEFT JOIN a.pacote pac "
@@ -50,7 +50,7 @@ public interface AtendimentoRepository extends JpaRepository<Atendimento, Long> 
             + "AND a.categoriaAtendimento.id = :categoriaAtendimentoId")
     Long findTotalByPackage(final Long pacienteId, final Long pacoteId, final Long categoriaAtendimentoId);
 
-    @Query("SELECT new br.com.sisms.api.model.entity.Atendimento(a.id, a.paciente, a.usuario, a.pacote, a.preAtendimento, a.posAtendimento, a.tipoAtendimento, a.numero, a.aberto) FROM Atendimento a "
+    @Query("SELECT new br.com.sisms.api.model.entity.Atendimento(a.id, a.paciente, a.usuario, a.pacote, a.preAtendimento, a.posAtendimento, a.categoriaAtendimento, a.tipoAtendimento, a.numero, a.aberto) FROM Atendimento a "
             + "LEFT JOIN a.preAtendimento pre "
             + "LEFT JOIN a.posAtendimento pos "
             + "LEFT JOIN a.pacote pac "

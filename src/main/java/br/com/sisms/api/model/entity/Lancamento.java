@@ -52,4 +52,8 @@ public class Lancamento implements Serializable {
     @JoinColumn(name = "id_tipo_lancamento", nullable = false, updatable = false)
     private TipoLancamento tipoLancamento;
 
+    @ManyToOne
+    @JoinColumn(name = "id_tipo_atendimento", updatable = false)
+    private TipoAtendimento tipoAtendimento;
+
 }

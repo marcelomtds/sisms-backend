@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LancamentoTotalResultDTO implements Serializable {
+public class LancamentoTotalDTO implements Serializable {
 
     private static final long serialVersionUID = -6109510519270550267L;
 
