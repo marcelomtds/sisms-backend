@@ -49,4 +49,7 @@ public class Pacote implements Serializable {
     @Formula("(select count(*) from atendimento as a where a.id_pacote = id)")
     private Long quantidadeAtendimentos;
 
+    @Formula("(select sum(l.valor) from lancamento as l where l.id_pacote = id)")
+    private BigDecimal totalPago;
+
 }

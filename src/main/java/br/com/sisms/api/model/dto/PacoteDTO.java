@@ -45,4 +45,6 @@ public class PacoteDTO implements Serializable {
 
     private Long quantidadeAtendimentos;
 
+    private BigDecimal totalPago;
+
 }

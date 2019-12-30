@@ -110,4 +110,6 @@ public class AtendimentoDTO implements Serializable {
     @Size(max = 1000, message = "{atendimento.conduta.tamanho}")
     private String conduta;
 
+    private BigDecimal totalPago;
+
 }

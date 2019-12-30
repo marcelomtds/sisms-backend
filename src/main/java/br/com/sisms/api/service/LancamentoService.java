@@ -4,6 +4,7 @@ import br.com.sisms.api.exception.BusinessException;
 import br.com.sisms.api.exception.ResourceNotFoundException;
 import br.com.sisms.api.filter.LancamentoFilter;
 import br.com.sisms.api.filter.PageableFilter;
+import br.com.sisms.api.model.dto.AtendimentoDTO;
 import br.com.sisms.api.model.dto.LancamentoDTO;
 import br.com.sisms.api.model.dto.LancamentoTotalDTO;
 import br.com.sisms.api.model.entity.Lancamento;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +49,7 @@ public class LancamentoService {
         Lancamento entity;
         if (Objects.nonNull(id)) {
             LancamentoDTO dtoTarget = findById(id);
+            checkUserPermission(dtoTarget);
             BeanUtils.copyProperties(dtoSource, dtoTarget, "id", "usuarioId", "atendimentoId", "pacoteId", "formaPagamentoId", "tipoLancamentoId", "tipoAtendimentoId");
             entity = mapper.toEntity(dtoTarget);
         } else {
@@ -80,7 +83,8 @@ public class LancamentoService {
     }
 
     public void delete(final Long id) {
-        findById(id);
+        LancamentoDTO dto = findById(id);
+        checkUserPermission(dto);
         repository.deleteById(id);
     }
 
@@ -103,6 +107,13 @@ public class LancamentoService {
         return new LancamentoTotalDTO(entrada, saida, entrada.subtract(saida));
     }
 
+    private void checkUserPermission(final LancamentoDTO lancamentoDTO) {
+        Usuario usuario = usuarioService.getCurrentSessionUser();
+        if (!lancamentoDTO.getUsuarioId().equals(usuario.getId()) && usuario.getPerfil().getId().equals(PerfilEnum.USUARIO.getPerfil())) {
+            throw new AccessDeniedException(MessageEnum.USUARIO_SEM_PERMISSAO.toString());
+        }
+    }
+
     private Page<LancamentoDTO> find(final PageableFilter<LancamentoFilter> filter, final Integer size, final Integer currentPage) {
         filter.setOrderBy(StringUtils.isBlank(filter.getOrderBy()) ? "id" : filter.getOrderBy());
         Pageable pageable = PageRequest.of(
@@ -112,10 +123,6 @@ public class LancamentoService {
                 filter.getOrderBy());
         filter.setFilter(Objects.isNull(filter.getFilter()) ? new LancamentoFilter() : filter.getFilter());
         validatePeriod(filter.getFilter().getDataInicio(), filter.getFilter().getDataFim());
-        Usuario user = usuarioService.getCurrentSessionUser();
-        if (user.getPerfil().getId().equals(PerfilEnum.USUARIO.getPerfil())) {
-            filter.getFilter().setUsuarioId(user.getId());
-        }
         return repository.findByFilter(
                 filter.getFilter().getTipoAtendimentoId(),
                 filter.getFilter().getPacoteId(),
