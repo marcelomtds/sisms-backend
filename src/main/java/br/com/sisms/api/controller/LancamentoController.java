@@ -2,6 +2,7 @@ package br.com.sisms.api.controller;
 
 import br.com.sisms.api.filter.LancamentoFilter;
 import br.com.sisms.api.filter.PageableFilter;
+import br.com.sisms.api.model.dto.AtendimentoDTO;
 import br.com.sisms.api.model.dto.LancamentoDTO;
 import br.com.sisms.api.model.dto.LancamentoTotalDTO;
 import br.com.sisms.api.model.enums.MessageEnum;
@@ -53,6 +54,13 @@ public class LancamentoController {
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
     public ResponseEntity<Response<Page<LancamentoDTO>>> findByFilter(@RequestBody PageableFilter<LancamentoFilter> filter) {
         return ResponseEntity.ok().body(new Response(service.findByFilter(filter), MessageEnum.SUCESSO.toString()));
+    }
+
+    @ApiOperation(value = "Retorna um lançamento por id.")
+    @GetMapping(path = "/{id}")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    public ResponseEntity<Response<AtendimentoDTO>> findById(@PathVariable final Long id) {
+        return ResponseEntity.ok().body(new Response(service.findByIdWithPermission(id), MessageEnum.SUCESSO.toString()));
     }
 
     @ApiOperation(value = "Retorna o total de lançamentos por filtros.")

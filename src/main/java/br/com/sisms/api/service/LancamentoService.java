@@ -48,8 +48,7 @@ public class LancamentoService {
         validateResources(dtoSource);
         Lancamento entity;
         if (Objects.nonNull(id)) {
-            LancamentoDTO dtoTarget = findById(id);
-            checkUserPermission(dtoTarget);
+            LancamentoDTO dtoTarget = findByIdWithPermission(id);
             BeanUtils.copyProperties(dtoSource, dtoTarget, "id", "usuarioId", "atendimentoId", "pacoteId", "formaPagamentoId", "tipoLancamentoId", "tipoAtendimentoId");
             entity = mapper.toEntity(dtoTarget);
         } else {
@@ -82,9 +81,15 @@ public class LancamentoService {
         return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.LANCAMENTO_NAO_ENCONTRADO.toString())));
     }
 
-    public void delete(final Long id) {
+    @Transactional(readOnly = true)
+    public LancamentoDTO findByIdWithPermission(final Long id) {
         LancamentoDTO dto = findById(id);
         checkUserPermission(dto);
+        return dto;
+    }
+
+    public void delete(final Long id) {
+        findByIdWithPermission(id);
         repository.deleteById(id);
     }
 
