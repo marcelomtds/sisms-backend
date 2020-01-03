@@ -4,18 +4,18 @@ import br.com.sisms.api.exception.BusinessException;
 import br.com.sisms.api.exception.ResourceNotFoundException;
 import br.com.sisms.api.filter.PacienteUsuarioFilter;
 import br.com.sisms.api.filter.PageableFilter;
+import br.com.sisms.api.model.dto.SenhaDTO;
 import br.com.sisms.api.model.dto.UsuarioDTO;
 import br.com.sisms.api.model.entity.Usuario;
 import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.model.enums.PerfilEnum;
 import br.com.sisms.api.model.mapper.UsuarioMapper;
-import br.com.sisms.api.model.dto.SenhaDTO;
 import br.com.sisms.api.repository.UsuarioRepository;
 import br.com.sisms.api.util.Util;
-import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +32,6 @@ import java.util.Objects;
 
 @Service
 @Transactional
-@AllArgsConstructor
 public class UsuarioService {
 
     private final UsuarioRepository repository;
@@ -40,7 +39,17 @@ public class UsuarioService {
     private final ProfissaoService profissaoService;
     private final SexoService sexoService;
     private final LocalidadeService localidadeService;
-    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public UsuarioService(UsuarioRepository repository, UsuarioMapper mapper, ProfissaoService profissaoService, SexoService sexoService, LocalidadeService localidadeService) {
+        this.repository = repository;
+        this.mapper = mapper;
+        this.profissaoService = profissaoService;
+        this.sexoService = sexoService;
+        this.localidadeService = localidadeService;
+    }
 
     @Transactional(readOnly = true)
     public UsuarioDTO findByCpf(final String cpf) {

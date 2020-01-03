@@ -42,6 +42,7 @@ public class AutenticacaoService {
             throw new BusinessException(MessageEnum.USUARIO_BLOQUEADO.toString());
         }
         final String token = jwtTokenUtil.generateToken(userDetails);
+        usuarioDTO.setSenha(null);
         return new CurrentAuthenticationDTO(token, usuarioDTO);
     }
 
