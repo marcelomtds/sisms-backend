@@ -27,28 +27,28 @@ public class CategoriaLancamentoController {
 
     @ApiOperation(value = "Retorna uma lista paginada de categorias de lançamento por filtros.")
     @PostMapping(path = "/findByFilter")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR')")
     public ResponseEntity<Response<Page<CategoriaLancamentoDTO>>> findByFilter(@RequestBody final PageableFilter pageableFilter) {
         return ResponseEntity.ok().body(new Response(service.findByFilter(pageableFilter), MessageEnum.SUCESSO.toString()));
     }
 
     @ApiOperation(value = "Inclui uma categoria de lançamento.")
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR')")
     public ResponseEntity<Response<CategoriaLancamentoDTO>> create(@Valid @RequestBody final CategoriaLancamentoDTO dto) {
         return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, dto), MessageEnum.SUCESSO.toString()));
     }
 
     @ApiOperation(value = "Altera uma categoria de lançamento.")
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR')")
     public ResponseEntity<Response<CategoriaLancamentoDTO>> update(@PathVariable final Long id, @Valid @RequestBody final CategoriaLancamentoDTO dto) {
         return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, dto), MessageEnum.SUCESSO.toString()));
     }
 
     @ApiOperation(value = "Retorna uma lista com todas categorias de lançamento.")
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR')")
     public ResponseEntity<Response<List<CategoriaLancamentoDTO>>> findAll() {
         return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.SUCESSO.toString()));
     }

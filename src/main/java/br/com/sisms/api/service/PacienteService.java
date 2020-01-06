@@ -78,7 +78,11 @@ public class PacienteService {
     public PacienteDTO activeOrInative(final Long id) {
         PacienteDTO dto = findById(id);
         dto.setAtivo(BooleanUtils.negate(dto.getAtivo()));
-        return mapper.toDTO(repository.save(mapper.toEntity(dto)));
+        Paciente entity = mapper.toEntity(dto);
+        if (Objects.isNull(entity.getProfissao().getId())) {
+            entity.setProfissao(null);
+        }
+        return mapper.toDTO(repository.save(entity));
     }
 
     public PacienteDTO createOrUpdate(final Long id, final PacienteDTO dtoSource) {

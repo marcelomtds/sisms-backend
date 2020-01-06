@@ -133,7 +133,7 @@ public class AtendimentoService {
 
     @Transactional(readOnly = true)
     public AtendimentoDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.ATENDIMENTO_NAO_ENCONTRADO.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00027.toString())));
     }
 
     @Transactional(readOnly = true)

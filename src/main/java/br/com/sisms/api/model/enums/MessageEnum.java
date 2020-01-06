@@ -15,6 +15,7 @@ public enum MessageEnum {
     MSG0007("É necessário informar pelo menos um telefone de contato."),
     MSG0008("A data início não pode ser maior que a data fim."),
     MSG0009("Tipo de lançamento não encontrada."),
+    MSG00027("Atendimento não encontrado."),
     SUCESSO(Codigo.SUCESSO),
     USUARIO_BLOQUEADO(Codigo.USUARIO_BLOQUEADO),
     REGISTRO_JA_CADASTRADO(Codigo.REGISTRO_JA_CADASTRADO),
@@ -32,7 +33,6 @@ public enum MessageEnum {
     PERFIL_NAO_ENCONTRADO(Codigo.PERFIL_NAO_ENCONTRADO),
     USUARIO_NAO_ENCONTRADO(Codigo.USUARIO_NAO_ENCONTRADO),
     PACIENTE_NAO_ENCONTRADO(Codigo.PACIENTE_NAO_ENCONTRADO),
-    ATENDIMENTO_NAO_ENCONTRADO(Codigo.ATENDIMENTO_NAO_ENCONTRADO),
     PACOTE_NAO_ENCONTRADO(Codigo.PACOTE_NAO_ENCONTRADO),
     CPF_SENHA_NAO_COINCIDEM(Codigo.CPF_SENHA_NAO_COINCIDEM),
     LANCAMENTO_NAO_ENCONTRADO(Codigo.LANCAMENTO_NAO_ENCONTRADO),
@@ -75,7 +75,6 @@ public enum MessageEnum {
         public static final String DATA_NASCIMENTO_MAIOR_ATUAL = "A data de nascimento não pode ser maior que a data atual.";
         public static final String OUTRA_MEDIDA_NAO_ENCONTRADA = "Outra medida não encontrado.";
         public static final String PERFIL_NAO_ENCONTRADO = "Perfil não encontrado.";
-        public static final String ATENDIMENTO_NAO_ENCONTRADO = "Atendimento não encontrado.";
         public static final String PACOTE_NAO_ENCONTRADO = "Pacote não encontrado.";
         public static final String LANCAMENTO_NAO_ENCONTRADO = "Lançamento não encontrado.";
         public static final String USUARIO_NAO_ENCONTRADO = "Usuário não encontrado.";
