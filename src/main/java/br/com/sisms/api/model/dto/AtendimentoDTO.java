@@ -40,7 +40,6 @@ public class AtendimentoDTO implements Serializable {
     private LocalDateTime preAtendimentoData;
 
     @PressaoArterial(message = "{pre.atendimento.pressao.arterial.formato}")
-    @Size(max = 7, message = "{pre.atendimento.pressao.arterial.tamanho}")
     private String preAtendimentoPressaoArterial;
 
     @DecimalMax(value = "999.9", message = "{pre.atendimento.peso.tamanho}")
@@ -67,7 +66,6 @@ public class AtendimentoDTO implements Serializable {
     private LocalDateTime posAtendimentoData;
 
     @PressaoArterial(message = "{pos.atendimento.pressao.arterial.formato}")
-    @Size(max = 7, message = "{pos.atendimento.pressao.arterial.tamanho}")
     private String posAtendimentoPressaoArterial;
 
     @DecimalMax(value = "999.9", message = "{pos.atendimento.peso.tamanho}")

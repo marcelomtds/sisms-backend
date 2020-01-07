@@ -1,4 +1,4 @@
-package br.com.sisms.api.filter;
+package br.com.sisms.api.model.filter;
 
 import lombok.Getter;
 import lombok.Setter;

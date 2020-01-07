@@ -28,7 +28,7 @@ public class SexoController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
     public ResponseEntity<Response<List<SexoDTO>>> findAll() {
-        return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.SUCESSO.toString()));
+        return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.MSG00028.toString()));
     }
 
 }

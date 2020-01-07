@@ -2,10 +2,10 @@ package br.com.sisms.api.service;
 
 import br.com.sisms.api.exception.BusinessException;
 import br.com.sisms.api.exception.ResourceNotFoundException;
-import br.com.sisms.api.filter.PageableFilter;
 import br.com.sisms.api.model.dto.LocalidadeDTO;
 import br.com.sisms.api.model.entity.Localidade;
 import br.com.sisms.api.model.enums.MessageEnum;
+import br.com.sisms.api.model.filter.PageableFilter;
 import br.com.sisms.api.model.mapper.LocalidadeMapper;
 import br.com.sisms.api.repository.LocalidadeRepository;
 import lombok.AllArgsConstructor;
@@ -65,7 +65,7 @@ public class LocalidadeService {
 
     @Transactional(readOnly = true)
     public LocalidadeDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.LOCALIDADE_NAO_ENCONTRADA.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00049.toString())));
     }
 
     private void validateResource(final LocalidadeDTO dto) {
@@ -75,7 +75,7 @@ public class LocalidadeService {
     private void validateDuplicityByDescriptionAndUF(final Localidade entity) {
         final LocalidadeDTO dto = mapper.toDTO(repository.findByDescricaoIgnoreCaseAndUfId(entity.getDescricao(), entity.getUf().getId()));
         if (Objects.nonNull(dto) && !dto.getId().equals(entity.getId())) {
-            throw new BusinessException(MessageEnum.REGISTRO_JA_CADASTRADO.toString());
+            throw new BusinessException(MessageEnum.MSG00031.toString());
         }
     }
 

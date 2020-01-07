@@ -1,11 +1,9 @@
 package br.com.sisms.api.controller;
 
 import br.com.sisms.api.model.dto.ImagemAtendimentoDTO;
-import br.com.sisms.api.model.dto.SexoDTO;
 import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.response.Response;
 import br.com.sisms.api.service.ImagemAtendimentoService;
-import br.com.sisms.api.service.SexoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -31,7 +29,7 @@ public class ImagemAtendimentoController {
     @GetMapping("/findByAtendimento/{id}")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
     public ResponseEntity<Response<List<ImagemAtendimentoDTO>>> findByAtendimento(@PathVariable final Long id) {
-        return ResponseEntity.ok().body(new Response(service.findByAtendimento(id), MessageEnum.SUCESSO.toString()));
+        return ResponseEntity.ok().body(new Response(service.findByAtendimento(id), MessageEnum.MSG00028.toString()));
     }
 
 }

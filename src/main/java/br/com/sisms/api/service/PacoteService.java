@@ -2,13 +2,13 @@ package br.com.sisms.api.service;
 
 import br.com.sisms.api.exception.BusinessException;
 import br.com.sisms.api.exception.ResourceNotFoundException;
-import br.com.sisms.api.filter.PacoteFilter;
-import br.com.sisms.api.filter.PageableFilter;
 import br.com.sisms.api.model.dto.PacoteDTO;
 import br.com.sisms.api.model.entity.Pacote;
 import br.com.sisms.api.model.entity.Usuario;
 import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.model.enums.PerfilEnum;
+import br.com.sisms.api.model.filter.PacoteFilter;
+import br.com.sisms.api.model.filter.PageableFilter;
 import br.com.sisms.api.model.mapper.PacoteMapper;
 import br.com.sisms.api.repository.PacoteRepository;
 import br.com.sisms.api.util.Util;
@@ -72,7 +72,7 @@ public class PacoteService {
 
     @Transactional(readOnly = true)
     public PacoteDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.PACOTE_NAO_ENCONTRADO.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00045.toString())));
     }
 
     public PacoteDTO closePackage(final Long id) {
@@ -113,14 +113,14 @@ public class PacoteService {
     private void checkUserPermission(final PacoteDTO dto) {
         Usuario user = usuarioService.getCurrentSessionUser();
         if (!dto.getUsuarioId().equals(user.getId()) && user.getPerfil().getId().equals(PerfilEnum.USUARIO.getPerfil())) {
-            throw new AccessDeniedException(MessageEnum.USUARIO_SEM_PERMISSAO.toString());
+            throw new AccessDeniedException(MessageEnum.MSG00036.toString());
         }
     }
 
     private void checkUserPermissionTerminatePackage(final PacoteDTO dto) {
         Usuario user = usuarioService.getCurrentSessionUser();
         if (!dto.getUsuarioId().equals(user.getId()) && user.getPerfil().getId().equals(PerfilEnum.USUARIO.getPerfil())) {
-            throw new BusinessException(MessageEnum.PERMISSAO_CRIAR_PACOTE.toString());
+            throw new BusinessException(MessageEnum.MSG00055.toString());
         }
     }
 
@@ -137,7 +137,7 @@ public class PacoteService {
 
     private void checkUpdate(final Boolean aberto) {
         if (BooleanUtils.isFalse(aberto)) {
-            throw new BusinessException(MessageEnum.ALTERAR_PACOTE_ENCERRADO.toString());
+            throw new BusinessException(MessageEnum.MSG00038.toString());
         }
     }
 

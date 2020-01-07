@@ -28,7 +28,7 @@ public class PerfilController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMINISTRADOR')")
     public ResponseEntity<Response<List<PerfilDTO>>> findAll() {
-        return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.SUCESSO.toString()));
+        return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.MSG00028.toString()));
     }
 
 }

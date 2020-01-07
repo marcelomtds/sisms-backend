@@ -1,10 +1,9 @@
-package br.com.sisms.api.filter;
+package br.com.sisms.api.model.filter;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Getter
 @Setter

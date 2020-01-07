@@ -2,10 +2,10 @@ package br.com.sisms.api.service;
 
 import br.com.sisms.api.exception.BusinessException;
 import br.com.sisms.api.exception.ResourceNotFoundException;
-import br.com.sisms.api.filter.PageableFilter;
 import br.com.sisms.api.model.dto.CategoriaLancamentoDTO;
 import br.com.sisms.api.model.entity.CategoriaLancamento;
 import br.com.sisms.api.model.enums.MessageEnum;
+import br.com.sisms.api.model.filter.PageableFilter;
 import br.com.sisms.api.model.mapper.CategoriaLancamentoMapper;
 import br.com.sisms.api.repository.CategoriaLancamentoRepository;
 import lombok.AllArgsConstructor;
@@ -59,13 +59,13 @@ public class CategoriaLancamentoService {
 
     @Transactional(readOnly = true)
     public CategoriaLancamentoDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.CATEGORIA_LANCAMENTO_NAO_ENCONTRADA.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00053.toString())));
     }
 
     private void validateDuplicityByDescription(final CategoriaLancamento entity) {
         final CategoriaLancamentoDTO dtoResult = mapper.toDTO(repository.findByDescricaoIgnoreCase(entity.getDescricao()));
         if (Objects.nonNull(dtoResult) && !dtoResult.getId().equals(entity.getId())) {
-            throw new BusinessException(MessageEnum.REGISTRO_JA_CADASTRADO.toString());
+            throw new BusinessException(MessageEnum.MSG00030.toString());
         }
     }
 

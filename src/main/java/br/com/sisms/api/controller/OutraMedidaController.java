@@ -1,9 +1,9 @@
 package br.com.sisms.api.controller;
 
-import br.com.sisms.api.filter.PageableFilter;
 import br.com.sisms.api.model.dto.OutraMedidaDTO;
 import br.com.sisms.api.model.dto.ProfissaoDTO;
 import br.com.sisms.api.model.enums.MessageEnum;
+import br.com.sisms.api.model.filter.PageableFilter;
 import br.com.sisms.api.response.Response;
 import br.com.sisms.api.service.OutraMedidaService;
 import io.swagger.annotations.Api;
@@ -30,28 +30,28 @@ public class OutraMedidaController {
     @PostMapping(path = "/findByFilter")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
     public ResponseEntity<Response<Page<ProfissaoDTO>>> findByFilter(@RequestBody final PageableFilter pageableFilter) {
-        return ResponseEntity.ok().body(new Response(service.findByFilter(pageableFilter), MessageEnum.SUCESSO.toString()));
+        return ResponseEntity.ok().body(new Response(service.findByFilter(pageableFilter), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Inclui uma Outra Medida.")
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
     public ResponseEntity<Response<OutraMedidaDTO>> create(@Valid @RequestBody final OutraMedidaDTO dto) {
-        return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, dto), MessageEnum.SUCESSO.toString()));
+        return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, dto), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Altera uma Outra Medida.")
     @PutMapping(path = "/{id}")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
     public ResponseEntity<Response<OutraMedidaDTO>> update(@PathVariable final Long id, @Valid @RequestBody final OutraMedidaDTO dto) {
-        return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, dto), MessageEnum.SUCESSO.toString()));
+        return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, dto), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Retorna uma lista com todas Outras Medidas.")
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
     public ResponseEntity<Response<List<OutraMedidaDTO>>> findAll() {
-        return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.SUCESSO.toString()));
+        return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.MSG00028.toString()));
     }
 
 }

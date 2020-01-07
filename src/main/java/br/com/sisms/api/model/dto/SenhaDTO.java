@@ -26,5 +26,4 @@ public class SenhaDTO implements Serializable {
     @Senha(message = "{nova.senha.confirmacao.tamanho}")
     private String novaSenhaConfirmacao;
 
-
 }

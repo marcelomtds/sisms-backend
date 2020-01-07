@@ -1,4 +1,4 @@
-package br.com.sisms.api.filter;
+package br.com.sisms.api.model.filter;
 
 import br.com.sisms.api.validation.constraint.CPF;
 import br.com.sisms.api.validation.constraint.Celular;

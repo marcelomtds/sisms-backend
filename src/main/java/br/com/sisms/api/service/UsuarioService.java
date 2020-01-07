@@ -2,13 +2,13 @@ package br.com.sisms.api.service;
 
 import br.com.sisms.api.exception.BusinessException;
 import br.com.sisms.api.exception.ResourceNotFoundException;
-import br.com.sisms.api.filter.PacienteUsuarioFilter;
-import br.com.sisms.api.filter.PageableFilter;
 import br.com.sisms.api.model.dto.SenhaDTO;
 import br.com.sisms.api.model.dto.UsuarioDTO;
 import br.com.sisms.api.model.entity.Usuario;
 import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.model.enums.PerfilEnum;
+import br.com.sisms.api.model.filter.PacienteUsuarioFilter;
+import br.com.sisms.api.model.filter.PageableFilter;
 import br.com.sisms.api.model.mapper.UsuarioMapper;
 import br.com.sisms.api.repository.UsuarioRepository;
 import br.com.sisms.api.util.Util;
@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -63,7 +64,14 @@ public class UsuarioService {
 
     @Transactional(readOnly = true)
     public UsuarioDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.USUARIO_NAO_ENCONTRADO.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00043.toString())));
+    }
+
+    @Transactional(readOnly = true)
+    public UsuarioDTO findByIdWithPermission(final Long id) {
+        UsuarioDTO dto = findById(id);
+        checkUserPermission(dto);
+        return dto;
     }
 
     @Transactional(readOnly = true)
@@ -108,7 +116,7 @@ public class UsuarioService {
     public UsuarioDTO activeOrInative(final Long id) {
         UsuarioDTO dto = findById(id);
         if (getCurrentSessionUser().getId().equals(dto.getId())) {
-            throw new BusinessException(MessageEnum.ATIVAR_INATIVAR_PROPRIO_USUARIO.toString());
+            throw new BusinessException(MessageEnum.MSG00058.toString());
         }
         dto.setAtivo(BooleanUtils.negate(dto.getAtivo()));
         return mapper.toDTO(repository.save(mapper.toEntity(dto)));
@@ -131,6 +139,7 @@ public class UsuarioService {
         Usuario entity;
         if (Objects.nonNull(id)) {
             UsuarioDTO dtoTarget = findById(id);
+            checkUserPermissionUpdate(dtoTarget);
             BeanUtils.copyProperties(dtoSource, dtoTarget, "id", "cpf", "ativo", "senha", "senhaConfirmacao", "contatoId", "enderecoId", "perfilId", "dataCadastro");
             entity = mapper.toEntity(dtoTarget);
         } else {
@@ -141,6 +150,20 @@ public class UsuarioService {
         }
         validateDuplicityByCpf(entity);
         return mapper.toDTO(repository.save(entity));
+    }
+
+    private void checkUserPermission(final UsuarioDTO usuarioDTO) {
+        Usuario usuario = getCurrentSessionUser();
+        if (!usuarioDTO.getId().equals(usuario.getId()) && usuario.getPerfil().getId().equals(PerfilEnum.USUARIO.getPerfil())) {
+            throw new AccessDeniedException(MessageEnum.MSG00036.toString());
+        }
+    }
+
+    private void checkUserPermissionUpdate(final UsuarioDTO usuarioDTO) {
+        Usuario usuario = getCurrentSessionUser();
+        if (!usuarioDTO.getId().equals(usuario.getId())) {
+            throw new AccessDeniedException(MessageEnum.MSG00036.toString());
+        }
     }
 
     private void validateTelefoneContato(final UsuarioDTO dto) {
@@ -171,7 +194,7 @@ public class UsuarioService {
 
     private void checkDate(final LocalDate date) {
         if (Util.isCurrentDateBeforeDate(date)) {
-            throw new BusinessException(MessageEnum.DATA_NASCIMENTO_MAIOR_ATUAL.toString());
+            throw new BusinessException(MessageEnum.MSG00037.toString());
         }
     }
 

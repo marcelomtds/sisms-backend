@@ -2,10 +2,10 @@ package br.com.sisms.api.service;
 
 import br.com.sisms.api.exception.BusinessException;
 import br.com.sisms.api.exception.ResourceNotFoundException;
-import br.com.sisms.api.filter.PageableFilter;
 import br.com.sisms.api.model.dto.OutraMedidaDTO;
 import br.com.sisms.api.model.entity.OutraMedida;
 import br.com.sisms.api.model.enums.MessageEnum;
+import br.com.sisms.api.model.filter.PageableFilter;
 import br.com.sisms.api.model.mapper.OutraMedidaMapper;
 import br.com.sisms.api.repository.OutraMedidaRepository;
 import lombok.AllArgsConstructor;
@@ -46,7 +46,7 @@ public class OutraMedidaService {
 
     @Transactional(readOnly = true)
     public OutraMedidaDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.OUTRA_MEDIDA_NAO_ENCONTRADA.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00041.toString())));
     }
 
     public OutraMedidaDTO createOrUpdate(final Long id, final OutraMedidaDTO dtoSource) {
@@ -65,7 +65,7 @@ public class OutraMedidaService {
     private void validateDuplicityByDescription(final OutraMedida entity) {
         final OutraMedidaDTO dto = mapper.toDTO(repository.findByDescricaoIgnoreCase(entity.getDescricao()));
         if (Objects.nonNull(dto) && !dto.getId().equals(entity.getId())) {
-            throw new BusinessException(MessageEnum.REGISTRO_JA_CADASTRADO.toString());
+            throw new BusinessException(MessageEnum.MSG00032.toString());
         }
     }
 

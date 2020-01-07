@@ -2,11 +2,11 @@ package br.com.sisms.api.service;
 
 import br.com.sisms.api.exception.BusinessException;
 import br.com.sisms.api.exception.ResourceNotFoundException;
-import br.com.sisms.api.filter.PacienteUsuarioFilter;
-import br.com.sisms.api.filter.PageableFilter;
 import br.com.sisms.api.model.dto.PacienteDTO;
 import br.com.sisms.api.model.entity.Paciente;
 import br.com.sisms.api.model.enums.MessageEnum;
+import br.com.sisms.api.model.filter.PacienteUsuarioFilter;
+import br.com.sisms.api.model.filter.PageableFilter;
 import br.com.sisms.api.model.mapper.PacienteMapper;
 import br.com.sisms.api.repository.PacienteRepository;
 import br.com.sisms.api.util.Util;
@@ -72,7 +72,7 @@ public class PacienteService {
 
     @Transactional(readOnly = true)
     public PacienteDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.PACIENTE_NAO_ENCONTRADO.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00044.toString())));
     }
 
     public PacienteDTO activeOrInative(final Long id) {
@@ -130,7 +130,7 @@ public class PacienteService {
 
     private void checkDate(final LocalDate date) {
         if (Util.isCurrentDateBeforeDate(date)) {
-            throw new BusinessException(MessageEnum.DATA_NASCIMENTO_MAIOR_ATUAL.toString());
+            throw new BusinessException(MessageEnum.MSG00037.toString());
         }
     }
 

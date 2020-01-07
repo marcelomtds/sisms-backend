@@ -6,9 +6,7 @@ import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.security.jwt.AutenticacaoDTO;
 import br.com.sisms.api.security.jwt.JwtTokenUtil;
 import br.com.sisms.api.security.model.CurrentAuthenticationDTO;
-import br.com.sisms.api.util.Util;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -39,7 +37,7 @@ public class AutenticacaoService {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(autenticacaoDTO.getCpf());
         final UsuarioDTO usuarioDTO = usuarioService.findByCpfAndAtivoIsTrue(autenticacaoDTO.getCpf());
         if (Objects.isNull(usuarioDTO)) {
-            throw new BusinessException(MessageEnum.USUARIO_BLOQUEADO.toString());
+            throw new BusinessException(MessageEnum.MSG00029.toString());
         }
         final String token = jwtTokenUtil.generateToken(userDetails);
         usuarioDTO.setSenha(null);

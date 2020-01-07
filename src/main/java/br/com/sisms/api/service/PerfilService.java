@@ -27,7 +27,7 @@ public class PerfilService {
 
     @Transactional(readOnly = true)
     public PerfilDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.PERFIL_NAO_ENCONTRADO.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00042.toString())));
     }
 
 }

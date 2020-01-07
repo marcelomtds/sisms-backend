@@ -2,10 +2,10 @@ package br.com.sisms.api.service;
 
 import br.com.sisms.api.exception.BusinessException;
 import br.com.sisms.api.exception.ResourceNotFoundException;
-import br.com.sisms.api.filter.PageableFilter;
 import br.com.sisms.api.model.dto.ProfissaoDTO;
 import br.com.sisms.api.model.entity.Profissao;
 import br.com.sisms.api.model.enums.MessageEnum;
+import br.com.sisms.api.model.filter.PageableFilter;
 import br.com.sisms.api.model.mapper.ProfissaoMapper;
 import br.com.sisms.api.repository.ProfissaoRepository;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -49,7 +48,7 @@ public class ProfissaoService {
 
     @Transactional(readOnly = true)
     public ProfissaoDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.PROFISSAO_NAO_ENCONTRADA.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00050.toString())));
     }
 
     public ProfissaoDTO createOrUpdate(final Long id, final ProfissaoDTO dtoSource) {
@@ -68,7 +67,7 @@ public class ProfissaoService {
     private void validateDuplicityByDescription(final Profissao entity) {
         final ProfissaoDTO dto = mapper.toDTO(repository.findByDescricaoIgnoreCase(entity.getDescricao()));
         if (Objects.nonNull(dto) && !dto.getId().equals(entity.getId())) {
-            throw new BusinessException(MessageEnum.REGISTRO_JA_CADASTRADO.toString());
+            throw new BusinessException(MessageEnum.MSG00033.toString());
         }
     }
 

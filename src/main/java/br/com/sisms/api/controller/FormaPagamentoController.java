@@ -28,7 +28,7 @@ public class FormaPagamentoController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
     public ResponseEntity<Response<List<FormaPagamentoDTO>>> findAll() {
-        return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.SUCESSO.toString()));
+        return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.MSG00028.toString()));
     }
 
 }

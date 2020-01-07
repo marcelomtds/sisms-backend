@@ -55,10 +55,6 @@ public final class Util {
         return LocalDate.now().isBefore(date);
     }
 
-    public static Boolean isCurrentDateBeforeDateTime(final LocalDateTime date) {
-        return LocalDateTime.now().isBefore(date);
-    }
-
     public static Boolean isInvalidPeriod(final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
         return endDateTime.isBefore(startDateTime);
     }

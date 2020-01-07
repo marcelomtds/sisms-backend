@@ -2,9 +2,6 @@ package br.com.sisms.api.service;
 
 import br.com.sisms.api.exception.BusinessException;
 import br.com.sisms.api.exception.ResourceNotFoundException;
-import br.com.sisms.api.filter.LancamentoFilter;
-import br.com.sisms.api.filter.PageableFilter;
-import br.com.sisms.api.model.dto.AtendimentoDTO;
 import br.com.sisms.api.model.dto.LancamentoDTO;
 import br.com.sisms.api.model.dto.LancamentoTotalDTO;
 import br.com.sisms.api.model.entity.Lancamento;
@@ -13,6 +10,8 @@ import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.model.enums.PerfilEnum;
 import br.com.sisms.api.model.enums.TipoAtendimentoEnum;
 import br.com.sisms.api.model.enums.TipoLancamentoEnum;
+import br.com.sisms.api.model.filter.LancamentoFilter;
+import br.com.sisms.api.model.filter.PageableFilter;
 import br.com.sisms.api.model.mapper.LancamentoMapper;
 import br.com.sisms.api.repository.LancamentoRepository;
 import br.com.sisms.api.util.Util;
@@ -78,7 +77,7 @@ public class LancamentoService {
 
     @Transactional(readOnly = true)
     public LancamentoDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.LANCAMENTO_NAO_ENCONTRADO.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00047.toString())));
     }
 
     @Transactional(readOnly = true)
@@ -115,7 +114,7 @@ public class LancamentoService {
     private void checkUserPermission(final LancamentoDTO lancamentoDTO) {
         Usuario usuario = usuarioService.getCurrentSessionUser();
         if (!lancamentoDTO.getUsuarioId().equals(usuario.getId()) && usuario.getPerfil().getId().equals(PerfilEnum.USUARIO.getPerfil())) {
-            throw new AccessDeniedException(MessageEnum.USUARIO_SEM_PERMISSAO.toString());
+            throw new AccessDeniedException(MessageEnum.MSG00036.toString());
         }
     }
 

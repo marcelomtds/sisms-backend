@@ -1,9 +1,9 @@
 package br.com.sisms.api.controller;
 
-import br.com.sisms.api.filter.PacienteUsuarioFilter;
-import br.com.sisms.api.filter.PageableFilter;
 import br.com.sisms.api.model.dto.PacienteDTO;
 import br.com.sisms.api.model.enums.MessageEnum;
+import br.com.sisms.api.model.filter.PacienteUsuarioFilter;
+import br.com.sisms.api.model.filter.PageableFilter;
 import br.com.sisms.api.response.Response;
 import br.com.sisms.api.service.PacienteService;
 import io.swagger.annotations.Api;
@@ -30,49 +30,49 @@ public class PacienteController {
     @PostMapping(path = "/findByFilter")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
     public ResponseEntity<Response<Page<PacienteDTO>>> findByFilter(@RequestBody @Valid final PageableFilter<PacienteUsuarioFilter> filter) {
-        return ResponseEntity.ok().body(new Response(service.findByFilter(filter), MessageEnum.SUCESSO.toString()));
+        return ResponseEntity.ok().body(new Response(service.findByFilter(filter), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Inclui um paciente.")
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
     public ResponseEntity<Response<PacienteDTO>> create(@Valid @RequestBody final PacienteDTO dto) {
-        return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, dto), MessageEnum.SUCESSO.toString()));
+        return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, dto), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Altera um paciente.")
     @PutMapping(path = "/{id}")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
     public ResponseEntity<Response<PacienteDTO>> update(@PathVariable final Long id, @Valid @RequestBody final PacienteDTO dto) {
-        return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, dto), MessageEnum.SUCESSO.toString()));
+        return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, dto), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Retorna uma lista com todos pacientes ativos.")
     @GetMapping(path = "/findAllActive")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
     public ResponseEntity<Response<List<PacienteDTO>>> findAllActive() {
-        return ResponseEntity.ok().body(new Response(service.findAllActive(), MessageEnum.SUCESSO.toString()));
+        return ResponseEntity.ok().body(new Response(service.findAllActive(), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Retorna uma lista com todos pacientes.")
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
     public ResponseEntity<Response<List<PacienteDTO>>> findAll() {
-        return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.SUCESSO.toString()));
+        return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Retorna um paciente por id.")
     @GetMapping(path = "/{id}")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
     public ResponseEntity<Response<PacienteDTO>> findById(@PathVariable final Long id) {
-        return ResponseEntity.ok().body(new Response(service.findById(id), MessageEnum.SUCESSO.toString()));
+        return ResponseEntity.ok().body(new Response(service.findById(id), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Ativa/Inativa um paciente.")
     @PostMapping(path = "/activeOrInative/{id}")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
     public ResponseEntity<Response<PacienteDTO>> activeOrInative(@PathVariable final Long id) {
-        return ResponseEntity.ok().body(new Response(service.activeOrInative(id), MessageEnum.SUCESSO.toString()));
+        return ResponseEntity.ok().body(new Response(service.activeOrInative(id), MessageEnum.MSG00028.toString()));
     }
 
 }

@@ -2,8 +2,6 @@ package br.com.sisms.api.service;
 
 import br.com.sisms.api.exception.BusinessException;
 import br.com.sisms.api.exception.ResourceNotFoundException;
-import br.com.sisms.api.filter.AtendimentoFilter;
-import br.com.sisms.api.filter.PageableFilter;
 import br.com.sisms.api.model.dto.AtendimentoDTO;
 import br.com.sisms.api.model.entity.Atendimento;
 import br.com.sisms.api.model.entity.TipoAtendimento;
@@ -11,6 +9,8 @@ import br.com.sisms.api.model.entity.Usuario;
 import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.model.enums.PerfilEnum;
 import br.com.sisms.api.model.enums.TipoAtendimentoEnum;
+import br.com.sisms.api.model.filter.AtendimentoFilter;
+import br.com.sisms.api.model.filter.PageableFilter;
 import br.com.sisms.api.model.mapper.AtendimentoMapper;
 import br.com.sisms.api.repository.AtendimentoRepository;
 import br.com.sisms.api.util.Util;
@@ -48,7 +48,7 @@ public class AtendimentoService {
 
     public AtendimentoDTO createOrUpdate(final Long id, final AtendimentoDTO dtoSource) {
         validateResources(dtoSource);
-        validatePeriod(dtoSource.getPreAtendimentoData(), dtoSource.getPosAtendimentoData(), MessageEnum.DATA_HORA_PRE_POS_ATENDIMENTO_INTERVALO.toString());
+        validatePeriod(dtoSource.getPreAtendimentoData(), dtoSource.getPosAtendimentoData(), MessageEnum.MSG00048.toString());
         Atendimento entity;
         if (Objects.nonNull(id)) {
             AtendimentoDTO dtoTarget = findByIdWithPermission(id);
@@ -115,7 +115,7 @@ public class AtendimentoService {
                 Sort.Direction.valueOf(filter.getDirection()),
                 filter.getOrderBy());
         filter.setFilter(Objects.isNull(filter.getFilter()) ? new AtendimentoFilter() : filter.getFilter());
-        validatePeriod(filter.getFilter().getPreAtendimentoData(), filter.getFilter().getPosAtendimentoData(), MessageEnum.DATA_HORA_PRE_POS_ATENDIMENTO_INTERVALO.toString());
+        validatePeriod(filter.getFilter().getPreAtendimentoData(), filter.getFilter().getPosAtendimentoData(), MessageEnum.MSG00048.toString());
         Usuario user = usuarioService.getCurrentSessionUser();
         if (user.getPerfil().getId().equals(PerfilEnum.USUARIO.getPerfil())) {
             filter.getFilter().setUsuarioId(user.getId());
@@ -164,14 +164,14 @@ public class AtendimentoService {
 
     private void validadeDatePosAtendimento(LocalDateTime date) {
         if (Objects.isNull(date)) {
-            throw new BusinessException(MessageEnum.DATA_HORA_POS_ATENDIMENTO_OBRIGATORIO.toString());
+            throw new BusinessException(MessageEnum.MSG00057.toString());
         }
     }
 
     private void checkUserPermission(final AtendimentoDTO atendimentoDTO) {
         Usuario usuario = usuarioService.getCurrentSessionUser();
         if (!atendimentoDTO.getUsuarioId().equals(usuario.getId()) && usuario.getPerfil().getId().equals(PerfilEnum.USUARIO.getPerfil())) {
-            throw new AccessDeniedException(MessageEnum.USUARIO_SEM_PERMISSAO.toString());
+            throw new AccessDeniedException(MessageEnum.MSG00036.toString());
         }
     }
 

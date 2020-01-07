@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,12 +21,12 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(BadCredentialsException.class)
     protected ResponseEntity badCredentialsException(BadCredentialsException e, WebRequest request) {
-        return handleExceptionInternal(e, new Response(MessageEnum.CPF_SENHA_NAO_COINCIDEM.toString()), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+        return handleExceptionInternal(e, new Response(MessageEnum.MSG00046.toString()), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     protected ResponseEntity accessDeniedException(AccessDeniedException e, WebRequest request) {
-        return handleExceptionInternal(e, new Response(MessageEnum.USUARIO_SEM_PERMISSAO.toString()), new HttpHeaders(), HttpStatus.FORBIDDEN, request);
+        return handleExceptionInternal(e, new Response(MessageEnum.MSG00036.toString()), new HttpHeaders(), HttpStatus.FORBIDDEN, request);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -42,7 +41,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException e, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return handleExceptionInternal(e, new Response(MessageEnum.CAMPOS_INVALIDOS.toString(), getErrors(e)), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+        return handleExceptionInternal(e, new Response(MessageEnum.MSG00035.toString(), getErrors(e)), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     private List<String> getErrors(MethodArgumentNotValidException e) {

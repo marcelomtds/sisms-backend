@@ -28,7 +28,7 @@ public class AutenticacaoController {
     @ApiOperation(value = "Realiza login no sistema.")
     @PostMapping
     public ResponseEntity<Response<CurrentAuthenticationDTO>> createAuthenticationToken(@RequestBody @Valid final AutenticacaoDTO dto) {
-        return ResponseEntity.ok().body(new Response(service.createAuthenticationToken(dto), MessageEnum.SUCESSO.toString()));
+        return ResponseEntity.ok().body(new Response(service.createAuthenticationToken(dto), MessageEnum.MSG00028.toString()));
     }
 
 }

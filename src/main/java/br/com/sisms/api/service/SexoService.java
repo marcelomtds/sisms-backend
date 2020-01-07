@@ -27,6 +27,6 @@ public class SexoService {
 
     @Transactional(readOnly = true)
     public SexoDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.SEXO_NAO_ENCONTRADO.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00054.toString())));
     }
 }
