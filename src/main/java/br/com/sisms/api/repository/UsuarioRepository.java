@@ -1,5 +1,6 @@
 package br.com.sisms.api.repository;
 
+import br.com.sisms.api.model.entity.Paciente;
 import br.com.sisms.api.model.entity.Usuario;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,5 +43,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Usuario findByCpfAndAtivoIsTrue(final String cpf);
 
     List<Usuario> findAllByAtivoIsTrueOrderByNomeCompletoAsc();
+
+    @Query("SELECT u FROM Usuario as u WHERE Extract(Month FROM u.dataNascimento) = Extract(Month FROM Now())")
+    List<Usuario> findAllBirthdaysMonth();
 
 }

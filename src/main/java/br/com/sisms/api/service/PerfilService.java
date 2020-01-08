@@ -21,11 +21,6 @@ public class PerfilService {
     private final PerfilMapper mapper;
 
     @Transactional(readOnly = true)
-    public List<PerfilDTO> findAll() {
-        return mapper.toDTO(repository.findAll(new Sort(Sort.Direction.ASC, "descricao")));
-    }
-
-    @Transactional(readOnly = true)
     public PerfilDTO findById(final Long id) {
         return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00042.toString())));
     }

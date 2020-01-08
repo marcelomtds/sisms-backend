@@ -27,42 +27,42 @@ public class PacoteController {
 
     @ApiOperation(value = "Retorna uma lista paginada de pacotes por filtros.")
     @PostMapping(path = "/findByFilter")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<Page<PacoteDTO>>> findByFilter(@RequestBody final PageableFilter<PacoteFilter> pageableFilter) {
         return ResponseEntity.ok().body(new Response(service.findByFilter(pageableFilter), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Inclui um pacote.")
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<PacoteDTO>> create(@Valid @RequestBody final PacoteDTO dto) {
         return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, dto), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Altera um pacote.")
     @PutMapping(path = "/{id}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<PacoteDTO>> update(@PathVariable final Long id, @Valid @RequestBody final PacoteDTO dto) {
         return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, dto), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Retorna um pacote por id.")
     @GetMapping(path = "/{id}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<PacoteDTO>> findById(@PathVariable final Long id) {
         return ResponseEntity.ok().body(new Response(service.findById(id), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Encerra um pacote.")
     @GetMapping(path = "closePackage/{id}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<PacoteDTO>> closePackage(@PathVariable final Long id) {
         return ResponseEntity.ok().body(new Response(service.closePackage(id), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Retorno o último pacote por filtros.")
     @GetMapping(path = "findLastOpen/{categoriaAtendimentoId}/{pacienteId}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<PacoteDTO>> findLast(@PathVariable final Long categoriaAtendimentoId, @PathVariable final Long pacienteId) {
         return ResponseEntity.ok().body(new Response(service.findLastOpen(categoriaAtendimentoId, pacienteId), MessageEnum.MSG00028.toString()));
     }

@@ -27,7 +27,7 @@ public class ImagemAtendimentoController {
 
     @ApiOperation(value = "Retorna uma lista de imagens do atendimentos pelo id do atendimento.")
     @GetMapping("/findByAtendimento/{id}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<List<ImagemAtendimentoDTO>>> findByAtendimento(@PathVariable final Long id) {
         return ResponseEntity.ok().body(new Response(service.findByAtendimento(id), MessageEnum.MSG00028.toString()));
     }

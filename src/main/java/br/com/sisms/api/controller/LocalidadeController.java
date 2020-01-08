@@ -27,35 +27,35 @@ public class LocalidadeController {
 
     @ApiOperation(value = "Retorna uma lista paginada de localidades por filtros.")
     @PostMapping(path = "/findByFilter")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<Page<LocalidadeDTO>>> findByFilter(@RequestBody final PageableFilter pageableFilter) {
         return ResponseEntity.ok().body(new Response(service.findByFilter(pageableFilter), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Inclui uma localidade.")
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<LocalidadeDTO>> create(@Valid @RequestBody final LocalidadeDTO dto) {
         return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, dto), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Altera uma localidade.")
     @PutMapping(path = "/{id}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<LocalidadeDTO>> update(@PathVariable final Long id, @Valid @RequestBody final LocalidadeDTO dto) {
         return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, dto), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Retorna uma lista com todas localidades.")
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<List<LocalidadeDTO>>> findAll() {
         return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Retorna uma lista com todas localidades por UF.")
     @GetMapping(path = "/findByUfId/{id}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<List<LocalidadeDTO>>> findByUfId(@PathVariable final Long id) {
         return ResponseEntity.ok().body(new Response(service.findByUfId(id), MessageEnum.MSG00028.toString()));
     }

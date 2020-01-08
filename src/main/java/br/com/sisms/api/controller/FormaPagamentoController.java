@@ -26,7 +26,7 @@ public class FormaPagamentoController {
 
     @ApiOperation(value = "Retorna uma lista com todas formas de pagamento.")
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<List<FormaPagamentoDTO>>> findAll() {
         return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.MSG00028.toString()));
     }

@@ -49,7 +49,7 @@ public class AtendimentoService {
     public AtendimentoDTO createOrUpdate(final Long id, final AtendimentoDTO dtoSource) {
         validateResources(dtoSource);
         validatePeriod(dtoSource.getPreAtendimentoData(), dtoSource.getPosAtendimentoData(), MessageEnum.MSG00048.toString());
-        Atendimento entity;
+        final Atendimento entity;
         if (Objects.nonNull(id)) {
             AtendimentoDTO dtoTarget = findByIdWithPermission(id);
             BeanUtils.copyProperties(dtoSource, dtoTarget, "id", "tipoAtendimentoId", "numero", "pacoteId", "pacienteId", "usuarioId", "preAtendimentoId", "posAtendimentoId", "categoriaAtendimentoId");
@@ -109,14 +109,14 @@ public class AtendimentoService {
     @Transactional(readOnly = true)
     public Page<AtendimentoDTO> findByFilter(final PageableFilter<AtendimentoFilter> filter) {
         filter.setOrderBy(StringUtils.isBlank(filter.getOrderBy()) ? "id" : filter.getOrderBy());
-        Pageable pageable = PageRequest.of(
+        final Pageable pageable = PageRequest.of(
                 filter.getCurrentPage(),
                 filter.getPageSize(),
                 Sort.Direction.valueOf(filter.getDirection()),
                 filter.getOrderBy());
         filter.setFilter(Objects.isNull(filter.getFilter()) ? new AtendimentoFilter() : filter.getFilter());
         validatePeriod(filter.getFilter().getPreAtendimentoData(), filter.getFilter().getPosAtendimentoData(), MessageEnum.MSG00048.toString());
-        Usuario user = usuarioService.getCurrentSessionUser();
+        final Usuario user = usuarioService.getCurrentSessionUser();
         if (user.getPerfil().getId().equals(PerfilEnum.USUARIO.getPerfil())) {
             filter.getFilter().setUsuarioId(user.getId());
         }
@@ -138,7 +138,7 @@ public class AtendimentoService {
 
     @Transactional(readOnly = true)
     public AtendimentoDTO findByIdWithPermission(final Long id) {
-        AtendimentoDTO dto = findById(id);
+        final AtendimentoDTO dto = findById(id);
         checkUserPermission(dto);
         return dto;
     }
@@ -169,14 +169,14 @@ public class AtendimentoService {
     }
 
     private void checkUserPermission(final AtendimentoDTO atendimentoDTO) {
-        Usuario usuario = usuarioService.getCurrentSessionUser();
+        final Usuario usuario = usuarioService.getCurrentSessionUser();
         if (!atendimentoDTO.getUsuarioId().equals(usuario.getId()) && usuario.getPerfil().getId().equals(PerfilEnum.USUARIO.getPerfil())) {
             throw new AccessDeniedException(MessageEnum.MSG00036.toString());
         }
     }
 
     private TipoAtendimento checkTipoAtendimento(final Atendimento atendimento) {
-        TipoAtendimento tipoAtendimento = new TipoAtendimento();
+        final TipoAtendimento tipoAtendimento = new TipoAtendimento();
         if (Objects.nonNull(atendimento.getPacote()) && Objects.nonNull(atendimento.getPacote().getId())) {
             tipoAtendimento.setId(TipoAtendimentoEnum.PACOTE.getTipoAtendimento());
         } else {

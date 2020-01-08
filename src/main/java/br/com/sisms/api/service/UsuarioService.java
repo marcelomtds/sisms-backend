@@ -2,6 +2,7 @@ package br.com.sisms.api.service;
 
 import br.com.sisms.api.exception.BusinessException;
 import br.com.sisms.api.exception.ResourceNotFoundException;
+import br.com.sisms.api.model.dto.PacienteDTO;
 import br.com.sisms.api.model.dto.SenhaDTO;
 import br.com.sisms.api.model.dto.UsuarioDTO;
 import br.com.sisms.api.model.entity.Usuario;
@@ -60,6 +61,11 @@ public class UsuarioService {
     @Transactional(readOnly = true)
     public UsuarioDTO findByCpfAndAtivoIsTrue(final String cpf) {
         return mapper.toDTO(repository.findByCpfAndAtivoIsTrue(cpf));
+    }
+
+    @Transactional(readOnly = true)
+    public List<UsuarioDTO> findAllBirthdaysMonth() {
+        return mapper.toDTO(repository.findAllBirthdaysMonth());
     }
 
     @Transactional(readOnly = true)

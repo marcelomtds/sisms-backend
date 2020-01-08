@@ -40,7 +40,7 @@ public class PacienteService {
     @Transactional(readOnly = true)
     public Page<PacienteDTO> findByFilter(final PageableFilter<PacienteUsuarioFilter> filter) {
         filter.setOrderBy(StringUtils.isBlank(filter.getOrderBy()) ? "id" : filter.getOrderBy());
-        Pageable pageable = PageRequest.of(
+        final Pageable pageable = PageRequest.of(
                 filter.getCurrentPage(),
                 filter.getPageSize(),
                 Direction.valueOf(filter.getDirection()),
@@ -73,6 +73,11 @@ public class PacienteService {
     @Transactional(readOnly = true)
     public PacienteDTO findById(final Long id) {
         return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00044.toString())));
+    }
+
+    @Transactional(readOnly = true)
+    public List<PacienteDTO> findAllBirthdaysMonth() {
+        return mapper.toDTO(repository.findAllBirthdaysMonth());
     }
 
     public PacienteDTO activeOrInative(final Long id) {

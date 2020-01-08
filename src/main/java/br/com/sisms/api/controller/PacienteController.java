@@ -28,51 +28,58 @@ public class PacienteController {
 
     @ApiOperation(value = "Retorna uma lista paginada de pacientes por filtros.")
     @PostMapping(path = "/findByFilter")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<Page<PacienteDTO>>> findByFilter(@RequestBody @Valid final PageableFilter<PacienteUsuarioFilter> filter) {
         return ResponseEntity.ok().body(new Response(service.findByFilter(filter), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Inclui um paciente.")
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<PacienteDTO>> create(@Valid @RequestBody final PacienteDTO dto) {
         return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, dto), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Altera um paciente.")
     @PutMapping(path = "/{id}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<PacienteDTO>> update(@PathVariable final Long id, @Valid @RequestBody final PacienteDTO dto) {
         return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, dto), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Retorna uma lista com todos pacientes ativos.")
     @GetMapping(path = "/findAllActive")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<List<PacienteDTO>>> findAllActive() {
         return ResponseEntity.ok().body(new Response(service.findAllActive(), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Retorna uma lista com todos pacientes.")
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<List<PacienteDTO>>> findAll() {
         return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Retorna um paciente por id.")
     @GetMapping(path = "/{id}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<PacienteDTO>> findById(@PathVariable final Long id) {
         return ResponseEntity.ok().body(new Response(service.findById(id), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Ativa/Inativa um paciente.")
     @PostMapping(path = "/activeOrInative/{id}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'USUARIO')")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<PacienteDTO>> activeOrInative(@PathVariable final Long id) {
         return ResponseEntity.ok().body(new Response(service.activeOrInative(id), MessageEnum.MSG00028.toString()));
+    }
+
+    @ApiOperation(value = "Retorna uma lista com todos pacientes que fazem aniversário no mes atual.")
+    @GetMapping(path = "/findAllBirthdaysMonth")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
+    public ResponseEntity<Response<List<PacienteDTO>>> findAllBirthdaysMonth() {
+        return ResponseEntity.ok().body(new Response(service.findAllBirthdaysMonth(), MessageEnum.MSG00028.toString()));
     }
 
 }

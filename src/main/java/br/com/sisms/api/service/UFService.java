@@ -9,6 +9,7 @@ import br.com.sisms.api.model.filter.PageableFilter;
 import br.com.sisms.api.model.mapper.UFMapper;
 import br.com.sisms.api.repository.UFRepository;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,6 +36,7 @@ public class UFService {
 
     @Transactional(readOnly = true)
     public Page<UFDTO> findByFilter(final PageableFilter pageableFilter) {
+        pageableFilter.setOrderBy(StringUtils.isBlank(pageableFilter.getOrderBy()) ? "id" : pageableFilter.getOrderBy());
         Pageable pageable = PageRequest.of(
                 pageableFilter.getCurrentPage(),
                 pageableFilter.getPageSize(),
