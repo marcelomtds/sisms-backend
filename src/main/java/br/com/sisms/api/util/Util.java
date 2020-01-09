@@ -2,6 +2,7 @@ package br.com.sisms.api.util;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.InputMismatchException;
 
 public final class Util {
@@ -61,6 +62,10 @@ public final class Util {
 
     public static Boolean isInvalidPeriod(final LocalDate startDate, final LocalDate endDate) {
         return endDate.isBefore(startDate);
+    }
+
+    public static Boolean isInvalidPeriod(final LocalTime startTime, final LocalTime endTime) {
+        return endTime.isBefore(startTime);
     }
 
 }

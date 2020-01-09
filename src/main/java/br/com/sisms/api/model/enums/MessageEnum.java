@@ -44,7 +44,10 @@ public enum MessageEnum {
     MSG00055("Não é possível criar um novo pacote para esse paciente com essa categoria de atendimento porque existe um pacote em aberto criado por outro usuário."),
     MSG00056("Tipo de atendimento não encontrado."),
     MSG00057("O campo data em pós-atendimento é obrigatório."),
-    MSG00058("Não é possível ativar/inativar o próprio usuário.");
+    MSG00058("Não é possível ativar/inativar o próprio usuário."),
+    MSG00059("Dia da semana não encontrado."),
+    MSG00060("Registro da agenda não encontrado."),
+    MSG00061("O horário início não pode ser maior que o horário fim.");
 
     private final String codigo;
 

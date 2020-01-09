@@ -4,6 +4,14 @@ INSERT INTO categoria_atendimento (id, descricao) VALUES (3, 'Reeducação Postu
 INSERT INTO categoria_atendimento (id, descricao) VALUES (4, 'Pilates');
 INSERT INTO categoria_atendimento (id, descricao) VALUES (5, 'Massagem Relaxante');
 
+INSERT INTO dia_semana (id, descricao) VALUES (1, 'Segunda - Feira');
+INSERT INTO dia_semana (id, descricao) VALUES (2, 'Terça - Feira');
+INSERT INTO dia_semana (id, descricao) VALUES (3, 'Quarta - Feira');
+INSERT INTO dia_semana (id, descricao) VALUES (4, 'Quinta - Feira');
+INSERT INTO dia_semana (id, descricao) VALUES (5, 'Sexta - Feira');
+INSERT INTO dia_semana (id, descricao) VALUES (6, 'Sábado');
+INSERT INTO dia_semana (id, descricao) VALUES (7, 'Domingo');
+
 INSERT INTO forma_pagamento (id, descricao) VALUES (1, 'Dinheiro');
 INSERT INTO forma_pagamento (id, descricao) VALUES (2, 'Cheque');
 INSERT INTO forma_pagamento (id, descricao) VALUES (3, 'Cartão de Crédito');
