@@ -31,8 +31,13 @@ public class AgendaService {
     private final TipoAtendimentoService tipoAtendimentoService;
 
     @Transactional(readOnly = true)
+    public List<AgendaDTO> findAllByWeekDay() {
+        return mapper.toDTO(repository.findAllByWeekDay());
+    }
+
+    @Transactional(readOnly = true)
     public List<AgendaDTO> findAll() {
-        return mapper.toDTO(repository.findAll(new Sort(Sort.Direction.ASC, "diaSemana.id", "horarioInicio")));
+        return mapper.toDTO(repository.findAll(new Sort(Sort.Direction.ASC, "horarioInicio")));
     }
 
     @Transactional(readOnly = true)

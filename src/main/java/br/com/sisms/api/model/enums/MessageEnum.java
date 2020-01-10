@@ -47,7 +47,7 @@ public enum MessageEnum {
     MSG00058("Não é possível ativar/inativar o próprio usuário."),
     MSG00059("Dia da semana não encontrado."),
     MSG00060("Registro da agenda não encontrado."),
-    MSG00061("O horário início não pode ser maior que o horário fim.");
+    MSG00061("O horário inicial não pode ser maior que o horário final.");
 
     private final String codigo;
 

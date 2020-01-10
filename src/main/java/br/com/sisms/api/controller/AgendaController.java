@@ -24,9 +24,16 @@ public class AgendaController {
 
     @ApiOperation(value = "Retorna a agenda completa.")
     @GetMapping
-    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString())")
     public ResponseEntity<Response<List<AgendaDTO>>> findAll() {
         return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.MSG00028.toString()));
+    }
+
+    @ApiOperation(value = "Retorna a agenda pelo dia da semana atual.")
+    @GetMapping(path = "/findAllByWeekDay")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
+    public ResponseEntity<Response<List<AgendaDTO>>> findAllByWeekDay() {
+        return ResponseEntity.ok().body(new Response(service.findAllByWeekDay(), MessageEnum.MSG00028.toString()));
     }
 
     @ApiOperation(value = "Inclui um registro na agenda.")

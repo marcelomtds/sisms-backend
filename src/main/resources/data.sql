@@ -10,7 +10,7 @@ INSERT INTO dia_semana (id, descricao) VALUES (3, 'Quarta - Feira');
 INSERT INTO dia_semana (id, descricao) VALUES (4, 'Quinta - Feira');
 INSERT INTO dia_semana (id, descricao) VALUES (5, 'Sexta - Feira');
 INSERT INTO dia_semana (id, descricao) VALUES (6, 'Sábado');
-INSERT INTO dia_semana (id, descricao) VALUES (7, 'Domingo');
+INSERT INTO dia_semana (id, descricao) VALUES (0, 'Domingo');
 
 INSERT INTO forma_pagamento (id, descricao) VALUES (1, 'Dinheiro');
 INSERT INTO forma_pagamento (id, descricao) VALUES (2, 'Cheque');

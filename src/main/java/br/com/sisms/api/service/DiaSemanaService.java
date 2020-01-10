@@ -22,7 +22,7 @@ public class DiaSemanaService {
 
     @Transactional(readOnly = true)
     public List<DiaSemanaDTO> findAll() {
-        return mapper.toDTO(repository.findAll(new Sort(Sort.Direction.ASC, "descricao")));
+        return mapper.toDTO(repository.findAll(new Sort(Sort.Direction.ASC, "id")));
     }
 
     @Transactional(readOnly = true)
