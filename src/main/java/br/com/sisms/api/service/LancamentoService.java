@@ -48,7 +48,7 @@ public class LancamentoService {
         Lancamento entity;
         if (Objects.nonNull(id)) {
             LancamentoDTO dtoTarget = findByIdWithPermission(id);
-            BeanUtils.copyProperties(dtoSource, dtoTarget, "id", "usuarioId", "atendimentoId", "pacoteId", "formaPagamentoId", "tipoLancamentoId", "tipoAtendimentoId");
+            BeanUtils.copyProperties(dtoSource, dtoTarget, "id", "usuarioId", "atendimentoId", "pacoteId", "tipoLancamentoId", "tipoAtendimentoId");
             entity = mapper.toEntity(dtoTarget);
         } else {
             dtoSource.setUsuarioId(usuarioService.getCurrentSessionUser().getId());
