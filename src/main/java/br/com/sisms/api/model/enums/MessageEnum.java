@@ -47,7 +47,9 @@ public enum MessageEnum {
     MSG00058("Não é possível ativar/inativar o próprio usuário."),
     MSG00059("Dia da semana não encontrado."),
     MSG00060("Registro da agenda não encontrado."),
-    MSG00061("O horário inicial não pode ser maior que o horário final.");
+    MSG00061("O horário inicial não pode ser maior que o horário final."),
+    MSG00064("Categoria de exame não encontrada."),
+    MSG00065("Essa categoria de exame já existe na base de dados.");
 
     private final String codigo;
 
