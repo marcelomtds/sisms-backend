@@ -25,6 +25,13 @@ public class LocalidadeController {
 
     private final LocalidadeService service;
 
+    @ApiOperation(value = "Retorna uma localidade por id.")
+    @GetMapping(path = "/{id}")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
+    public ResponseEntity<Response<LocalidadeDTO>> findById(@PathVariable final Long id) {
+        return ResponseEntity.ok().body(new Response(service.findById(id), MessageEnum.MSG00028.toString()));
+    }
+
     @ApiOperation(value = "Retorna uma lista paginada de localidades por filtros.")
     @PostMapping(path = "/findByFilter")
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")

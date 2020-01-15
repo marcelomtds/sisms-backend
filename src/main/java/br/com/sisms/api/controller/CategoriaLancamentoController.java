@@ -25,6 +25,13 @@ public class CategoriaLancamentoController {
 
     private final CategoriaLancamentoService service;
 
+    @ApiOperation(value = "Retorna uma categoria de lançamento por id.")
+    @GetMapping(path = "/{id}")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString())")
+    public ResponseEntity<Response<CategoriaLancamentoDTO>> findById(@PathVariable final Long id) {
+        return ResponseEntity.ok().body(new Response(service.findById(id), MessageEnum.MSG00028.toString()));
+    }
+
     @ApiOperation(value = "Retorna uma lista paginada de categorias de lançamento por filtros.")
     @PostMapping(path = "/findByFilter")
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString())")

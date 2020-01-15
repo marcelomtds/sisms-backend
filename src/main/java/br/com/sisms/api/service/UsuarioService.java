@@ -2,7 +2,6 @@ package br.com.sisms.api.service;
 
 import br.com.sisms.api.exception.BusinessException;
 import br.com.sisms.api.exception.ResourceNotFoundException;
-import br.com.sisms.api.model.dto.PacienteDTO;
 import br.com.sisms.api.model.dto.SenhaDTO;
 import br.com.sisms.api.model.dto.UsuarioDTO;
 import br.com.sisms.api.model.entity.Usuario;
@@ -45,7 +44,7 @@ public class UsuarioService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository repository, UsuarioMapper mapper, ProfissaoService profissaoService, SexoService sexoService, LocalidadeService localidadeService) {
+    public UsuarioService(final UsuarioRepository repository, final UsuarioMapper mapper, final ProfissaoService profissaoService, final SexoService sexoService, final LocalidadeService localidadeService) {
         this.repository = repository;
         this.mapper = mapper;
         this.profissaoService = profissaoService;

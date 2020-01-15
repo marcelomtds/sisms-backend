@@ -41,7 +41,7 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 
     Paciente findByCpf(final String cpf);
 
-    @Query("SELECT p FROM Paciente as p WHERE Extract(Month FROM p.dataNascimento) = Extract(Month FROM Now())")
+    @Query("SELECT p FROM Paciente as p WHERE FUNCTION ('DATE_PART', 'MONTH', p.dataNascimento) = FUNCTION ('DATE_PART', 'MONTH', CURRENT_DATE) ORDER BY p.dataNascimento ASC")
     List<Paciente> findAllBirthdaysMonth();
 
 }

@@ -25,6 +25,13 @@ public class CategoriaExameController {
 
     private final CategoriaExameService service;
 
+    @ApiOperation(value = "Retorna uma categoria de exame por id.")
+    @GetMapping(path = "/{id}")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
+    public ResponseEntity<Response<CategoriaExameDTO>> findById(@PathVariable final Long id) {
+        return ResponseEntity.ok().body(new Response(service.findById(id), MessageEnum.MSG00028.toString()));
+    }
+
     @ApiOperation(value = "Retorna uma lista paginada de categorias de exame por filtros.")
     @PostMapping(path = "/findByFilter")
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
@@ -48,7 +55,7 @@ public class CategoriaExameController {
 
     @ApiOperation(value = "Retorna uma lista com todas categorias de exame.")
     @GetMapping
-    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString())")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<List<CategoriaExameDTO>>> findAll() {
         return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.MSG00028.toString()));
     }

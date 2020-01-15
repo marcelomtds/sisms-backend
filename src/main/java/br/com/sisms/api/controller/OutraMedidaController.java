@@ -1,7 +1,6 @@
 package br.com.sisms.api.controller;
 
 import br.com.sisms.api.model.dto.OutraMedidaDTO;
-import br.com.sisms.api.model.dto.ProfissaoDTO;
 import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.model.filter.PageableFilter;
 import br.com.sisms.api.response.Response;
@@ -26,10 +25,17 @@ public class OutraMedidaController {
 
     private final OutraMedidaService service;
 
+    @ApiOperation(value = "Retorna uma outra medida por id.")
+    @GetMapping(path = "/{id}")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
+    public ResponseEntity<Response<OutraMedidaDTO>> findById(@PathVariable final Long id) {
+        return ResponseEntity.ok().body(new Response(service.findById(id), MessageEnum.MSG00028.toString()));
+    }
+
     @ApiOperation(value = "Retorna uma lista paginada de profissões por filtros.")
     @PostMapping(path = "/findByFilter")
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
-    public ResponseEntity<Response<Page<ProfissaoDTO>>> findByFilter(@RequestBody final PageableFilter pageableFilter) {
+    public ResponseEntity<Response<Page<OutraMedidaDTO>>> findByFilter(@RequestBody final PageableFilter pageableFilter) {
         return ResponseEntity.ok().body(new Response(service.findByFilter(pageableFilter), MessageEnum.MSG00028.toString()));
     }
 

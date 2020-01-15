@@ -44,7 +44,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     List<Usuario> findAllByAtivoIsTrueOrderByNomeCompletoAsc();
 
-    @Query("SELECT u FROM Usuario as u WHERE Extract(Month FROM u.dataNascimento) = Extract(Month FROM Now())")
+    @Query("SELECT u FROM Usuario as u WHERE FUNCTION ('DATE_PART', 'MONTH', u.dataNascimento) = FUNCTION ('DATE_PART', 'MONTH', CURRENT_DATE) ORDER BY u.dataNascimento ASC")
     List<Usuario> findAllBirthdaysMonth();
 
 }

@@ -14,9 +14,9 @@ import br.com.sisms.api.model.filter.PageableFilter;
 import br.com.sisms.api.model.mapper.AtendimentoMapper;
 import br.com.sisms.api.repository.AtendimentoRepository;
 import br.com.sisms.api.util.Util;
-import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,19 +32,32 @@ import java.util.Objects;
 
 @Service
 @Transactional
-@AllArgsConstructor
 public class AtendimentoService {
 
     private final AtendimentoRepository repository;
     private final AtendimentoMapper mapper;
     private final UsuarioService usuarioService;
-    private final ImagemAtendimentoService imagemAtendimentoService;
     private final PreAtendimentoOutraMedidaService preAtendimentoOutraMedidaService;
     private final PosAtendimentoOutraMedidaService posAtendimentoOutraMedidaService;
     private final PacoteService pacoteService;
     private final PacienteService pacienteService;
     private final CategoriaAtendimentoService categoriaAtendimentoService;
     private final OutraMedidaService outraMedidaService;
+
+    @Autowired
+    private ImagemAtendimentoService imagemAtendimentoService;
+
+    public AtendimentoService(final AtendimentoRepository repository, final AtendimentoMapper mapper, final UsuarioService usuarioService, final PreAtendimentoOutraMedidaService preAtendimentoOutraMedidaService, final PosAtendimentoOutraMedidaService posAtendimentoOutraMedidaService, final PacoteService pacoteService, final PacienteService pacienteService, final CategoriaAtendimentoService categoriaAtendimentoService, final OutraMedidaService outraMedidaService) {
+        this.repository = repository;
+        this.mapper = mapper;
+        this.usuarioService = usuarioService;
+        this.preAtendimentoOutraMedidaService = preAtendimentoOutraMedidaService;
+        this.posAtendimentoOutraMedidaService = posAtendimentoOutraMedidaService;
+        this.pacoteService = pacoteService;
+        this.pacienteService = pacienteService;
+        this.categoriaAtendimentoService = categoriaAtendimentoService;
+        this.outraMedidaService = outraMedidaService;
+    }
 
     public AtendimentoDTO createOrUpdate(final Long id, final AtendimentoDTO dtoSource) {
         validateResources(dtoSource);

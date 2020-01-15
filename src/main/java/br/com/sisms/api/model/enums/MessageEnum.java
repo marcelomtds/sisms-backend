@@ -49,7 +49,8 @@ public enum MessageEnum {
     MSG00060("Registro da agenda não encontrado."),
     MSG00061("O horário inicial não pode ser maior que o horário final."),
     MSG00064("Categoria de exame não encontrada."),
-    MSG00065("Essa categoria de exame já existe na base de dados.");
+    MSG00065("Essa categoria de exame já existe na base de dados."),
+    MSG00066("Exame não encontrado."),;
 
     private final String codigo;
 
