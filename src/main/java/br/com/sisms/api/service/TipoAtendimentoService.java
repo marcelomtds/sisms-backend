@@ -27,6 +27,6 @@ public class TipoAtendimentoService {
 
     @Transactional(readOnly = true)
     public TipoAtendimentoDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00056.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG0056.toString())));
     }
 }

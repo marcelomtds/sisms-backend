@@ -5,7 +5,7 @@ import br.com.sisms.api.model.entity.Exame;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(uses = {PacienteMapper.class, CategoriaExameMapper.class, ImagemExameMapper.class})
+@Mapper(uses = {PacienteMapper.class, CategoriaExameMapper.class, AnexoExameMapper.class})
 public interface ExameMapper extends BaseMapper<Exame, ExameDTO> {
 
     @Mapping(target = "pacienteId", source = "paciente.id")

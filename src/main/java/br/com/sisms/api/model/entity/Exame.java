@@ -43,7 +43,7 @@ public class Exame implements Serializable {
     private CategoriaExame categoriaExame;
 
     @OneToMany(mappedBy = "exame", cascade = CascadeType.ALL)
-    private List<ImagemExame> imagens;
+    private List<AnexoExame> anexos;
 
     @Column(length = 1000)
     private String observacao;

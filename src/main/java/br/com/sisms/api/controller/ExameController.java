@@ -29,7 +29,7 @@ public class ExameController {
     @PostMapping
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<ExameDTO>> create(@Valid @RequestBody final ExameDTO dto) {
-        return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, dto), MessageEnum.MSG00028.toString()));
+        return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, dto), MessageEnum.MSG0028.toString()));
     }
 
     @ApiOperation(value = "Exclui um exame.")
@@ -37,28 +37,28 @@ public class ExameController {
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response> delete(@PathVariable final Long id) {
         service.delete(id);
-        return ResponseEntity.ok().body(new Response(MessageEnum.MSG00028.toString()));
+        return ResponseEntity.ok().body(new Response(MessageEnum.MSG0028.toString()));
     }
 
     @ApiOperation(value = "Altera um exame.")
     @PutMapping(path = "/{id}")
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<List<ExameDTO>>> update(@PathVariable final Long id, @Valid @RequestBody final ExameDTO dto) {
-        return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, dto), MessageEnum.MSG00028.toString()));
+        return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, dto), MessageEnum.MSG0028.toString()));
     }
 
     @ApiOperation(value = "Retorna uma lista paginada de exames por filtros.")
     @PostMapping(path = "/findByFilter")
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<Page<ExameDTO>>> findByFilter(@RequestBody PageableFilter<ExameFilter> filter) {
-        return ResponseEntity.ok().body(new Response(service.findByFilter(filter), MessageEnum.MSG00028.toString()));
+        return ResponseEntity.ok().body(new Response(service.findByFilter(filter), MessageEnum.MSG0028.toString()));
     }
 
     @ApiOperation(value = "Retorna um exame por id.")
     @GetMapping(path = "/{id}")
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<ExameDTO>> findById(@PathVariable final Long id) {
-        return ResponseEntity.ok().body(new Response(service.findById(id), MessageEnum.MSG00028.toString()));
+        return ResponseEntity.ok().body(new Response(service.findById(id), MessageEnum.MSG0028.toString()));
     }
 
 }

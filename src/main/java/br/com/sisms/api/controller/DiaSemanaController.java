@@ -28,7 +28,7 @@ public class DiaSemanaController {
     @GetMapping
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString())")
     public ResponseEntity<Response<List<DiaSemanaDTO>>> findAll() {
-        return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.MSG00028.toString()));
+        return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.MSG0028.toString()));
     }
 
 }

@@ -46,7 +46,7 @@ public class OutraMedidaService {
 
     @Transactional(readOnly = true)
     public OutraMedidaDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00041.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG0041.toString())));
     }
 
     public OutraMedidaDTO createOrUpdate(final Long id, final OutraMedidaDTO dtoSource) {
@@ -65,7 +65,7 @@ public class OutraMedidaService {
     private void validateDuplicityByDescription(final OutraMedida entity) {
         final OutraMedidaDTO dto = mapper.toDTO(repository.findByDescricaoIgnoreCase(entity.getDescricao()));
         if (Objects.nonNull(dto) && !dto.getId().equals(entity.getId())) {
-            throw new BusinessException(MessageEnum.MSG00032.toString());
+            throw new BusinessException(MessageEnum.MSG0032.toString());
         }
     }
 

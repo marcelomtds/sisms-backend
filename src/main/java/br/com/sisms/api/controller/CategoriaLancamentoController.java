@@ -29,35 +29,35 @@ public class CategoriaLancamentoController {
     @GetMapping(path = "/{id}")
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString())")
     public ResponseEntity<Response<CategoriaLancamentoDTO>> findById(@PathVariable final Long id) {
-        return ResponseEntity.ok().body(new Response(service.findById(id), MessageEnum.MSG00028.toString()));
+        return ResponseEntity.ok().body(new Response(service.findById(id), MessageEnum.MSG0028.toString()));
     }
 
     @ApiOperation(value = "Retorna uma lista paginada de categorias de lançamento por filtros.")
     @PostMapping(path = "/findByFilter")
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString())")
     public ResponseEntity<Response<Page<CategoriaLancamentoDTO>>> findByFilter(@RequestBody final PageableFilter pageableFilter) {
-        return ResponseEntity.ok().body(new Response(service.findByFilter(pageableFilter), MessageEnum.MSG00028.toString()));
+        return ResponseEntity.ok().body(new Response(service.findByFilter(pageableFilter), MessageEnum.MSG0028.toString()));
     }
 
     @ApiOperation(value = "Inclui uma categoria de lançamento.")
     @PostMapping
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString())")
     public ResponseEntity<Response<CategoriaLancamentoDTO>> create(@Valid @RequestBody final CategoriaLancamentoDTO dto) {
-        return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, dto), MessageEnum.MSG00028.toString()));
+        return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, dto), MessageEnum.MSG0028.toString()));
     }
 
     @ApiOperation(value = "Altera uma categoria de lançamento.")
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString())")
     public ResponseEntity<Response<CategoriaLancamentoDTO>> update(@PathVariable final Long id, @Valid @RequestBody final CategoriaLancamentoDTO dto) {
-        return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, dto), MessageEnum.MSG00028.toString()));
+        return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, dto), MessageEnum.MSG0028.toString()));
     }
 
     @ApiOperation(value = "Retorna uma lista com todas categorias de lançamento.")
     @GetMapping
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString())")
     public ResponseEntity<Response<List<CategoriaLancamentoDTO>>> findAll() {
-        return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.MSG00028.toString()));
+        return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.MSG0028.toString()));
     }
 
 }

@@ -27,7 +27,7 @@ public class FormaPagamentoService {
 
     @Transactional(readOnly = true)
     public FormaPagamentoDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00051.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG0051.toString())));
     }
 
 }

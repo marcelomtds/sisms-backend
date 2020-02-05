@@ -48,7 +48,7 @@ public class ProfissaoService {
 
     @Transactional(readOnly = true)
     public ProfissaoDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00050.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG0050.toString())));
     }
 
     public ProfissaoDTO createOrUpdate(final Long id, final ProfissaoDTO dtoSource) {
@@ -67,7 +67,7 @@ public class ProfissaoService {
     private void validateDuplicityByDescription(final Profissao entity) {
         final ProfissaoDTO dto = mapper.toDTO(repository.findByDescricaoIgnoreCase(entity.getDescricao()));
         if (Objects.nonNull(dto) && !dto.getId().equals(entity.getId())) {
-            throw new BusinessException(MessageEnum.MSG00033.toString());
+            throw new BusinessException(MessageEnum.MSG0033.toString());
         }
     }
 

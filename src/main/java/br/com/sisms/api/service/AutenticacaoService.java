@@ -37,7 +37,7 @@ public class AutenticacaoService {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(autenticacaoDTO.getCpf());
         final UsuarioDTO usuarioDTO = usuarioService.findByCpfAndAtivoIsTrue(autenticacaoDTO.getCpf());
         if (Objects.isNull(usuarioDTO)) {
-            throw new BusinessException(MessageEnum.MSG00029.toString());
+            throw new BusinessException(MessageEnum.MSG0029.toString());
         }
         final String token = jwtTokenUtil.generateToken(userDetails);
         usuarioDTO.setSenha(null);

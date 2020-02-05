@@ -21,12 +21,12 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(BadCredentialsException.class)
     protected ResponseEntity badCredentialsException(BadCredentialsException e, WebRequest request) {
-        return handleExceptionInternal(e, new Response(MessageEnum.MSG00046.toString()), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+        return handleExceptionInternal(e, new Response(MessageEnum.MSG0046.toString()), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     protected ResponseEntity accessDeniedException(AccessDeniedException e, WebRequest request) {
-        return handleExceptionInternal(e, new Response(MessageEnum.MSG00036.toString()), new HttpHeaders(), HttpStatus.FORBIDDEN, request);
+        return handleExceptionInternal(e, new Response(MessageEnum.MSG0036.toString()), new HttpHeaders(), HttpStatus.FORBIDDEN, request);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -41,7 +41,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException e, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return handleExceptionInternal(e, new Response(MessageEnum.MSG00035.toString(), getErrors(e)), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+        return handleExceptionInternal(e, new Response(MessageEnum.MSG0035.toString(), getErrors(e)), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     private List<String> getErrors(MethodArgumentNotValidException e) {

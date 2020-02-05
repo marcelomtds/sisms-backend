@@ -30,35 +30,35 @@ public class UFController {
     @GetMapping(path = "/{id}")
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<UFDTO>> findById(@PathVariable final Long id) {
-        return ResponseEntity.ok().body(new Response(service.findById(id), MessageEnum.MSG00028.toString()));
+        return ResponseEntity.ok().body(new Response(service.findById(id), MessageEnum.MSG0028.toString()));
     }
 
     @ApiOperation(value = "Retorna uma lista paginada de UFs por filtros.")
     @PostMapping(path = "/findByFilter")
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<Page<UFDTO>>> findByFilter(@RequestBody final PageableFilter pageableFilter) {
-        return ResponseEntity.ok().body(new Response(service.findByFilter(pageableFilter), MessageEnum.MSG00028.toString()));
+        return ResponseEntity.ok().body(new Response(service.findByFilter(pageableFilter), MessageEnum.MSG0028.toString()));
     }
 
     @ApiOperation(value = "Inclui uma UF.")
     @PostMapping
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response> create(@Valid @RequestBody final UFDTO dto) {
-        return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, dto), MessageEnum.MSG00028.toString(), new ArrayList()));
+        return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, dto), MessageEnum.MSG0028.toString(), new ArrayList()));
     }
 
     @ApiOperation(value = "Altera uma UF.")
     @PutMapping(path = "/{id}")
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<UFDTO>> update(@PathVariable final Long id, @Valid @RequestBody final UFDTO dto) {
-        return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, dto), MessageEnum.MSG00028.toString(), new ArrayList()));
+        return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, dto), MessageEnum.MSG0028.toString(), new ArrayList()));
     }
 
     @ApiOperation(value = "Retorna uma lista com todas UFs.")
     @GetMapping
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<List<UFDTO>>> findAll() {
-        return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.MSG00028.toString()));
+        return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.MSG0028.toString()));
     }
 
 }

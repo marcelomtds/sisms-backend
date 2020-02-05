@@ -59,13 +59,13 @@ public class CategoriaLancamentoService {
 
     @Transactional(readOnly = true)
     public CategoriaLancamentoDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00053.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG0053.toString())));
     }
 
     private void validateDuplicityByDescription(final CategoriaLancamento entity) {
         final CategoriaLancamentoDTO dtoResult = mapper.toDTO(repository.findByDescricaoIgnoreCase(entity.getDescricao()));
         if (Objects.nonNull(dtoResult) && !dtoResult.getId().equals(entity.getId())) {
-            throw new BusinessException(MessageEnum.MSG00030.toString());
+            throw new BusinessException(MessageEnum.MSG0030.toString());
         }
     }
 

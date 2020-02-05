@@ -72,7 +72,7 @@ public class PacoteService {
 
     @Transactional(readOnly = true)
     public PacoteDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00045.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG0045.toString())));
     }
 
     public PacoteDTO closePackage(final Long id) {
@@ -113,14 +113,14 @@ public class PacoteService {
     private void checkUserPermission(final PacoteDTO dto) {
         Usuario user = usuarioService.getCurrentSessionUser();
         if (!dto.getUsuarioId().equals(user.getId()) && user.getPerfil().getId().equals(PerfilEnum.USUARIO.getPerfil())) {
-            throw new AccessDeniedException(MessageEnum.MSG00036.toString());
+            throw new AccessDeniedException(MessageEnum.MSG0036.toString());
         }
     }
 
     private void checkUserPermissionTerminatePackage(final PacoteDTO dto) {
         Usuario user = usuarioService.getCurrentSessionUser();
         if (!dto.getUsuarioId().equals(user.getId()) && user.getPerfil().getId().equals(PerfilEnum.USUARIO.getPerfil())) {
-            throw new BusinessException(MessageEnum.MSG00055.toString());
+            throw new BusinessException(MessageEnum.MSG0055.toString());
         }
     }
 
@@ -137,7 +137,7 @@ public class PacoteService {
 
     private void checkUpdate(final Boolean aberto) {
         if (BooleanUtils.isFalse(aberto)) {
-            throw new BusinessException(MessageEnum.MSG00038.toString());
+            throw new BusinessException(MessageEnum.MSG0038.toString());
         }
     }
 

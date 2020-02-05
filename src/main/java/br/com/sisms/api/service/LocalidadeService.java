@@ -65,7 +65,7 @@ public class LocalidadeService {
 
     @Transactional(readOnly = true)
     public LocalidadeDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00049.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG0049.toString())));
     }
 
     private void validateResource(final LocalidadeDTO dto) {
@@ -75,7 +75,7 @@ public class LocalidadeService {
     private void validateDuplicityByDescriptionAndUF(final Localidade entity) {
         final LocalidadeDTO dto = mapper.toDTO(repository.findByDescricaoIgnoreCaseAndUfId(entity.getDescricao(), entity.getUf().getId()));
         if (Objects.nonNull(dto) && !dto.getId().equals(entity.getId())) {
-            throw new BusinessException(MessageEnum.MSG00031.toString());
+            throw new BusinessException(MessageEnum.MSG0031.toString());
         }
     }
 

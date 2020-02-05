@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -30,7 +31,7 @@ public class ExameService {
 
     private final ExameRepository repository;
     private final ExameMapper mapper;
-    private final ImagemExameService imagemExameService;
+    private final AnexoExameService imagemExameService;
     private final PacienteService pacienteService;
     private final CategoriaExameService categoriaExameService;
 
@@ -45,16 +46,18 @@ public class ExameService {
         } else {
             entity = mapper.toEntity(dtoSource);
         }
-        entity.getImagens().forEach(imagem -> {
-            imagem.setId(null);
-            imagem.setExame(entity);
-        });
+        if (!ObjectUtils.isEmpty(entity.getAnexos())) {
+            entity.getAnexos().forEach(imagem -> {
+                imagem.setId(null);
+                imagem.setExame(entity);
+            });
+        }
         return mapper.toDTO(repository.save(entity));
     }
 
     @Transactional(readOnly = true)
     public ExameDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00066.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG0066.toString())));
     }
 
     @Transactional(readOnly = true)

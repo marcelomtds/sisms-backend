@@ -61,7 +61,7 @@ public class AtendimentoService {
 
     public AtendimentoDTO createOrUpdate(final Long id, final AtendimentoDTO dtoSource) {
         validateResources(dtoSource);
-        validatePeriod(dtoSource.getPreAtendimentoData(), dtoSource.getPosAtendimentoData(), MessageEnum.MSG00048.toString());
+        validatePeriod(dtoSource.getPreAtendimentoData(), dtoSource.getPosAtendimentoData(), MessageEnum.MSG0048.toString());
         final Atendimento entity;
         if (Objects.nonNull(id)) {
             AtendimentoDTO dtoTarget = findByIdWithPermission(id);
@@ -128,7 +128,7 @@ public class AtendimentoService {
                 Sort.Direction.valueOf(filter.getDirection()),
                 filter.getOrderBy());
         filter.setFilter(Objects.isNull(filter.getFilter()) ? new AtendimentoFilter() : filter.getFilter());
-        validatePeriod(filter.getFilter().getPreAtendimentoData(), filter.getFilter().getPosAtendimentoData(), MessageEnum.MSG00048.toString());
+        validatePeriod(filter.getFilter().getPreAtendimentoData(), filter.getFilter().getPosAtendimentoData(), MessageEnum.MSG0048.toString());
         final Usuario user = usuarioService.getCurrentSessionUser();
         if (user.getPerfil().getId().equals(PerfilEnum.USUARIO.getPerfil())) {
             filter.getFilter().setUsuarioId(user.getId());
@@ -146,7 +146,7 @@ public class AtendimentoService {
 
     @Transactional(readOnly = true)
     public AtendimentoDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00027.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG0027.toString())));
     }
 
     @Transactional(readOnly = true)
@@ -177,14 +177,14 @@ public class AtendimentoService {
 
     private void validadeDatePosAtendimento(LocalDateTime date) {
         if (Objects.isNull(date)) {
-            throw new BusinessException(MessageEnum.MSG00057.toString());
+            throw new BusinessException(MessageEnum.MSG0057.toString());
         }
     }
 
     private void checkUserPermission(final AtendimentoDTO atendimentoDTO) {
         final Usuario usuario = usuarioService.getCurrentSessionUser();
         if (!atendimentoDTO.getUsuarioId().equals(usuario.getId()) && usuario.getPerfil().getId().equals(PerfilEnum.USUARIO.getPerfil())) {
-            throw new AccessDeniedException(MessageEnum.MSG00036.toString());
+            throw new AccessDeniedException(MessageEnum.MSG0036.toString());
         }
     }
 

@@ -42,7 +42,7 @@ public class AgendaService {
 
     @Transactional(readOnly = true)
     public AgendaDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00060.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG0060.toString())));
     }
 
     public AgendaDTO createOrUpdate(final Long id, final AgendaDTO dtoSource) {
@@ -73,7 +73,7 @@ public class AgendaService {
 
     private void validatePeriod(final LocalTime start, final LocalTime end) {
         if (Util.isInvalidPeriod(start, end)) {
-            throw new BusinessException(MessageEnum.MSG00061.toString());
+            throw new BusinessException(MessageEnum.MSG0061.toString());
         }
     }
 

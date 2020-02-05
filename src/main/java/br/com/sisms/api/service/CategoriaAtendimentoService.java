@@ -27,7 +27,7 @@ public class CategoriaAtendimentoService {
 
     @Transactional(readOnly = true)
     public CategoriaAtendimentoDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00052.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG0052.toString())));
     }
 
 }

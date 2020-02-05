@@ -28,7 +28,7 @@ public class TipoLancamentoController {
     @GetMapping
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<List<TipoLancamentoDTO>>> findAll() {
-        return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.MSG00028.toString()));
+        return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.MSG0028.toString()));
     }
 
 }

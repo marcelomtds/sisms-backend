@@ -27,6 +27,6 @@ public class DiaSemanaService {
 
     @Transactional(readOnly = true)
     public DiaSemanaDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00059.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG0059.toString())));
     }
 }

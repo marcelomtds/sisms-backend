@@ -69,7 +69,7 @@ public class UsuarioService {
 
     @Transactional(readOnly = true)
     public UsuarioDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00043.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG0043.toString())));
     }
 
     @Transactional(readOnly = true)
@@ -121,7 +121,7 @@ public class UsuarioService {
     public UsuarioDTO activeOrInative(final Long id) {
         UsuarioDTO dto = findById(id);
         if (getCurrentSessionUser().getId().equals(dto.getId())) {
-            throw new BusinessException(MessageEnum.MSG00058.toString());
+            throw new BusinessException(MessageEnum.MSG0058.toString());
         }
         dto.setAtivo(BooleanUtils.negate(dto.getAtivo()));
         return mapper.toDTO(repository.save(mapper.toEntity(dto)));
@@ -160,14 +160,14 @@ public class UsuarioService {
     private void checkUserPermission(final UsuarioDTO usuarioDTO) {
         Usuario usuario = getCurrentSessionUser();
         if (!usuarioDTO.getId().equals(usuario.getId()) && usuario.getPerfil().getId().equals(PerfilEnum.USUARIO.getPerfil())) {
-            throw new AccessDeniedException(MessageEnum.MSG00036.toString());
+            throw new AccessDeniedException(MessageEnum.MSG0036.toString());
         }
     }
 
     private void checkUserPermissionUpdate(final UsuarioDTO usuarioDTO) {
         Usuario usuario = getCurrentSessionUser();
         if (!usuarioDTO.getId().equals(usuario.getId())) {
-            throw new AccessDeniedException(MessageEnum.MSG00036.toString());
+            throw new AccessDeniedException(MessageEnum.MSG0036.toString());
         }
     }
 
@@ -199,7 +199,7 @@ public class UsuarioService {
 
     private void checkDate(final LocalDate date) {
         if (Util.isCurrentDateBeforeDate(date)) {
-            throw new BusinessException(MessageEnum.MSG00037.toString());
+            throw new BusinessException(MessageEnum.MSG0037.toString());
         }
     }
 

@@ -60,13 +60,13 @@ public class UFService {
 
     @Transactional(readOnly = true)
     public UFDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00040.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG0040.toString())));
     }
 
     private void validateDuplicityByDescription(final UF entity) {
         final UFDTO dtoResult = mapper.toDTO(repository.findByDescricaoIgnoreCase(entity.getDescricao()));
         if (Objects.nonNull(dtoResult) && !dtoResult.getId().equals(entity.getId())) {
-            throw new BusinessException(MessageEnum.MSG00034.toString());
+            throw new BusinessException(MessageEnum.MSG0034.toString());
         }
     }
 

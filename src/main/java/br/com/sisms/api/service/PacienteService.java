@@ -72,7 +72,7 @@ public class PacienteService {
 
     @Transactional(readOnly = true)
     public PacienteDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00044.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG0044.toString())));
     }
 
     @Transactional(readOnly = true)
@@ -135,7 +135,7 @@ public class PacienteService {
 
     private void checkDate(final LocalDate date) {
         if (Util.isCurrentDateBeforeDate(date)) {
-            throw new BusinessException(MessageEnum.MSG00037.toString());
+            throw new BusinessException(MessageEnum.MSG0037.toString());
         }
     }
 

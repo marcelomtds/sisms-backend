@@ -6,11 +6,8 @@ import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.model.mapper.PerfilMapper;
 import br.com.sisms.api.repository.PerfilRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional
@@ -22,7 +19,7 @@ public class PerfilService {
 
     @Transactional(readOnly = true)
     public PerfilDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00042.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG0042.toString())));
     }
 
 }

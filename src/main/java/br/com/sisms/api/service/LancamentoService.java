@@ -77,7 +77,7 @@ public class LancamentoService {
 
     @Transactional(readOnly = true)
     public LancamentoDTO findById(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG00047.toString())));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG0047.toString())));
     }
 
     @Transactional(readOnly = true)
@@ -114,7 +114,7 @@ public class LancamentoService {
     private void checkUserPermission(final LancamentoDTO lancamentoDTO) {
         Usuario usuario = usuarioService.getCurrentSessionUser();
         if (!lancamentoDTO.getUsuarioId().equals(usuario.getId()) && usuario.getPerfil().getId().equals(PerfilEnum.USUARIO.getPerfil())) {
-            throw new AccessDeniedException(MessageEnum.MSG00036.toString());
+            throw new AccessDeniedException(MessageEnum.MSG0036.toString());
         }
     }
 
