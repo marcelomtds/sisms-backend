@@ -80,6 +80,11 @@ public class PacienteService {
         return mapper.toDTO(repository.findAllBirthdaysMonth());
     }
 
+    @Transactional(readOnly = true)
+    public List<PacienteDTO> findAllWithoutBondWithReservation() {
+        return mapper.toDTO(repository.findAllWithoutBondWithReservation());
+    }
+
     public PacienteDTO activeOrInative(final Long id) {
         PacienteDTO dto = findById(id);
         dto.setAtivo(BooleanUtils.negate(dto.getAtivo()));

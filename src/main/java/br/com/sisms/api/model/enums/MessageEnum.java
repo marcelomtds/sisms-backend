@@ -50,7 +50,9 @@ public enum MessageEnum {
     MSG0061("O horário inicial não pode ser maior que o horário final."),
     MSG0064("Categoria de exame não encontrada."),
     MSG0065("Essa categoria de exame já existe na base de dados."),
-    MSG0066("Exame não encontrado.");
+    MSG0066("Exame não encontrado."),
+    MSG0074("Reserva não encontrada."),
+    MSG0075("Esse paciente já está cadastrado na reserva.");
 
     private final String codigo;
 

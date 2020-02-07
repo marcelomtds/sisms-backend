@@ -29,6 +29,7 @@ public class AgendaService {
     private final DiaSemanaService diaSemanaService;
     private final PacienteService pacienteService;
     private final TipoAtendimentoService tipoAtendimentoService;
+    private final ReservaService reservaService;
 
     @Transactional(readOnly = true)
     public List<AgendaDTO> findAllByWeekDay() {
@@ -56,6 +57,7 @@ public class AgendaService {
         } else {
             entity = mapper.toEntity(dtoSource);
         }
+        removeFromReserva(entity.getPaciente().getId());
         return mapper.toDTO(repository.save(entity));
     }
 
@@ -75,6 +77,10 @@ public class AgendaService {
         if (Util.isInvalidPeriod(start, end)) {
             throw new BusinessException(MessageEnum.MSG0061.toString());
         }
+    }
+
+    private void removeFromReserva(final Long pacienteId) {
+        reservaService.deleteByPacienteId(pacienteId);
     }
 
 }

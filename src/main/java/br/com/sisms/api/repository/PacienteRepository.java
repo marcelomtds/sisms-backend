@@ -41,7 +41,15 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 
     Paciente findByCpf(final String cpf);
 
-    @Query("SELECT p FROM Paciente as p WHERE FUNCTION ('DATE_PART', 'MONTH', p.dataNascimento) = FUNCTION ('DATE_PART', 'MONTH', CURRENT_DATE) ORDER BY p.dataNascimento ASC")
+    @Query("SELECT p FROM Paciente AS p " +
+            "WHERE p.ativo = TRUE " +
+            "AND FUNCTION ('DATE_PART', 'MONTH', p.dataNascimento) = FUNCTION ('DATE_PART', 'MONTH', CURRENT_DATE) " +
+            "ORDER BY p.dataNascimento ASC")
     List<Paciente> findAllBirthdaysMonth();
 
+    @Query("SELECT p FROM Paciente AS p " +
+            "WHERE p.id NOT IN (SELECT r.paciente.id FROM Reserva AS r) " +
+            "AND p.id NOT IN (SELECT a.paciente.id FROM Agenda AS a) " +
+            "ORDER BY p.nomeCompleto ASC")
+    List<Paciente> findAllWithoutBondWithReservation();
 }
