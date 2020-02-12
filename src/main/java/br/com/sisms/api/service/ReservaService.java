@@ -5,15 +5,18 @@ import br.com.sisms.api.exception.ResourceNotFoundException;
 import br.com.sisms.api.model.dto.ReservaDTO;
 import br.com.sisms.api.model.entity.Reserva;
 import br.com.sisms.api.model.enums.MessageEnum;
+import br.com.sisms.api.model.filter.PageableFilter;
 import br.com.sisms.api.model.mapper.ReservaMapper;
 import br.com.sisms.api.repository.ReservaRepository;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 
-import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -45,8 +48,14 @@ public class ReservaService {
     }
 
     @Transactional(readOnly = true)
-    public List<ReservaDTO> findAll() {
-        return mapper.toDTO(repository.findAll(Sort.by(Sort.Direction.ASC, "paciente.nomeCompleto")));
+    public Page<ReservaDTO> findByFilter(final PageableFilter pageableFilter) {
+        pageableFilter.setOrderBy(StringUtils.isBlank(pageableFilter.getOrderBy()) ? "id" : pageableFilter.getOrderBy());
+        Pageable pageable = PageRequest.of(
+                pageableFilter.getCurrentPage(),
+                pageableFilter.getPageSize(),
+                Sort.Direction.valueOf(pageableFilter.getDirection()),
+                pageableFilter.getOrderBy());
+        return repository.findAll(pageable).map(mapper::toDTO);
     }
 
     public void delete(final Long id) {

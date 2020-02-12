@@ -2,11 +2,13 @@ package br.com.sisms.api.controller;
 
 import br.com.sisms.api.model.dto.ReservaDTO;
 import br.com.sisms.api.model.enums.MessageEnum;
+import br.com.sisms.api.model.filter.PageableFilter;
 import br.com.sisms.api.response.Response;
 import br.com.sisms.api.service.ReservaService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -44,11 +46,11 @@ public class ReservaController {
         return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, dto), MessageEnum.MSG0028.toString()));
     }
 
-    @ApiOperation(value = "Retorna uma lista com todas reservas.")
-    @GetMapping
+    @ApiOperation(value = "Retorna uma lista paginada de reservas por filtros.")
+    @PostMapping(path = "/findByFilter")
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
-    public ResponseEntity<Response<List<ReservaDTO>>> findAll() {
-        return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.MSG0028.toString()));
+    public ResponseEntity<Response<Page<ReservaDTO>>> findByFilter(@RequestBody final PageableFilter pageableFilter) {
+        return ResponseEntity.ok().body(new Response(service.findByFilter(pageableFilter), MessageEnum.MSG0028.toString()));
     }
 
     @ApiOperation(value = "Retorna uma reserva por id.")
