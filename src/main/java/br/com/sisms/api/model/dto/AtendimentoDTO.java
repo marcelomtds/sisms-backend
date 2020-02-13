@@ -25,6 +25,10 @@ public class AtendimentoDTO implements Serializable {
 
     private Long pacoteNumero;
 
+    private BigDecimal pacoteValor;
+
+    private BigDecimal pacoteTotalPago;
+
     private Long usuarioId;
 
     private String usuarioNomeCompleto;

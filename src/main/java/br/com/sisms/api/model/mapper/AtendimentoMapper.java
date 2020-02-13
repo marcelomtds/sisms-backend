@@ -14,6 +14,8 @@ public interface AtendimentoMapper extends BaseMapper<Atendimento, AtendimentoDT
 
     @Mapping(target = "pacoteId", source = "pacote.id")
     @Mapping(target = "pacoteNumero", source = "pacote.numero")
+    @Mapping(target = "pacoteValor", source = "pacote.valor")
+    @Mapping(target = "pacoteTotalPago", source = "pacote.totalPago")
     @Mapping(target = "usuarioId", source = "usuario.id")
     @Mapping(target = "usuarioNomeCompleto", source = "usuario.nomeCompleto")
     @Mapping(target = "pacienteId", source = "paciente.id")
@@ -44,6 +46,8 @@ public interface AtendimentoMapper extends BaseMapper<Atendimento, AtendimentoDT
 
     @Mapping(source = "pacoteId", target = "pacote.id")
     @Mapping(source = "pacoteNumero", target = "pacote.numero")
+    @Mapping(source = "pacoteValor", target = "pacote.valor")
+    @Mapping(source = "pacoteTotalPago", target = "pacote.totalPago")
     @Mapping(source = "usuarioId", target = "usuario.id")
     @Mapping(source = "usuarioNomeCompleto", target = "usuario.nomeCompleto")
     @Mapping(source = "pacienteId", target = "paciente.id")

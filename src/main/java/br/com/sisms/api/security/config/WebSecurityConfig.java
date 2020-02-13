@@ -66,6 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js"
                 ).permitAll()
                 .antMatchers(
+                        "/actuator/shutdown/**",
                         "/api/auth/**",
                         "/swagger-resources/**",
                         "/swagger-ui.html**",
