@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
+
 @Service
 @Transactional
 @AllArgsConstructor
@@ -33,12 +34,12 @@ public class AutenticacaoService {
 
     public CurrentAuthenticationDTO createAuthenticationToken(final AutenticacaoDTO autenticacaoDTO) {
         final Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(autenticacaoDTO.getCpf(), autenticacaoDTO.getSenha()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(autenticacaoDTO.getCpf());
         final UsuarioDTO usuarioDTO = usuarioService.findByCpfAndAtivoIsTrue(autenticacaoDTO.getCpf());
         if (Objects.isNull(usuarioDTO)) {
             throw new BusinessException(MessageEnum.MSG0029.toString());
         }
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(autenticacaoDTO.getCpf());
         final String token = jwtTokenUtil.generateToken(userDetails);
         usuarioDTO.setSenha(null);
         return new CurrentAuthenticationDTO(token, usuarioDTO);
