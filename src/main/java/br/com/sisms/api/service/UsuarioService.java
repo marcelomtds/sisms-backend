@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -110,12 +111,7 @@ public class UsuarioService {
 
     @Transactional(readOnly = true)
     public List<UsuarioDTO> findAll() {
-        return mapper.toDTO(repository.findAll(Sort.by(Sort.Direction.ASC, "nomeCompleto")));
-    }
-
-    @Transactional(readOnly = true)
-    public List<UsuarioDTO> findAllActive() {
-        return mapper.toDTO(repository.findAllByAtivoIsTrueOrderByNomeCompletoAsc());
+        return mapper.toDTO(repository.findAll());
     }
 
     public UsuarioDTO activeOrInative(final Long id) {

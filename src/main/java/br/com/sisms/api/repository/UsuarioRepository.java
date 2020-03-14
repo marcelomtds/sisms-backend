@@ -42,9 +42,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Usuario findByCpfAndAtivoIsTrue(final String cpf);
 
-    List<Usuario> findAllByAtivoIsTrueOrderByNomeCompletoAsc();
+    @Query("SELECT new br.com.sisms.api.model.entity.Usuario(u.id, u.nomeCompleto, u.cpf, u.dataNascimento) FROM Usuario u ORDER BY u.nomeCompleto ASC")
+    List<Usuario> findAll();
 
-    @Query("SELECT u FROM Usuario as u WHERE FUNCTION ('DATE_PART', 'MONTH', u.dataNascimento) = FUNCTION ('DATE_PART', 'MONTH', CURRENT_DATE) ORDER BY u.dataNascimento ASC")
+    @Query("SELECT new br.com.sisms.api.model.entity.Usuario(u.id, u.nomeCompleto, u.cpf, u.dataNascimento) FROM Usuario as u "
+            + "WHERE FUNCTION ('DATE_PART', 'MONTH', u.dataNascimento) = FUNCTION ('DATE_PART', 'MONTH', CURRENT_DATE) "
+            + "ORDER BY u.dataNascimento ASC")
     List<Usuario> findAllBirthdaysMonth();
 
 }

@@ -76,13 +76,6 @@ public class UsuarioController {
         return ResponseEntity.ok().body(new Response(service.findAll(), MessageEnum.MSG0028.toString()));
     }
 
-    @ApiOperation(value = "Retorna uma lista com todos usuários ativos.")
-    @GetMapping(path = "/findAllActive")
-    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString())")
-    public ResponseEntity<Response<List<UsuarioDTO>>> findAllActive() {
-        return ResponseEntity.ok().body(new Response(service.findAllActive(), MessageEnum.MSG0028.toString()));
-    }
-
     @ApiOperation(value = "Retorna uma lista com todos usuários que fazem aniversário no mes atual.")
     @GetMapping(path = "/findAllBirthdaysMonth")
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")

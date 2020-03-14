@@ -25,6 +25,13 @@ public class Usuario implements Serializable {
         this.ativo = ativo;
     }
 
+    public Usuario(final Long id, final String nomeCompleto, final String cpf, final LocalDate dataNascimento) {
+        this.id = id;
+        this.nomeCompleto = nomeCompleto;
+        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
+    }
+
     @Id
     @SequenceGenerator(name = "usuario_generator", sequenceName = "usuario_id_seq", allocationSize = 1, initialValue = 2)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuario_generator")
