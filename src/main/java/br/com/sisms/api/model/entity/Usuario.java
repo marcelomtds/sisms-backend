@@ -40,10 +40,10 @@ public class Usuario implements Serializable {
     @Column(nullable = false, length = 10485760)
     private String senha;
 
-    @Column(length = 200, nullable = false)
+    @Column(length = 200)
     private String nomeCompleto;
 
-    @Column(name = "data_nascimento", nullable = false)
+    @Column(name = "data_nascimento")
     private LocalDate dataNascimento;
 
     @Column(name = "data_cadastro", columnDefinition = "date default current_date", nullable = false, insertable = false, updatable = false)
@@ -58,15 +58,16 @@ public class Usuario implements Serializable {
     @Column(columnDefinition = "boolean default true", nullable = false, insertable = false)
     private Boolean ativo;
 
+
     @Column(length = 10485760)
     private String imagem;
 
     @ManyToOne
-    @JoinColumn(name = "id_sexo", nullable = false)
+    @JoinColumn(name = "id_sexo")
     private Sexo sexo;
 
     @ManyToOne
-    @JoinColumn(name = "id_profissao", nullable = false)
+    @JoinColumn(name = "id_profissao")
     private Profissao profissao;
 
     @ManyToOne
@@ -74,11 +75,14 @@ public class Usuario implements Serializable {
     private Perfil perfil;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_endereco", nullable = false)
+    @JoinColumn(name = "id_endereco")
     private Endereco endereco;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_contato", nullable = false)
+    @JoinColumn(name = "id_contato")
     private Contato contato;
+
+    @Column(name = "cadastro_completo", columnDefinition = "boolean default false", nullable = false, insertable = false)
+    private Boolean cadastroCompleto;
 
 }

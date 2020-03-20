@@ -36,25 +36,12 @@ INSERT INTO uf (id, descricao) VALUES (1, 'São Paulo');
 INSERT INTO localidade (id, descricao, id_uf) VALUES (1, 'Trabiju', 1);
 
 INSERT INTO endereco (id, bairro, cep, complemento, logradouro, numero, ponto_referencia, id_localidade)
-VALUES (1, 'Centro', '14935000', '', 'Rua Manoel Rodrigues Fonseca', '81', 'Casa de esquina', 1);
-INSERT INTO endereco (id, bairro, cep, complemento, logradouro, numero, ponto_referencia, id_localidade)
-VALUES (2, 'Centro', '14935000', '', 'Rua Manoel Rodrigues Fonseca', '81', 'Casa de esquina', 1);
-INSERT INTO endereco (id, bairro, cep, complemento, logradouro, numero, ponto_referencia, id_localidade)
-VALUES (3, 'Centro', '14935000', '', 'Rua Manoel Rodrigues Fonseca', '81', 'Casa de esquina', 1);
+VALUES (1, 'Centro', '14935000', 'Casa A', 'Rua Manoel Rodrigues Fonseca', '81', 'Casa de Esquina', 1);
 
-INSERT INTO contato (id, celular, celular_recado, comercial, email, residencial)
-VALUES (1, '16997314845', '16997425677', '', 'marcelo.souza.81@hotmail.com', '');
-INSERT INTO contato (id, celular, celular_recado, comercial, email, residencial)
-VALUES (2, '16997314845', '16997425677', '', 'marcelo.souza.81@hotmail.com', '');
-INSERT INTO contato (id, celular, celular_recado, comercial, email, residencial)
-VALUES (3, '16997314845', '16997425677', '', 'marcelo.souza.81@hotmail.com', '');
+INSERT INTO contato (id, celular, celular_recado, comercial, residencial, email)
+VALUES (1, '16997314845', '16997425677', '11111111111', '22222222222', 'marcelo.souza.81@hotmail.com');
 
 INSERT INTO profissao (id, descricao) VALUES (1, 'Programador');
 
-INSERT INTO usuario (id, ativo, cpf, data_nascimento, data_cadastro, imagem, nome_completo, rg, senha, id_contato, id_endereco, id_perfil, id_profissao, id_sexo)
-VALUES (1, true, '36986634811', '1991-04-04', current_date, '', 'Administrador', '47851301X', '$2a$10$cYLM.qoXpeAzcZhJ3oXRLu9Slkb61LHyWW5qJ4QKvHEMhaxZ5qCPi', 1, 1, 1, 1, 1);
-INSERT INTO usuario (id, ativo, cpf, data_nascimento, data_cadastro, imagem, nome_completo, rg, senha, id_contato, id_endereco, id_perfil, id_profissao, id_sexo)
-VALUES (2, true, '32542626898', '1991-04-04', current_date, '', 'Usuário', '47851301X', '$2a$10$cYLM.qoXpeAzcZhJ3oXRLu9Slkb61LHyWW5qJ4QKvHEMhaxZ5qCPi', 1, 1, 2, 1, 1);
-
-INSERT INTO paciente (id, ativo, cpf, data_nascimento, nome_completo, rg, id_contato, id_endereco, id_profissao, id_sexo)
-VALUES (1, true, '36986634811', '1991-04-04', 'Osvaldo', '47851301X', 3, 3, 1, 1);
+INSERT INTO usuario (id, ativo, cpf, data_nascimento, data_cadastro, imagem, nome_completo, rg, senha, id_contato, id_endereco, id_perfil, id_profissao, id_sexo, cadastro_completo)
+VALUES (1, true, '36986634811', '1991-04-04', current_date, null, 'Marcelo Tadeu de Souza', '47851301X', '$2a$10$cYLM.qoXpeAzcZhJ3oXRLu9Slkb61LHyWW5qJ4QKvHEMhaxZ5qCPi', 1, 1, 1, 1, 1, true);

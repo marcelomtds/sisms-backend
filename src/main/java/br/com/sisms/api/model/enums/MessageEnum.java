@@ -52,7 +52,9 @@ public enum MessageEnum {
     MSG0065("Essa categoria de exame já existe na base de dados."),
     MSG0066("Exame não encontrado."),
     MSG0074("Reserva não encontrada."),
-    MSG0075("Esse paciente já está cadastrado na reserva.");
+    MSG0075("Esse paciente já está cadastrado na reserva."),
+    MSG0076("As senhas não coincidem."),
+    MSG0077("CPF inválido.");
 
     private final String codigo;
 

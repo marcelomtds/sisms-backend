@@ -113,4 +113,6 @@ public class UsuarioDTO implements Serializable {
     @Size(max = 100, message = "{email.tamanho}")
     private String contatoEmail;
 
+    private Boolean cadastroCompleto;
+
 }

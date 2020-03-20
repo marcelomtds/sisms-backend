@@ -2,8 +2,10 @@ package br.com.sisms.api.service;
 
 import br.com.sisms.api.exception.BusinessException;
 import br.com.sisms.api.exception.ResourceNotFoundException;
+import br.com.sisms.api.model.dto.PreCadastroUsuarioDTO;
 import br.com.sisms.api.model.dto.SenhaDTO;
 import br.com.sisms.api.model.dto.UsuarioDTO;
+import br.com.sisms.api.model.entity.Perfil;
 import br.com.sisms.api.model.entity.Usuario;
 import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.model.enums.PerfilEnum;
@@ -30,7 +32,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -51,6 +52,33 @@ public class UsuarioService {
         this.profissaoService = profissaoService;
         this.sexoService = sexoService;
         this.localidadeService = localidadeService;
+    }
+
+    public UsuarioDTO create(final PreCadastroUsuarioDTO dto) {
+        validateEqualsPasswords(dto.getSenha(), dto.getSenhaConfirmacao());
+        validateDuplicityByCpf(dto.getCpf());
+        Usuario usuario = new Usuario();
+        usuario.setCpf(dto.getCpf());
+        usuario.setSenha(passwordEncoder.encode(dto.getSenha()));
+        usuario.setPerfil(createPerfil(PerfilEnum.USUARIO.getPerfil()));
+        return mapper.toDTO(repository.save(usuario));
+    }
+
+    public UsuarioDTO update(final Long id, final UsuarioDTO dtoSource) {
+        validateResources(dtoSource);
+        checkDate(dtoSource.getDataNascimento());
+        validateContato(dtoSource);
+        UsuarioDTO dtoTarget = findById(id);
+        checkUserPermissionUpdate(dtoTarget);
+        BeanUtils.copyProperties(dtoSource, dtoTarget, "id", "cpf", "ativo", "senha", "senhaConfirmacao", "contatoId", "enderecoId", "perfilId", "dataCadastro", "cadastroCompleto");
+        dtoTarget.setCadastroCompleto(Boolean.TRUE);
+        return mapper.toDTO(repository.save( mapper.toEntity(dtoTarget)));
+    }
+
+    public UsuarioDTO completeRegistration(final Long id, final UsuarioDTO dto) {
+        validateRequiredPasswords(dto.getSenha(), dto.getSenhaConfirmacao());
+        validateEqualsPasswords(dto.getSenha(), dto.getSenhaConfirmacao());
+        return update(id, dto);
     }
 
     @Transactional(readOnly = true)
@@ -124,33 +152,13 @@ public class UsuarioService {
     }
 
     public UsuarioDTO updatePassword(final SenhaDTO dto) {
-        validateRequiredPasswords(dto.getNovaSenha(), dto.getNovaSenhaConfirmacao());
+        validateEqualsPasswords(dto.getNovaSenha(), dto.getNovaSenhaConfirmacao());
         UsuarioDTO sessionUserDTO = mapper.toDTO(getCurrentSessionUser());
         if (!passwordEncoder.matches(dto.getSenhaAtual(), sessionUserDTO.getSenha())) {
             throw new BusinessException(MessageEnum.MSG0005.toString());
         }
         sessionUserDTO.setSenha(passwordEncoder.encode(dto.getNovaSenha()));
         return mapper.toDTO(repository.save(mapper.toEntity(sessionUserDTO)));
-    }
-
-    public UsuarioDTO createOrUpdate(final Long id, final UsuarioDTO dtoSource) {
-        validateResources(dtoSource);
-        checkDate(dtoSource.getDataNascimento());
-        validateTelefoneContato(dtoSource);
-        Usuario entity;
-        if (Objects.nonNull(id)) {
-            UsuarioDTO dtoTarget = findById(id);
-            checkUserPermissionUpdate(dtoTarget);
-            BeanUtils.copyProperties(dtoSource, dtoTarget, "id", "cpf", "ativo", "senha", "senhaConfirmacao", "contatoId", "enderecoId", "perfilId", "dataCadastro");
-            entity = mapper.toEntity(dtoTarget);
-        } else {
-            validateRequiredPasswords(dtoSource.getSenha(), dtoSource.getSenhaConfirmacao());
-            dtoSource.setPerfilId(PerfilEnum.USUARIO.getPerfil());
-            dtoSource.setSenha(passwordEncoder.encode(dtoSource.getSenha()));
-            entity = mapper.toEntity(dtoSource);
-        }
-        validateDuplicityByCpf(entity);
-        return mapper.toDTO(repository.save(entity));
     }
 
     private void checkUserPermission(final UsuarioDTO usuarioDTO) {
@@ -167,17 +175,22 @@ public class UsuarioService {
         }
     }
 
-    private void validateTelefoneContato(final UsuarioDTO dto) {
+    private void validateContato(final UsuarioDTO dto) {
         if (StringUtils.isBlank(dto.getContatoCelular()) && StringUtils.isBlank(dto.getContatoCelularRecado())
                 && StringUtils.isBlank(dto.getContatoResidencial()) && StringUtils.isBlank(dto.getContatoComercial())) {
             throw new BusinessException(MessageEnum.MSG0007.toString());
         }
     }
 
-    private void validateDuplicityByCpf(final Usuario entity) {
-        final UsuarioDTO dto = mapper.toDTO(repository.findByCpf(entity.getCpf()));
-        if (Objects.nonNull(dto) && !dto.getId().equals(entity.getId())) {
-            throw new BusinessException(MessageEnum.MSG0006.toString());
+    private Perfil createPerfil(final Long id) {
+        Perfil perfil = new Perfil();
+        perfil.setId(id);
+        return perfil;
+    }
+
+    private void validateEqualsPasswords(final String senha, final String senhaConfirmacao) {
+        if (!senha.equals(senhaConfirmacao)) {
+            throw new BusinessException(MessageEnum.MSG0076.toString());
         }
     }
 
@@ -188,8 +201,11 @@ public class UsuarioService {
         if (StringUtils.isBlank(senhaConfirmacao)) {
             throw new BusinessException(MessageEnum.MSG0002.toString());
         }
-        if (!senha.equals(senhaConfirmacao)) {
-            throw new BusinessException(MessageEnum.MSG0003.toString());
+    }
+
+    private void validateDuplicityByCpf(final String cpf) {
+        if (Objects.nonNull(repository.findByCpf(cpf))) {
+            throw new BusinessException(MessageEnum.MSG0006.toString());
         }
     }
 

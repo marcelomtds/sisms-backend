@@ -1,5 +1,6 @@
 package br.com.sisms.api.controller;
 
+import br.com.sisms.api.model.dto.PreCadastroUsuarioDTO;
 import br.com.sisms.api.model.dto.SenhaDTO;
 import br.com.sisms.api.model.dto.UsuarioDTO;
 import br.com.sisms.api.model.enums.MessageEnum;
@@ -48,25 +49,32 @@ public class UsuarioController {
         return ResponseEntity.ok().body(new Response(service.activeOrInative(id), MessageEnum.MSG0028.toString()));
     }
 
-    @ApiOperation(value = "Inclui um usuário.")
+    @ApiOperation(value = "Inclui um usuário (pré-cadastro).")
     @PostMapping
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString())")
-    public ResponseEntity<Response<UsuarioDTO>> create(@Valid @RequestBody final UsuarioDTO dto) {
-        return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, dto), MessageEnum.MSG0028.toString()));
+    public ResponseEntity<Response<UsuarioDTO>> create(@Valid @RequestBody final PreCadastroUsuarioDTO dto) {
+        return ResponseEntity.ok().body(new Response(service.create(dto), MessageEnum.MSG0028.toString()));
     }
 
     @ApiOperation(value = "Altera um usuário.")
     @PutMapping(path = "/{id}")
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<UsuarioDTO>> update(@PathVariable final Long id, @Valid @RequestBody final UsuarioDTO dto) {
-        return ResponseEntity.ok().body(new Response(service.createOrUpdate(id, dto), MessageEnum.MSG0028.toString()));
+        return ResponseEntity.ok().body(new Response(service.update(id, dto), MessageEnum.MSG0028.toString()));
     }
 
     @ApiOperation(value = "Altera a senha do usuário.")
     @PutMapping(path = "/updatePassword")
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
-    public ResponseEntity<Response<UsuarioDTO>> updatePassword(@Valid @RequestBody final SenhaDTO request) {
-        return ResponseEntity.ok().body(new Response(service.updatePassword(request), MessageEnum.MSG0028.toString()));
+    public ResponseEntity<Response<UsuarioDTO>> updatePassword(@Valid @RequestBody final SenhaDTO dto) {
+        return ResponseEntity.ok().body(new Response(service.updatePassword(dto), MessageEnum.MSG0028.toString()));
+    }
+
+    @ApiOperation(value = "Completa o cadastro do usuário.")
+    @PutMapping(path = "/completeRegistration/{id}")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
+    public ResponseEntity<Response<UsuarioDTO>> completeRegistration(@PathVariable final Long id, @Valid @RequestBody final UsuarioDTO dto) {
+        return ResponseEntity.ok().body(new Response(service.completeRegistration(id, dto), MessageEnum.MSG0028.toString()));
     }
 
     @ApiOperation(value = "Retorna uma lista com todos usuários.")
