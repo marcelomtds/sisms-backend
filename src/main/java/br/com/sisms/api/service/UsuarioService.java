@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -57,7 +58,7 @@ public class UsuarioService {
     public UsuarioDTO create(final PreCadastroUsuarioDTO dto) {
         validateEqualsPasswords(dto.getSenha(), dto.getSenhaConfirmacao());
         validateDuplicityByCpf(dto.getCpf());
-        Usuario usuario = new Usuario();
+        final Usuario usuario = new Usuario();
         usuario.setCpf(dto.getCpf());
         usuario.setSenha(passwordEncoder.encode(dto.getSenha()));
         usuario.setPerfil(createPerfil(PerfilEnum.USUARIO.getPerfil()));
@@ -68,11 +69,13 @@ public class UsuarioService {
         validateResources(dtoSource);
         checkDate(dtoSource.getDataNascimento());
         validateContato(dtoSource);
-        UsuarioDTO dtoTarget = findById(id);
+        Optional<Usuario> entity = Optional.ofNullable(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(MessageEnum.MSG0043.toString())));
+        final UsuarioDTO dtoTarget = mapper.toDTO(entity.get());
         checkUserPermissionUpdate(dtoTarget);
         BeanUtils.copyProperties(dtoSource, dtoTarget, "id", "cpf", "ativo", "senha", "senhaConfirmacao", "contatoId", "enderecoId", "perfilId", "dataCadastro", "cadastroCompleto");
         dtoTarget.setCadastroCompleto(Boolean.TRUE);
-        return mapper.toDTO(repository.save( mapper.toEntity(dtoTarget)));
+        dtoTarget.setSenha(entity.get().getSenha());
+        return mapper.toDTO(repository.save(mapper.toEntity(dtoTarget)));
     }
 
     public UsuarioDTO completeRegistration(final Long id, final UsuarioDTO dto) {
@@ -82,8 +85,12 @@ public class UsuarioService {
     }
 
     @Transactional(readOnly = true)
-    public UsuarioDTO findByCpf(final String cpf) {
-        return mapper.toDTO(repository.findByCpf(cpf));
+    public Usuario authenticationByCpf(final String cpf) {
+        final Usuario usuario = repository.findByCpf(cpf);
+        if (Objects.isNull(usuario)) {
+            throw new BusinessException(MessageEnum.MSG0046.toString());
+        }
+        return usuario;
     }
 
     @Transactional(readOnly = true)
@@ -103,7 +110,7 @@ public class UsuarioService {
 
     @Transactional(readOnly = true)
     public UsuarioDTO findByIdWithPermission(final Long id) {
-        UsuarioDTO dto = findById(id);
+        final UsuarioDTO dto = findById(id);
         checkUserPermission(dto);
         return dto;
     }
@@ -111,7 +118,7 @@ public class UsuarioService {
     @Transactional(readOnly = true)
     public Page<UsuarioDTO> findByFilter(final PageableFilter<PacienteUsuarioFilter> filter) {
         filter.setOrderBy(StringUtils.isBlank(filter.getOrderBy()) ? "id" : filter.getOrderBy());
-        Pageable pageable = PageRequest.of(
+        final Pageable pageable = PageRequest.of(
                 filter.getCurrentPage(),
                 filter.getPageSize(),
                 Sort.Direction.valueOf(filter.getDirection()),
@@ -133,7 +140,7 @@ public class UsuarioService {
 
     @Transactional(readOnly = true)
     public Usuario getCurrentSessionUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return repository.findByCpf(authentication.getName());
     }
 
@@ -143,7 +150,7 @@ public class UsuarioService {
     }
 
     public UsuarioDTO activeOrInative(final Long id) {
-        UsuarioDTO dto = findById(id);
+        final UsuarioDTO dto = findById(id);
         if (getCurrentSessionUser().getId().equals(dto.getId())) {
             throw new BusinessException(MessageEnum.MSG0058.toString());
         }
@@ -153,23 +160,23 @@ public class UsuarioService {
 
     public UsuarioDTO updatePassword(final SenhaDTO dto) {
         validateEqualsPasswords(dto.getNovaSenha(), dto.getNovaSenhaConfirmacao());
-        UsuarioDTO sessionUserDTO = mapper.toDTO(getCurrentSessionUser());
-        if (!passwordEncoder.matches(dto.getSenhaAtual(), sessionUserDTO.getSenha())) {
+        final Usuario sessionUser = getCurrentSessionUser();
+        if (!passwordEncoder.matches(dto.getSenhaAtual(), sessionUser.getSenha())) {
             throw new BusinessException(MessageEnum.MSG0005.toString());
         }
-        sessionUserDTO.setSenha(passwordEncoder.encode(dto.getNovaSenha()));
-        return mapper.toDTO(repository.save(mapper.toEntity(sessionUserDTO)));
+        sessionUser.setSenha(passwordEncoder.encode(dto.getNovaSenha()));
+        return mapper.toDTO(repository.save(sessionUser));
     }
 
     private void checkUserPermission(final UsuarioDTO usuarioDTO) {
-        Usuario usuario = getCurrentSessionUser();
+        final Usuario usuario = getCurrentSessionUser();
         if (!usuarioDTO.getId().equals(usuario.getId()) && usuario.getPerfil().getId().equals(PerfilEnum.USUARIO.getPerfil())) {
             throw new AccessDeniedException(MessageEnum.MSG0036.toString());
         }
     }
 
     private void checkUserPermissionUpdate(final UsuarioDTO usuarioDTO) {
-        Usuario usuario = getCurrentSessionUser();
+        final Usuario usuario = getCurrentSessionUser();
         if (!usuarioDTO.getId().equals(usuario.getId())) {
             throw new AccessDeniedException(MessageEnum.MSG0036.toString());
         }
@@ -183,7 +190,7 @@ public class UsuarioService {
     }
 
     private Perfil createPerfil(final Long id) {
-        Perfil perfil = new Perfil();
+        final Perfil perfil = new Perfil();
         perfil.setId(id);
         return perfil;
     }

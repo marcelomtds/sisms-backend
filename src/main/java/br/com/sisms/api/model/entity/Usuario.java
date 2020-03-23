@@ -58,7 +58,6 @@ public class Usuario implements Serializable {
     @Column(columnDefinition = "boolean default true", nullable = false, insertable = false)
     private Boolean ativo;
 
-
     @Column(length = 10485760)
     private String imagem;
 

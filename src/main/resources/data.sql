@@ -39,7 +39,7 @@ INSERT INTO endereco (id, bairro, cep, complemento, logradouro, numero, ponto_re
 VALUES (1, 'Centro', '14935000', 'Casa A', 'Rua Manoel Rodrigues Fonseca', '81', 'Casa de Esquina', 1);
 
 INSERT INTO contato (id, celular, celular_recado, comercial, residencial, email)
-VALUES (1, '16997314845', '16997425677', '11111111111', '22222222222', 'marcelo.souza.81@hotmail.com');
+VALUES (1, '16997314845', '16997425677', '1111111111', '2222222222', 'marcelo.souza.81@hotmail.com');
 
 INSERT INTO profissao (id, descricao) VALUES (1, 'Programador');
 

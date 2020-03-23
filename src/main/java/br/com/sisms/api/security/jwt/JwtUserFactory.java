@@ -1,6 +1,6 @@
 package br.com.sisms.api.security.jwt;
 
-import br.com.sisms.api.model.dto.UsuarioDTO;
+import br.com.sisms.api.model.entity.Usuario;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -13,9 +13,9 @@ public class JwtUserFactory {
 
     }
 
-    public static JwtUser create(final UsuarioDTO dto) {
-        return new JwtUser(dto.getId(), dto.getCpf(), dto.getSenha(),
-                mapToGranteAuthorities(dto.getPerfilRole()));
+    public static JwtUser create(final Usuario usuario) {
+        return new JwtUser(usuario.getId(), usuario.getCpf(), usuario.getSenha(),
+                mapToGranteAuthorities(usuario.getPerfil().getRole()));
     }
 
     private static List<GrantedAuthority> mapToGranteAuthorities(final String role) {

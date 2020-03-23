@@ -41,7 +41,6 @@ public class AutenticacaoService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final UserDetails userDetails = userDetailsService.loadUserByUsername(autenticacaoDTO.getCpf());
         final String token = jwtTokenUtil.generateToken(userDetails);
-        usuarioDTO.setSenha(null);
         return new CurrentAuthenticationDTO(token, usuarioDTO);
     }
 

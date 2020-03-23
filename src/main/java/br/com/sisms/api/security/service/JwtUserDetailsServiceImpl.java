@@ -16,7 +16,7 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(final String cpf) throws UsernameNotFoundException {
-        return JwtUserFactory.create(usuarioService.findByCpf(cpf));
+        return JwtUserFactory.create(usuarioService.authenticationByCpf(cpf));
     }
 
 }

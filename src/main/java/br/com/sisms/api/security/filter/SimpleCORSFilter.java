@@ -24,7 +24,7 @@ public class SimpleCORSFilter implements Filter {
 	private final Log logger = LogFactory.getLog(this.getClass());
 
 	@Override
-	public void init(FilterConfig fc) throws ServletException {
+	public void init(FilterConfig fc) {
 		logger.info("SisMs-API | SimpleCORSFilter loaded");
 	}
 

@@ -32,6 +32,7 @@ public interface UsuarioMapper extends BaseMapper<Usuario, UsuarioDTO> {
     @Mapping(target = "contatoResidencial", source = "contato.residencial")
     @Mapping(target = "contatoComercial", source = "contato.comercial")
     @Mapping(target = "contatoEmail", source = "contato.email")
+    @Mapping(target = "senha", ignore = true)
     UsuarioDTO toDTO(Usuario entity);
 
     @Mapping(source = "sexoId", target = "sexo.id")
