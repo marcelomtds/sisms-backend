@@ -35,6 +35,13 @@ INSERT INTO uf (id, descricao) VALUES (1, 'São Paulo');
 
 INSERT INTO localidade (id, descricao, id_uf) VALUES (1, 'Trabiju', 1);
 
+INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (1, 'Agenda', 'fa fa-calendar', '', null);
+INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (2, 'Gerenciar', 'fa fa-pencil', '/agenda/gerenciar', 1);
+
+INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (3, 'Reserva', 'fa fa-hourglass-2', '', null);
+INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (4, 'Buscar', 'fa fa-search', '/reserva', 3);
+INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (5, 'Cadastrar', 'fa fa-plus', '/reserva/incluir', 3);
+
 INSERT INTO endereco (id, bairro, cep, complemento, logradouro, numero, ponto_referencia, id_localidade)
 VALUES (1, 'Centro', '14935000', 'Casa A', 'Rua Manoel Rodrigues Fonseca', '81', 'Casa de Esquina', 1);
 
