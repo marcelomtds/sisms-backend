@@ -21,8 +21,6 @@ public class MenuDTO implements Serializable {
 
     private String rota;
 
-    private Boolean exibir;
-
     private Menu pai;
 
     private List<Menu> submenus;
