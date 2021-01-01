@@ -33,7 +33,7 @@ public class Menu implements Serializable {
     @Column(length = 100, nullable = false)
     private String icone;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 100)
     private String rota;
 
     @ManyToOne
