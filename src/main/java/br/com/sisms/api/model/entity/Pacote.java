@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -43,6 +44,9 @@ public class Pacote implements Serializable {
     @Column(nullable = false)
     private Long numero;
 
+    @Column(name = "quantidade_sessao")
+    private Long quantidadeSessao;
+
     @Column(nullable = false, columnDefinition = "boolean default true", insertable = false)
     private Boolean aberto;
 
@@ -51,5 +55,13 @@ public class Pacote implements Serializable {
 
     @Formula("(select sum(l.valor) from lancamento as l where l.id_pacote = id)")
     private BigDecimal totalPago;
+
+    @Formula("(select pa.data " +
+            "from atendimento as a " +
+            "inner join pre_atendimento as pa on pa.id = a.id_pre_atendimento " +
+            "where a.id_pacote = id " +
+            "order by pa.data asc " +
+            "limit 1)")
+    private LocalDateTime dataInicio;
 
 }

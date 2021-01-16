@@ -23,6 +23,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -44,6 +45,9 @@ public class PacoteService {
             PacoteDTO dto = findByIdWithPermission(id);
             checkUpdate(dto.getAberto());
             dto.setValor(dtoSource.getValor());
+            dto.setQuantidadeSessao(dtoSource.getQuantidadeSessao());
+            checkPackageValue(dto);
+            checkPackageLimit(dto);
             entity = mapper.toEntity(dto);
         } else {
             entity = mapper.toEntity(dtoSource);
@@ -138,6 +142,18 @@ public class PacoteService {
     private void checkUpdate(final Boolean aberto) {
         if (BooleanUtils.isFalse(aberto)) {
             throw new BusinessException(MessageEnum.MSG0038.toString());
+        }
+    }
+
+    private void checkPackageLimit(final PacoteDTO pacoteDTO) {
+        if (Objects.nonNull(pacoteDTO.getQuantidadeSessao()) && pacoteDTO.getQuantidadeSessao() < pacoteDTO.getQuantidadeAtendimentos()) {
+            throw new BusinessException(MessageEnum.MSG0079.toString());
+        }
+    }
+
+    private void checkPackageValue(final PacoteDTO pacoteDTO) {
+        if (Objects.nonNull(pacoteDTO.getTotalPago()) && pacoteDTO.getValor().compareTo(pacoteDTO.getTotalPago()) == -1) {
+            throw new BusinessException(MessageEnum.MSG0081.messageWithParameters(NumberFormat.getCurrencyInstance().format(pacoteDTO.getTotalPago())));
         }
     }
 

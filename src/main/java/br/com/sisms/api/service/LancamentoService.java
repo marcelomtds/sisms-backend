@@ -4,7 +4,9 @@ import br.com.sisms.api.exception.BusinessException;
 import br.com.sisms.api.exception.ResourceNotFoundException;
 import br.com.sisms.api.model.dto.LancamentoDTO;
 import br.com.sisms.api.model.dto.LancamentoTotalDTO;
+import br.com.sisms.api.model.dto.PacoteDTO;
 import br.com.sisms.api.model.entity.Lancamento;
+import br.com.sisms.api.model.entity.Pacote;
 import br.com.sisms.api.model.entity.Usuario;
 import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.model.enums.PerfilEnum;
@@ -45,6 +47,7 @@ public class LancamentoService {
 
     public LancamentoDTO createOrUpdate(final Long id, final LancamentoDTO dtoSource) {
         validateResources(dtoSource);
+        checkPackageValue(dtoSource);
         Lancamento entity;
         if (Objects.nonNull(id)) {
             LancamentoDTO dtoTarget = findByIdWithPermission(id);
@@ -159,6 +162,21 @@ public class LancamentoService {
             categoriaLancamentoService.findById(dto.getCategoriaLancamentoId());
         }
         formaPagamentoService.findById(dto.getFormaPagamentoId());
+    }
+
+    private void checkPackageValue(final LancamentoDTO lancamentoDTO) {
+        if (Objects.nonNull(lancamentoDTO.getPacoteId())) {
+            final PacoteDTO pacoteDTO = pacoteService.findById(lancamentoDTO.getPacoteId());
+            BigDecimal totalPago = Objects.isNull(pacoteDTO.getTotalPago()) ? BigDecimal.valueOf(0) : pacoteDTO.getTotalPago();
+            BigDecimal valorAnterior;
+            if (Objects.nonNull(lancamentoDTO.getId())) {
+                valorAnterior = findById(lancamentoDTO.getId()).getValor();
+                totalPago = totalPago.subtract(valorAnterior);
+            }
+            if (lancamentoDTO.getValor().add(totalPago).compareTo(pacoteDTO.getValor()) == 1) {
+                throw new BusinessException(MessageEnum.MSG0080.toString());
+            }
+        }
     }
 
 }

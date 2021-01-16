@@ -3,6 +3,7 @@ package br.com.sisms.api.service;
 import br.com.sisms.api.exception.BusinessException;
 import br.com.sisms.api.exception.ResourceNotFoundException;
 import br.com.sisms.api.model.dto.AtendimentoDTO;
+import br.com.sisms.api.model.dto.PacoteDTO;
 import br.com.sisms.api.model.entity.Atendimento;
 import br.com.sisms.api.model.entity.TipoAtendimento;
 import br.com.sisms.api.model.entity.Usuario;
@@ -62,6 +63,7 @@ public class AtendimentoService {
     public AtendimentoDTO createOrUpdate(final Long id, final AtendimentoDTO dtoSource) {
         validateResources(dtoSource);
         validatePeriod(dtoSource.getPreAtendimentoData(), dtoSource.getPosAtendimentoData(), MessageEnum.MSG0048.toString());
+        checkAtendimentoLimit(dtoSource);
         final Atendimento entity;
         if (Objects.nonNull(id)) {
             AtendimentoDTO dtoTarget = findByIdWithPermission(id);
@@ -196,6 +198,15 @@ public class AtendimentoService {
             tipoAtendimento.setId(TipoAtendimentoEnum.SESSAO.getTipoAtendimento());
         }
         return tipoAtendimento;
+    }
+
+    private void checkAtendimentoLimit(final AtendimentoDTO atendimentoDTO) {
+        if (Objects.nonNull(atendimentoDTO.getPacoteId())) {
+            final PacoteDTO pacoteDTO = pacoteService.findById(atendimentoDTO.getPacoteId());
+            if (Objects.nonNull(pacoteDTO.getQuantidadeSessao()) && pacoteDTO.getQuantidadeSessao().equals(pacoteDTO.getQuantidadeAtendimentos())) {
+                throw new BusinessException(MessageEnum.MSG0078.toString());
+            }
+        }
     }
 
 }

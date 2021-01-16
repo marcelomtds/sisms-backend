@@ -54,13 +54,21 @@ public enum MessageEnum {
     MSG0074("Reserva não encontrada."),
     MSG0075("Esse paciente já está cadastrado na reserva."),
     MSG0076("As senhas não coincidem."),
-    MSG0077("CPF inválido.");
+    MSG0077("CPF inválido."),
+    MSG0078("O número máximo de atendimento para esse pacote já foi atingido."),
+    MSG0079("O campo quantidade de sessão não pode ser menor do que a quantidade de atendimentos já realizados."),
+    MSG0080("A somatória do(s) valor(es) do histórico de pagamento ultrapassa o valor do pacote."),
+    MSG0081("O valor informado é menor que a somatória do(s) valor(es) lançado(s) para esse pacote. Informe um valor maior ou igual que %s.");
 
     private final String codigo;
 
     @Override
     public String toString() {
-        return codigo;
+        return String.format(codigo);
+    }
+
+    public String messageWithParameters(final String... parameters) {
+        return String.format(codigo, parameters);
     }
 
 }

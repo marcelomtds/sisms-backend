@@ -3,12 +3,11 @@ package br.com.sisms.api.model.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -41,10 +40,16 @@ public class PacoteDTO implements Serializable {
 
     private Long numero;
 
+    @Max(value = 99, message = "{pacote.quantidade.sessao.tamanho}")
+    @Min(value = 1, message = "{pacote.quantidade.sessao.tamanho}")
+    private Long quantidadeSessao;
+
     private Boolean aberto;
 
     private Long quantidadeAtendimentos;
 
     private BigDecimal totalPago;
+
+    private LocalDateTime dataInicio;
 
 }
