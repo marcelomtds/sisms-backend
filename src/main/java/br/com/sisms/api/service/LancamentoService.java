@@ -6,7 +6,6 @@ import br.com.sisms.api.model.dto.LancamentoDTO;
 import br.com.sisms.api.model.dto.LancamentoTotalDTO;
 import br.com.sisms.api.model.dto.PacoteDTO;
 import br.com.sisms.api.model.entity.Lancamento;
-import br.com.sisms.api.model.entity.Pacote;
 import br.com.sisms.api.model.entity.Usuario;
 import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.model.enums.PerfilEnum;

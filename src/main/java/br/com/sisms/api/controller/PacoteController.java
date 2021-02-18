@@ -39,6 +39,14 @@ public class PacoteController {
         return ResponseEntity.ok().body(new Response(service.createOrUpdate(null, dto), MessageEnum.MSG0028.toString()));
     }
 
+    @ApiOperation(value = "Exclui um pacote.")
+    @DeleteMapping(path = "/{id}")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
+    public ResponseEntity<Response> delete(@PathVariable final Long id) {
+        service.delete(id);
+        return ResponseEntity.ok().body(new Response(MessageEnum.MSG0028.toString()));
+    }
+
     @ApiOperation(value = "Altera um pacote.")
     @PutMapping(path = "/{id}")
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")

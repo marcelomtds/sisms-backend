@@ -23,6 +23,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -112,6 +113,20 @@ public class PacoteService {
                 filter.getFilter().getDataInicio(),
                 filter.getFilter().getDataFim(),
                 pageable).map(mapper::toDTO);
+    }
+
+    public void delete(final Long id) {
+        PacoteDTO pacoteDTO = findByIdWithPermission(id);
+        if (pacoteDTO.getQuantidadeAtendimentos() > 0) {
+            throw new BusinessException(MessageEnum.MSG0082.toString());
+        }
+        if (Objects.nonNull(pacoteDTO.getTotalPago()) && pacoteDTO.getTotalPago().compareTo(BigDecimal.valueOf(0)) == 1) {
+            throw new BusinessException(MessageEnum.MSG0083.toString());
+        }
+        if (BooleanUtils.isFalse(pacoteDTO.getAberto())) {
+            throw new BusinessException(MessageEnum.MSG0082.toString());
+        }
+        repository.deleteById(id);
     }
 
     private void checkUserPermission(final PacoteDTO dto) {

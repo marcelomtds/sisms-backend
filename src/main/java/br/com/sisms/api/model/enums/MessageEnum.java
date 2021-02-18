@@ -58,7 +58,10 @@ public enum MessageEnum {
     MSG0078("O número máximo de atendimento para esse pacote já foi atingido."),
     MSG0079("O campo quantidade de sessão não pode ser menor do que a quantidade de atendimentos já realizados."),
     MSG0080("A somatória do(s) valor(es) do histórico de pagamento ultrapassa o valor do pacote."),
-    MSG0081("O valor informado é menor que a somatória do(s) valor(es) lançado(s) para esse pacote. Informe um valor maior ou igual que %s.");
+    MSG0081("O valor informado é menor que a somatória do(s) valor(es) lançado(s) para esse pacote. Informe um valor maior ou igual que %s."),
+    MSG0082("Não é possível excluir pacote que contém atendimento(s)."),
+    MSG0083("Não é possível excluir pacote que contém lançamento(s)."),
+    MSG0084("Não é possível excluir pacote encerrado.");
 
     private final String codigo;
 
