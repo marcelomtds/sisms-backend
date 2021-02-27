@@ -13,6 +13,7 @@ public class PacoteFilter {
     private Long pacienteId;
     private Long usuarioId;
     private Boolean aberto;
+    private Boolean lancamentoPendente;
     private LocalDate dataInicio;
     private LocalDate dataFim;
 

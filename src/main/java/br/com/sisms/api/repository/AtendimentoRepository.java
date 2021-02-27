@@ -27,6 +27,7 @@ public interface AtendimentoRepository extends JpaRepository<Atendimento, Long> 
             + "AND (CAST(:preAtendimentoData AS date) IS NULL OR pre.data >= :preAtendimentoData) "
             + "AND (CAST(:posAtendimentoData AS date) IS NULL OR pos.data <= :posAtendimentoData) "
             + "AND (:aberto IS NULL OR a.aberto = :aberto) "
+            + "AND (:lancamentoPendente IS NULL OR (:lancamentoPendente IS TRUE AND (a.totalPago IS NULL AND pac.totalPago IS NULL OR pac.totalPago < pac.valor)) OR (:lancamentoPendente IS FALSE AND (a.totalPago IS NOT NULL OR pac.totalPago = pac.valor))) "
             + "AND (:categoriaAtendimentoId IS NULL OR a.categoriaAtendimento.id = :categoriaAtendimentoId)")
     Page<Atendimento> findByFilter(
             final Long tipoAtendimentoId,
@@ -35,6 +36,7 @@ public interface AtendimentoRepository extends JpaRepository<Atendimento, Long> 
             final LocalDateTime preAtendimentoData,
             final LocalDateTime posAtendimentoData,
             final Boolean aberto,
+            final Boolean lancamentoPendente,
             final Long categoriaAtendimentoId,
             Pageable pageable);
 

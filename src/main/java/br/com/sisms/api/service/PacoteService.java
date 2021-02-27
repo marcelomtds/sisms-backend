@@ -110,6 +110,7 @@ public class PacoteService {
                 filter.getFilter().getPacienteId(),
                 filter.getFilter().getUsuarioId(),
                 filter.getFilter().getAberto(),
+                filter.getFilter().getLancamentoPendente(),
                 filter.getFilter().getDataInicio(),
                 filter.getFilter().getDataFim(),
                 pageable).map(mapper::toDTO);

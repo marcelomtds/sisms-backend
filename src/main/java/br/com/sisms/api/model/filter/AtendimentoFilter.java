@@ -15,6 +15,7 @@ public class AtendimentoFilter {
     private LocalDateTime preAtendimentoData;
     private LocalDateTime posAtendimentoData;
     private Boolean aberto;
+    private Boolean lancamentoPendente;
     private Long categoriaAtendimentoId;
 
 }

@@ -63,7 +63,6 @@ public class AtendimentoService {
     public AtendimentoDTO createOrUpdate(final Long id, final AtendimentoDTO dtoSource) {
         validateResources(dtoSource);
         validatePeriod(dtoSource.getPreAtendimentoData(), dtoSource.getPosAtendimentoData(), MessageEnum.MSG0048.toString());
-        checkAtendimentoLimit(dtoSource);
         final Atendimento entity;
         if (Objects.nonNull(id)) {
             AtendimentoDTO dtoTarget = findByIdWithPermission(id);
@@ -75,6 +74,7 @@ public class AtendimentoService {
             }
             entity = mapper.toEntity(dtoTarget);
         } else {
+            checkAtendimentoLimit(dtoSource);
             dtoSource.setUsuarioId(usuarioService.getCurrentSessionUser().getId());
             entity = mapper.toEntity(dtoSource);
             entity.setTipoAtendimento(checkTipoAtendimento(entity));
@@ -142,6 +142,7 @@ public class AtendimentoService {
                 filter.getFilter().getPreAtendimentoData(),
                 filter.getFilter().getPosAtendimentoData(),
                 filter.getFilter().getAberto(),
+                filter.getFilter().getLancamentoPendente(),
                 filter.getFilter().getCategoriaAtendimentoId(),
                 pageable).map(mapper::toDTO);
     }

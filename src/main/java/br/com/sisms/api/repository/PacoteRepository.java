@@ -19,12 +19,14 @@ public interface PacoteRepository extends JpaRepository<Pacote, Long> {
             + "AND (:usuarioId IS NULL OR p.usuario.id = :usuarioId) "
             + "AND (CAST(:dataInicio AS date) IS NULL OR p.dataCriacao >= :dataInicio) "
             + "AND (CAST(:dataFim AS date) IS NULL OR p.dataCriacao <= :dataFim) "
+            + "AND (:lancamentoPendente IS NULL OR (:lancamentoPendente IS TRUE AND (p.totalPago IS NULL OR p.totalPago < p.valor)) OR (:lancamentoPendente IS FALSE AND (p.totalPago = p.valor))) "
             + "AND (:aberto IS NULL OR p.aberto = :aberto)")
     Page<Pacote> findByFilter(
             final Long categoriaAtendimentoId,
             final Long pacienteId,
             final Long usuarioId,
             final Boolean aberto,
+            final Boolean lancamentoPendente,
             final LocalDate dataInicio,
             final LocalDate dataFim,
             Pageable pageable);
