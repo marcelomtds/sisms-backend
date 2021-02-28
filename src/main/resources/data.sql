@@ -50,7 +50,7 @@ INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (12, 'Drenagem Lin
 INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (13, 'Buscar', 'fa fa-search', null, 12);
 INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (14, 'Cadastrar', 'fa fa-plus', '/incluir', 12);
 
-INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (15, 'Fisioterapia', 'fa fa-heartbeat', '/atendimento/fisioterapia', null);
+INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (15, 'Fisioterapia', 'fa fa-wheelchair', '/atendimento/fisioterapia', null);
 INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (16, 'Buscar', 'fa fa-search', null, 15);
 INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (17, 'Cadastrar', 'fa fa-plus', '/incluir', 15);
 
