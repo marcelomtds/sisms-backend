@@ -20,5 +20,6 @@ public class LancamentoFilter {
     private Long categoriaLancamentoId;
     private LocalDate dataInicio;
     private LocalDate dataFim;
+    private Boolean credito;
 
 }

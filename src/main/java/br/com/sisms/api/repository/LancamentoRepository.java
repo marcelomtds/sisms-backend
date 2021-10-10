@@ -18,11 +18,12 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
             + "LEFT JOIN lanc.tipoAtendimento ta "
             + "LEFT JOIN lanc.pacote paco "
             + "LEFT JOIN lanc.atendimento at "
-            + "LEFT JOIN Paciente pac ON (paco.paciente.id = pac.id OR at.paciente.id = pac.id) "
+            + "LEFT JOIN Paciente pac ON (paco.paciente.id = pac.id OR at.paciente.id = pac.id OR lanc.paciente.id = pac.id) "
             + "LEFT JOIN CategoriaAtendimento ca ON (paco.categoriaAtendimento.id = ca.id OR at.categoriaAtendimento.id = ca.id) "
             + "WHERE 1 = 1 "
             + "AND (:tipoAtendimentoId IS NULL OR ta.id = :tipoAtendimentoId) "
             + "AND (:pacoteId IS NULL OR paco.id = :pacoteId) "
+            + "AND (:credito IS NULL OR lanc.credito = :credito) "
             + "AND (:atendimentoId IS NULL OR at.id = :atendimentoId) "
             + "AND (:tipoLancamentoId IS NULL OR lanc.tipoLancamento.id = :tipoLancamentoId) "
             + "AND (:pacienteId IS NULL OR pac.id = :pacienteId) "
@@ -44,6 +45,7 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
             final Long categoriaLancamentoId,
             final LocalDate dataInicio,
             final LocalDate dataFim,
+            final Boolean credito,
             final Pageable pageable);
 
 }

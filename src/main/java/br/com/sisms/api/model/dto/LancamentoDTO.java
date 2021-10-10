@@ -59,8 +59,14 @@ public class LancamentoDTO implements Serializable {
 
     private String tipoAtendimentoDescricao;
 
+    private Long pacienteId;
+
+    private String pacienteNomeCompleto;
+
     private String atendimentoCategoriaAtendimentoDescricao;
 
     private String pacoteCategoriaAtendimentoDescricao;
+
+    private Boolean credito;
 
 }

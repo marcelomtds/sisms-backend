@@ -78,6 +78,10 @@ INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (33, 'Controle de 
 INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (34, 'Buscar', 'fa fa-search', null, 33);
 INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (35, 'Cadastrar Saída', 'fa fa-plus', '/saida', 33);
 
+INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (36, 'Crédito', 'fa fa-money', '/credito', null);
+INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (37, 'Buscar', 'fa fa-search', null, 36);
+INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (38, 'Cadastrar', 'fa fa-plus', '/incluir', 36);
+
 INSERT INTO uf (id, descricao) VALUES (1, 'São Paulo');
 
 INSERT INTO localidade (id, descricao, id_uf) VALUES (1, 'Trabiju', 1);

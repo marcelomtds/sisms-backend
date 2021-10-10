@@ -17,6 +17,7 @@ import br.com.sisms.api.model.mapper.LancamentoMapper;
 import br.com.sisms.api.repository.LancamentoRepository;
 import br.com.sisms.api.util.Util;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -42,6 +43,7 @@ public class LancamentoService {
     private final CategoriaLancamentoService categoriaLancamentoService;
     private final FormaPagamentoService formaPagamentoService;
     private final UsuarioService usuarioService;
+    private final PacienteService pacienteService;
     private final LancamentoMapper mapper;
 
     public LancamentoDTO createOrUpdate(final Long id, final LancamentoDTO dtoSource) {
@@ -50,13 +52,21 @@ public class LancamentoService {
         Lancamento entity;
         if (Objects.nonNull(id)) {
             LancamentoDTO dtoTarget = findByIdWithPermission(id);
-            BeanUtils.copyProperties(dtoSource, dtoTarget, "id", "usuarioId", "atendimentoId", "pacoteId", "tipoLancamentoId", "tipoAtendimentoId");
+            BeanUtils.copyProperties(dtoSource, dtoTarget, "id", "usuarioId", "atendimentoId", "pacoteId", "tipoLancamentoId", "tipoAtendimentoId", "credito", "pacienteId");
             entity = mapper.toEntity(dtoTarget);
         } else {
             dtoSource.setUsuarioId(usuarioService.getCurrentSessionUser().getId());
+            // TODO simplificar, mandando os parametros do front-end
             if (Objects.isNull(dtoSource.getCategoriaLancamentoId())) {
                 dtoSource.setTipoLancamentoId(TipoLancamentoEnum.ENTRADA.getTipoLancamento());
-                dtoSource.setTipoAtendimentoId(Objects.nonNull(dtoSource.getPacoteId()) ? TipoAtendimentoEnum.PACOTE.getTipoAtendimento() : TipoAtendimentoEnum.SESSAO.getTipoAtendimento());
+                if(BooleanUtils.isFalse(dtoSource.getCredito())){
+                    dtoSource.setTipoAtendimentoId(Objects.nonNull(dtoSource.getPacoteId()) ? TipoAtendimentoEnum.PACOTE.getTipoAtendimento() : TipoAtendimentoEnum.SESSAO.getTipoAtendimento());
+                    if(dtoSource.getTipoAtendimentoId().equals(TipoAtendimentoEnum.SESSAO)){
+                        dtoSource.setPacienteId(atendimentoService.findById(dtoSource.getAtendimentoId()).getPacienteId());
+                    } else {
+                        dtoSource.setPacienteId(pacoteService.findById(dtoSource.getPacoteId()).getPacienteId());
+                    }
+                }
             } else {
                 dtoSource.setTipoLancamentoId(TipoLancamentoEnum.SAIDA.getTipoLancamento());
             }
@@ -74,6 +84,8 @@ public class LancamentoService {
         if (Objects.isNull(entity.getTipoAtendimento().getId())) {
             entity.setTipoAtendimento(null);
         }
+        // TODO verificar porque o padrao da coluna credito nao esta inserindo false
+        entity.setCredito(Objects.isNull(entity.getCredito()) ? false : true);
         return mapper.toDTO(repository.save(entity));
     }
 
@@ -141,6 +153,7 @@ public class LancamentoService {
                 filter.getFilter().getCategoriaLancamentoId(),
                 filter.getFilter().getDataInicio(),
                 filter.getFilter().getDataFim(),
+                filter.getFilter().getCredito(),
                 pageable).map(mapper::toDTO);
     }
 
@@ -152,13 +165,16 @@ public class LancamentoService {
 
     private void validateResources(final LancamentoDTO dto) {
         if (Objects.nonNull(dto.getAtendimentoId())) {
-            atendimentoService.findById(dto.getAtendimentoId());
+            atendimentoService.findByIdWithPermission(dto.getAtendimentoId());
         }
         if (Objects.nonNull(dto.getPacoteId())) {
-            pacoteService.findById(dto.getPacoteId());
+            pacoteService.findByIdWithPermission(dto.getPacoteId());
         }
         if (Objects.nonNull(dto.getCategoriaLancamentoId())) {
             categoriaLancamentoService.findById(dto.getCategoriaLancamentoId());
+        }
+        if (Objects.nonNull(dto.getPacienteId())) {
+            pacienteService.findById(dto.getPacienteId());
         }
         formaPagamentoService.findById(dto.getFormaPagamentoId());
     }
