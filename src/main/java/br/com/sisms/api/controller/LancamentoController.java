@@ -59,7 +59,7 @@ public class LancamentoController {
     @ApiOperation(value = "Retorna um lançamento por id.")
     @GetMapping(path = "/{id}")
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
-    public ResponseEntity<Response<AtendimentoDTO>> findById(@PathVariable final Long id) {
+    public ResponseEntity<Response<LancamentoDTO>> findById(@PathVariable final Long id) {
         return ResponseEntity.ok().body(new Response(service.findByIdWithPermission(id), MessageEnum.MSG0028.toString()));
     }
 
@@ -68,6 +68,13 @@ public class LancamentoController {
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
     public ResponseEntity<Response<LancamentoTotalDTO>> findTotalByFilter(@RequestBody PageableFilter<LancamentoFilter> filter) {
         return ResponseEntity.ok().body(new Response(service.findTotalByFilter(filter), MessageEnum.MSG0028.toString()));
+    }
+
+    @ApiOperation(value = "Retorna os créditos do paciente por id.")
+    @GetMapping(path = "/findPatientCredit/{id}")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
+    public ResponseEntity<Response<LancamentoDTO>> findPatientCredit(@PathVariable final Long id) {
+        return ResponseEntity.ok().body(new Response(service.findPatientCredit(id), MessageEnum.MSG0028.toString()));
     }
 
 }

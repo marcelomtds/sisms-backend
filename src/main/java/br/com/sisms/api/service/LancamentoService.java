@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -99,6 +100,11 @@ public class LancamentoService {
         LancamentoDTO dto = findById(id);
         checkUserPermission(dto);
         return dto;
+    }
+
+    @Transactional(readOnly = true)
+    public List<LancamentoDTO> findPatientCredit(final Long id) {
+        return mapper.toDTO(repository.findPatientCredit(id));
     }
 
     public void delete(final Long id) {

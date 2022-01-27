@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
@@ -48,4 +49,9 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
             final Boolean credito,
             final Pageable pageable);
 
+    @Query("SELECT lanc FROM Lancamento lanc "
+            + "LEFT JOIN lanc.paciente pac "
+            + "WHERE lanc.credito IS TRUE "
+            + "AND pac.id = :id")
+    List<Lancamento> findPatientCredit(final Long id);
 }

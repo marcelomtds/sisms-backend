@@ -36,6 +36,12 @@ ALTER TABLE lancamento
         CONSTRAINT fk_lancamento_paciente_id
             REFERENCES paciente (id);
 
+-- Cria a coluna id_credito na tabela lancamento (recursividade para armazenar os créditos utilizados)
+ALTER TABLE lancamento
+    ADD COLUMN id_credito BIGINT
+        CONSTRAINT fk_lancamento_id
+            REFERENCES lancamento (id);
+
 -- Cria o menu Crédito
 INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (36, 'Crédito', 'fa fa-money', '/credito', null);
 INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (37, 'Buscar', 'fa fa-search', null, 36);
