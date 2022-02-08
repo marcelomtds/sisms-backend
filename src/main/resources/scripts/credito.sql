@@ -1,51 +1,23 @@
--- Cria a table que armazena o histórico de utilização de crédito
-CREATE TABLE historico_utilizacao_credito
-(
-    id             BIGSERIAL     NOT NULL
-        CONSTRAINT historico_utilizacao_credito_pkey
-            PRIMARY KEY,
-    data           DATE          NOT NULL,
-    valor          NUMERIC(8, 2) NOT NULL,
-    id_usuario     BIGINT        NOT NULL
-        CONSTRAINT fk_historico_utilizacao_credito_usuario_id
-            REFERENCES usuario (id),
-    id_atendimento BIGINT
-        CONSTRAINT fk_historico_utilizacao_credito_atendimento_id
-            REFERENCES atendimento (id),
-    id_pacote      BIGINT
-        CONSTRAINT fk_historico_utilizacao_credito_pacote_id
-            REFERENCES pacote (id),
-    id_lancamento  BIGINT        NOT NULL
-        CONSTRAINT fk_historico_utilizacao_credito_lancamento_id
-            REFERENCES lancamento (id)
-);
+-- Cria o menu da funcionalidade crédito
+INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (36, 'Crédito', 'fa fa-money', '/credito', null);
+INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (37, 'Buscar', 'fa fa-search', null, 36);
+INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (38, 'Cadastrar', 'fa fa-plus', '/incluir', 36);
 
--- Cria a coluna credito na tabela lancamento e atualiza os registros
-ALTER TABLE lancamento
-    ADD COLUMN credito BOOLEAN DEFAULT false;
+-- Altera a quantidade de caracteres da coluna descricao
+ALTER TABLE forma_pagamento ALTER COLUMN descricao TYPE CHARACTER VARYING(50);
 
-UPDATE lancamento
-SET credito = FALSE
-WHERE credito IS NULL;
+-- Adiciona opção de forma de pagamento
+INSERT INTO forma_pagamento (id, descricao) VALUES (7, 'Utilização de Crédito');
 
-ALTER TABLE lancamento
-    ALTER COLUMN credito SET NOT NULL;
+-- Adiciona opções de tipo de lançamento
+INSERT INTO tipo_lancamento (id, descricao) VALUES (3, 'Entrada de Crédito');
+INSERT INTO tipo_lancamento (id, descricao) VALUES (4, 'Utilização de Crédito');
 
+-- Cria a coluna id_paciente na tabela lancamento
 ALTER TABLE lancamento
     ADD COLUMN id_paciente BIGINT
         CONSTRAINT fk_lancamento_paciente_id
             REFERENCES paciente (id);
-
--- Cria a coluna id_credito na tabela lancamento (recursividade para armazenar os créditos utilizados)
-ALTER TABLE lancamento
-    ADD COLUMN id_credito BIGINT
-        CONSTRAINT fk_lancamento_id
-            REFERENCES lancamento (id);
-
--- Cria o menu Crédito
-INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (36, 'Crédito', 'fa fa-money', '/credito', null);
-INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (37, 'Buscar', 'fa fa-search', null, 36);
-INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (38, 'Cadastrar', 'fa fa-plus', '/incluir', 36);
 
 -- Replica o id do paciente do atendimento (lancamento.atendimento.paciente.id) para a coluna id_paciente na tabela lancamento
 DO
@@ -84,3 +56,7 @@ $do$
             END LOOP;
     END
 $do$;
+
+-- Adiciona obrigatoriedade na coluna id_paciente
+ALTER TABLE lancamento
+    ALTER COLUMN id_paciente SET NOT NULL;

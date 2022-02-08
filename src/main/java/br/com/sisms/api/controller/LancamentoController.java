@@ -17,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Api(tags = "Lançamento")
@@ -70,11 +71,17 @@ public class LancamentoController {
         return ResponseEntity.ok().body(new Response(service.findTotalByFilter(filter), MessageEnum.MSG0028.toString()));
     }
 
-    @ApiOperation(value = "Retorna os créditos do paciente por id.")
-    @GetMapping(path = "/findPatientCredit/{id}")
+    @ApiOperation(value = "Retorna o saldo do paciente por id.")
+    @GetMapping(path = "/findPatientBalance/{id}")
     @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
-    public ResponseEntity<Response<LancamentoDTO>> findPatientCredit(@PathVariable final Long id) {
-        return ResponseEntity.ok().body(new Response(service.findPatientCredit(id), MessageEnum.MSG0028.toString()));
+    public ResponseEntity<Response<BigDecimal>> findPatientBalance(@PathVariable final Long id) {
+        return ResponseEntity.ok().body(new Response(service.findPatientBalance(id), MessageEnum.MSG0028.toString()));
     }
 
+    @ApiOperation(value = "Retorna o extrato do paciente por id.")
+    @GetMapping(path = "/findExtractByPatient/{id}")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
+    public ResponseEntity<Response<List<LancamentoDTO>>> findExtractByPatient(@PathVariable final Long id) {
+        return ResponseEntity.ok().body(new Response(service.findExtractByPatient(id), MessageEnum.MSG0028.toString()));
+    }
 }

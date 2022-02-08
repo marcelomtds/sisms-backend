@@ -9,7 +9,6 @@ import br.com.sisms.api.model.entity.Lancamento;
 import br.com.sisms.api.model.entity.Usuario;
 import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.model.enums.PerfilEnum;
-import br.com.sisms.api.model.enums.TipoAtendimentoEnum;
 import br.com.sisms.api.model.enums.TipoLancamentoEnum;
 import br.com.sisms.api.model.filter.LancamentoFilter;
 import br.com.sisms.api.model.filter.PageableFilter;
@@ -17,7 +16,6 @@ import br.com.sisms.api.model.mapper.LancamentoMapper;
 import br.com.sisms.api.repository.LancamentoRepository;
 import br.com.sisms.api.util.Util;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -32,6 +30,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -45,32 +44,20 @@ public class LancamentoService {
     private final FormaPagamentoService formaPagamentoService;
     private final UsuarioService usuarioService;
     private final PacienteService pacienteService;
+    private final TipoLancamentoService tipoLancamentoService;
     private final LancamentoMapper mapper;
 
     public LancamentoDTO createOrUpdate(final Long id, final LancamentoDTO dtoSource) {
         validateResources(dtoSource);
         checkPackageValue(dtoSource);
+        checkBalanceAmount(dtoSource);
         Lancamento entity;
         if (Objects.nonNull(id)) {
             LancamentoDTO dtoTarget = findByIdWithPermission(id);
-            BeanUtils.copyProperties(dtoSource, dtoTarget, "id", "usuarioId", "atendimentoId", "pacoteId", "tipoLancamentoId", "tipoAtendimentoId", "credito", "pacienteId");
+            BeanUtils.copyProperties(dtoSource, dtoTarget, "id", "usuarioId", "atendimentoId", "pacoteId", "tipoLancamentoId", "tipoAtendimentoId", "pacienteId", dtoTarget.getTipoLancamentoId() == TipoLancamentoEnum.UTILIZACAO_CREDITO.getTipoLancamento() ? "formaPagamentoId" : "");
             entity = mapper.toEntity(dtoTarget);
         } else {
             dtoSource.setUsuarioId(usuarioService.getCurrentSessionUser().getId());
-            // TODO simplificar, mandando os parametros do front-end
-            if (Objects.isNull(dtoSource.getCategoriaLancamentoId())) {
-                dtoSource.setTipoLancamentoId(TipoLancamentoEnum.ENTRADA.getTipoLancamento());
-                if(BooleanUtils.isFalse(dtoSource.getCredito())){
-                    dtoSource.setTipoAtendimentoId(Objects.nonNull(dtoSource.getPacoteId()) ? TipoAtendimentoEnum.PACOTE.getTipoAtendimento() : TipoAtendimentoEnum.SESSAO.getTipoAtendimento());
-                    if(dtoSource.getTipoAtendimentoId().equals(TipoAtendimentoEnum.SESSAO)){
-                        dtoSource.setPacienteId(atendimentoService.findById(dtoSource.getAtendimentoId()).getPacienteId());
-                    } else {
-                        dtoSource.setPacienteId(pacoteService.findById(dtoSource.getPacoteId()).getPacienteId());
-                    }
-                }
-            } else {
-                dtoSource.setTipoLancamentoId(TipoLancamentoEnum.SAIDA.getTipoLancamento());
-            }
             entity = mapper.toEntity(dtoSource);
         }
         if (Objects.isNull(entity.getAtendimento().getId())) {
@@ -85,8 +72,6 @@ public class LancamentoService {
         if (Objects.isNull(entity.getTipoAtendimento().getId())) {
             entity.setTipoAtendimento(null);
         }
-        // TODO verificar porque o padrao da coluna credito nao esta inserindo false
-        entity.setCredito(Objects.isNull(entity.getCredito()) ? false : true);
         return mapper.toDTO(repository.save(entity));
     }
 
@@ -103,12 +88,18 @@ public class LancamentoService {
     }
 
     @Transactional(readOnly = true)
-    public List<LancamentoDTO> findPatientCredit(final Long id) {
-        return mapper.toDTO(repository.findPatientCredit(id));
+    public BigDecimal findPatientBalance(final Long id) {
+        return repository.findPatientBalance(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<LancamentoDTO> findExtractByPatient(final Long id) {
+        return mapper.toDTO(repository.findExtractByPatient(id));
     }
 
     public void delete(final Long id) {
-        findByIdWithPermission(id);
+        LancamentoDTO lancamentoDTO = findByIdWithPermission(id);
+        checkDelete(lancamentoDTO);
         repository.deleteById(id);
     }
 
@@ -122,9 +113,9 @@ public class LancamentoService {
         BigDecimal entrada = new BigDecimal(0);
         BigDecimal saida = new BigDecimal(0);
         for (LancamentoDTO dto : find(filter, Integer.MAX_VALUE, 0).getContent()) {
-            if (dto.getTipoLancamentoId().equals(TipoLancamentoEnum.ENTRADA.getTipoLancamento())) {
+            if (dto.getTipoLancamentoId().equals(TipoLancamentoEnum.ENTRADA.getTipoLancamento()) || dto.getTipoLancamentoId().equals(TipoLancamentoEnum.ENTRADA_CREDITO.getTipoLancamento())) {
                 entrada = entrada.add(dto.getValor());
-            } else {
+            } else if (dto.getTipoLancamentoId().equals(TipoLancamentoEnum.SAIDA.getTipoLancamento())) {
                 saida = saida.add(dto.getValor());
             }
         }
@@ -147,11 +138,14 @@ public class LancamentoService {
                 filter.getOrderBy());
         filter.setFilter(Objects.isNull(filter.getFilter()) ? new LancamentoFilter() : filter.getFilter());
         validatePeriod(filter.getFilter().getDataInicio(), filter.getFilter().getDataFim());
+        if (Objects.isNull(filter.getFilter().getTipoLancamentoIds()) || filter.getFilter().getTipoLancamentoIds().size() == 0) {
+            filter.getFilter().setTipoLancamentoIds(tipoLancamentoService.findAll().stream().map(result -> result.getId()).collect(Collectors.toList()));
+        }
         return repository.findByFilter(
                 filter.getFilter().getTipoAtendimentoId(),
                 filter.getFilter().getPacoteId(),
                 filter.getFilter().getAtendimentoId(),
-                filter.getFilter().getTipoLancamentoId(),
+                filter.getFilter().getTipoLancamentoIds(),
                 filter.getFilter().getPacienteId(),
                 filter.getFilter().getFormaPagamentoId(),
                 filter.getFilter().getCategoriaAtendimentoId(),
@@ -159,7 +153,6 @@ public class LancamentoService {
                 filter.getFilter().getCategoriaLancamentoId(),
                 filter.getFilter().getDataInicio(),
                 filter.getFilter().getDataFim(),
-                filter.getFilter().getCredito(),
                 pageable).map(mapper::toDTO);
     }
 
@@ -183,15 +176,15 @@ public class LancamentoService {
             pacienteService.findById(dto.getPacienteId());
         }
         formaPagamentoService.findById(dto.getFormaPagamentoId());
+        tipoLancamentoService.findById(dto.getTipoLancamentoId());
     }
 
     private void checkPackageValue(final LancamentoDTO lancamentoDTO) {
         if (Objects.nonNull(lancamentoDTO.getPacoteId())) {
             final PacoteDTO pacoteDTO = pacoteService.findById(lancamentoDTO.getPacoteId());
             BigDecimal totalPago = Objects.isNull(pacoteDTO.getTotalPago()) ? BigDecimal.valueOf(0) : pacoteDTO.getTotalPago();
-            BigDecimal valorAnterior;
             if (Objects.nonNull(lancamentoDTO.getId())) {
-                valorAnterior = findById(lancamentoDTO.getId()).getValor();
+                BigDecimal valorAnterior = findById(lancamentoDTO.getId()).getValor();
                 totalPago = totalPago.subtract(valorAnterior);
             }
             if (lancamentoDTO.getValor().add(totalPago).compareTo(pacoteDTO.getValor()) == 1) {
@@ -200,4 +193,25 @@ public class LancamentoService {
         }
     }
 
+    private void checkBalanceAmount(final LancamentoDTO lancamentoDTO) {
+        if (lancamentoDTO.getTipoLancamentoId() == TipoLancamentoEnum.UTILIZACAO_CREDITO.getTipoLancamento()) {
+            BigDecimal saldo = repository.findPatientBalance(lancamentoDTO.getPacienteId());
+            if (Objects.nonNull(lancamentoDTO.getId())) {
+                BigDecimal valorAnterior = findById(lancamentoDTO.getId()).getValor();
+                saldo = saldo.add(valorAnterior);
+            }
+            if (lancamentoDTO.getValor().compareTo(saldo) == 1) {
+                throw new BusinessException(MessageEnum.MSG0084.toString());
+            }
+        }
+    }
+
+    private void checkDelete(final LancamentoDTO lancamentoDTO) {
+        if (lancamentoDTO.getTipoLancamentoId() == TipoLancamentoEnum.ENTRADA_CREDITO.getTipoLancamento()) {
+            final BigDecimal saldo = repository.findPatientBalance(lancamentoDTO.getPacienteId());
+            if (saldo.compareTo(lancamentoDTO.getValor()) == -1) {
+                throw new BusinessException(MessageEnum.MSG0086.toString());
+            }
+        }
+    }
 }

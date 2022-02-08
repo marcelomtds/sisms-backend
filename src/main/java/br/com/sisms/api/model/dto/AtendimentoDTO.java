@@ -114,4 +114,5 @@ public class AtendimentoDTO implements Serializable {
 
     private BigDecimal totalPago;
 
+    private BigDecimal saldo;
 }
