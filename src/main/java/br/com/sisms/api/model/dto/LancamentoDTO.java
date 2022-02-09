@@ -60,7 +60,6 @@ public class LancamentoDTO implements Serializable {
 
     private String tipoAtendimentoDescricao;
 
-    @NotNull(message = "{paciente.vazio}")
     private Long pacienteId;
 
     private String pacienteNomeCompleto;

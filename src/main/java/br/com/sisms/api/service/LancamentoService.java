@@ -51,6 +51,7 @@ public class LancamentoService {
         validateResources(dtoSource);
         checkPackageValue(dtoSource);
         checkBalanceAmount(dtoSource);
+        checkEdit(dtoSource);
         Lancamento entity;
         if (Objects.nonNull(id)) {
             LancamentoDTO dtoTarget = findByIdWithPermission(id);
@@ -71,6 +72,9 @@ public class LancamentoService {
         }
         if (Objects.isNull(entity.getTipoAtendimento().getId())) {
             entity.setTipoAtendimento(null);
+        }
+        if (Objects.isNull(entity.getPaciente().getId())) {
+            entity.setPaciente(null);
         }
         return mapper.toDTO(repository.save(entity));
     }
@@ -196,6 +200,9 @@ public class LancamentoService {
     private void checkBalanceAmount(final LancamentoDTO lancamentoDTO) {
         if (lancamentoDTO.getTipoLancamentoId() == TipoLancamentoEnum.UTILIZACAO_CREDITO.getTipoLancamento()) {
             BigDecimal saldo = repository.findPatientBalance(lancamentoDTO.getPacienteId());
+            if(Objects.isNull(saldo)) {
+                saldo = new BigDecimal(0);
+            }
             if (Objects.nonNull(lancamentoDTO.getId())) {
                 BigDecimal valorAnterior = findById(lancamentoDTO.getId()).getValor();
                 saldo = saldo.add(valorAnterior);
@@ -208,9 +215,27 @@ public class LancamentoService {
 
     private void checkDelete(final LancamentoDTO lancamentoDTO) {
         if (lancamentoDTO.getTipoLancamentoId() == TipoLancamentoEnum.ENTRADA_CREDITO.getTipoLancamento()) {
-            final BigDecimal saldo = repository.findPatientBalance(lancamentoDTO.getPacienteId());
+            BigDecimal saldo = repository.findPatientBalance(lancamentoDTO.getPacienteId());
+            if(Objects.isNull(saldo)) {
+                saldo = new BigDecimal(0);
+            }
             if (saldo.compareTo(lancamentoDTO.getValor()) == -1) {
                 throw new BusinessException(MessageEnum.MSG0086.toString());
+            }
+        }
+    }
+
+    private void checkEdit(final LancamentoDTO lancamentoDTO) {
+        if (lancamentoDTO.getTipoLancamentoId() == TipoLancamentoEnum.ENTRADA_CREDITO.getTipoLancamento() && Objects.nonNull(lancamentoDTO.getId())) {
+            BigDecimal saldo = repository.findPatientBalance(lancamentoDTO.getPacienteId());
+            if(Objects.isNull(saldo)) {
+                saldo = new BigDecimal(0);
+            }
+            BigDecimal valorAnterior = findById(lancamentoDTO.getId()).getValor();
+            saldo = saldo.subtract(valorAnterior).add(lancamentoDTO.getValor());
+            if (saldo.compareTo(new BigDecimal(0)) == -1) {
+                final String valor = (saldo.multiply(new BigDecimal(-1)).add(lancamentoDTO.getValor())).toString();
+                throw new BusinessException(MessageEnum.MSG0087.messageWithParameters(valor));
             }
         }
     }

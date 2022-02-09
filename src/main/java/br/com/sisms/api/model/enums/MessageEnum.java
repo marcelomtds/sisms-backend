@@ -62,7 +62,8 @@ public enum MessageEnum {
     MSG0082("Não é possível excluir pacote que contém atendimento(s)."),
     MSG0083("Não é possível excluir pacote que contém lançamento(s)."),
     MSG0084("O valor informado é maior do que o valor do saldo disponível."),
-    MSG0086("Não é possível excluir esse lançamento pois o saldo do paciente ficará negativo.");
+    MSG0086("Não é possível excluir esse lançamento pois o saldo do paciente ficará negativo."),
+    MSG0087("Com o valor informado o paciente ficará com o saldo negativo. Informe um valor maior ou igual a R$ %s.");
 
     private final String codigo;
 
