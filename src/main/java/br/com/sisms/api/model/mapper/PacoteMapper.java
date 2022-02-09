@@ -10,6 +10,7 @@ public interface PacoteMapper extends BaseMapper<Pacote, PacoteDTO> {
 
     @Mapping(source = "pacienteId", target = "paciente.id")
     @Mapping(source = "pacienteNomeCompleto", target = "paciente.nomeCompleto")
+    @Mapping(source = "pacienteSexoId", target = "paciente.sexo.id")
     @Mapping(source = "usuarioId", target = "usuario.id")
     @Mapping(source = "usuarioNomeCompleto", target = "usuario.nomeCompleto")
     @Mapping(source = "categoriaAtendimentoId", target = "categoriaAtendimento.id")
@@ -18,6 +19,7 @@ public interface PacoteMapper extends BaseMapper<Pacote, PacoteDTO> {
 
     @Mapping(target = "pacienteId", source = "paciente.id")
     @Mapping(target = "pacienteNomeCompleto", source = "paciente.nomeCompleto")
+    @Mapping(target = "pacienteSexoId", source = "paciente.sexo.id")
     @Mapping(target = "usuarioId", source = "usuario.id")
     @Mapping(target = "usuarioNomeCompleto", source = "usuario.nomeCompleto")
     @Mapping(target = "categoriaAtendimentoId", source = "categoriaAtendimento.id")

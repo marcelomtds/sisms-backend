@@ -22,6 +22,8 @@ public interface LancamentoMapper extends BaseMapper<Lancamento, LancamentoDTO> 
     @Mapping(source = "tipoLancamentoDescricao", target = "tipoLancamento.descricao")
     @Mapping(source = "tipoAtendimentoId", target = "tipoAtendimento.id")
     @Mapping(source = "tipoAtendimentoDescricao", target = "tipoAtendimento.descricao")
+    @Mapping(source = "pacienteId", target = "paciente.id")
+    @Mapping(source = "pacienteNomeCompleto", target = "paciente.nomeCompleto")
     @Mapping(source = "atendimentoCategoriaAtendimentoDescricao", target = "atendimento.categoriaAtendimento.descricao")
     @Mapping(source = "pacoteCategoriaAtendimentoDescricao", target = "pacote.categoriaAtendimento.descricao")
     Lancamento toEntity(LancamentoDTO dto);
@@ -40,6 +42,8 @@ public interface LancamentoMapper extends BaseMapper<Lancamento, LancamentoDTO> 
     @Mapping(target = "tipoLancamentoDescricao", source = "tipoLancamento.descricao")
     @Mapping(target = "tipoAtendimentoId", source = "tipoAtendimento.id")
     @Mapping(target = "tipoAtendimentoDescricao", source = "tipoAtendimento.descricao")
+    @Mapping(target = "pacienteId", source = "paciente.id")
+    @Mapping(target = "pacienteNomeCompleto", source = "paciente.nomeCompleto")
     @Mapping(target = "atendimentoCategoriaAtendimentoDescricao", source = "atendimento.categoriaAtendimento.descricao")
     @Mapping(target = "pacoteCategoriaAtendimentoDescricao", source = "pacote.categoriaAtendimento.descricao")
     LancamentoDTO toDTO(Lancamento entity);

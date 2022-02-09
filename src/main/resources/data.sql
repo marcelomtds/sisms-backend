@@ -18,6 +18,7 @@ INSERT INTO forma_pagamento (id, descricao) VALUES (3, 'Cartão de Crédito');
 INSERT INTO forma_pagamento (id, descricao) VALUES (4, 'Cartão de Débito');
 INSERT INTO forma_pagamento (id, descricao) VALUES (5, 'Cheque');
 INSERT INTO forma_pagamento (id, descricao) VALUES (6, 'Outros');
+INSERT INTO forma_pagamento (id, descricao) VALUES (7, 'Utilização de Crédito');
 
 INSERT INTO perfil (id, descricao, role) VALUES (1, 'Administrador', 'ROLE_ADMINISTRADOR');
 INSERT INTO perfil (id, descricao, role) VALUES (2, 'Usuário', 'ROLE_USUARIO');
@@ -30,6 +31,8 @@ INSERT INTO tipo_atendimento (id, descricao) VALUES (2, 'Pacote');
 
 INSERT INTO tipo_lancamento (id, descricao) VALUES (1, 'Entrada');
 INSERT INTO tipo_lancamento (id, descricao) VALUES (2, 'Saída');
+INSERT INTO tipo_lancamento (id, descricao) VALUES (3, 'Entrada de Crédito');
+INSERT INTO tipo_lancamento (id, descricao) VALUES (4, 'Utilização de Crédito');
 
 INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (1, 'Agenda', 'fa fa-calendar', '/agenda', null);
 INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (2, 'Gerenciar', 'fa fa-pencil', '/gerenciar', 1);
@@ -77,6 +80,10 @@ INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (32, 'Cadastrar', 
 INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (33, 'Controle de Caixa', 'fa fa-dollar', '/controle-caixa', null);
 INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (34, 'Buscar', 'fa fa-search', null, 33);
 INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (35, 'Cadastrar Saída', 'fa fa-plus', '/saida', 33);
+
+INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (36, 'Crédito', 'fa fa-money', '/credito', null);
+INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (37, 'Buscar', 'fa fa-search', null, 36);
+INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (38, 'Cadastrar', 'fa fa-plus', '/incluir', 36);
 
 INSERT INTO uf (id, descricao) VALUES (1, 'São Paulo');
 

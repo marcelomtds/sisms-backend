@@ -51,6 +51,7 @@ public class LancamentoDTO implements Serializable {
 
     private String formaPagamentoDescricao;
 
+    @NotNull(message = "{tipo.lancamento.vazio}")
     private Long tipoLancamentoId;
 
     private String tipoLancamentoDescricao;
@@ -59,8 +60,11 @@ public class LancamentoDTO implements Serializable {
 
     private String tipoAtendimentoDescricao;
 
+    private Long pacienteId;
+
+    private String pacienteNomeCompleto;
+
     private String atendimentoCategoriaAtendimentoDescricao;
 
     private String pacoteCategoriaAtendimentoDescricao;
-
 }

@@ -7,36 +7,32 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
 
     @Query("SELECT lanc FROM Lancamento lanc "
-            + "LEFT JOIN lanc.formaPagamento fp "
-            + "LEFT JOIN lanc.categoriaLancamento cl "
-            + "LEFT JOIN lanc.tipoAtendimento ta "
-            + "LEFT JOIN lanc.pacote paco "
-            + "LEFT JOIN lanc.atendimento at "
-            + "LEFT JOIN Paciente pac ON (paco.paciente.id = pac.id OR at.paciente.id = pac.id) "
-            + "LEFT JOIN CategoriaAtendimento ca ON (paco.categoriaAtendimento.id = ca.id OR at.categoriaAtendimento.id = ca.id) "
+            + "LEFT JOIN CategoriaAtendimento ca ON (lanc.pacote.categoriaAtendimento.id = ca.id OR lanc.atendimento.categoriaAtendimento.id = ca.id) "
             + "WHERE 1 = 1 "
-            + "AND (:tipoAtendimentoId IS NULL OR ta.id = :tipoAtendimentoId) "
-            + "AND (:pacoteId IS NULL OR paco.id = :pacoteId) "
-            + "AND (:atendimentoId IS NULL OR at.id = :atendimentoId) "
-            + "AND (:tipoLancamentoId IS NULL OR lanc.tipoLancamento.id = :tipoLancamentoId) "
-            + "AND (:pacienteId IS NULL OR pac.id = :pacienteId) "
-            + "AND (:formaPagamentoId IS NULL OR fp.id = :formaPagamentoId) "
+            + "AND (:tipoAtendimentoId IS NULL OR lanc.tipoAtendimento.id = :tipoAtendimentoId) "
+            + "AND (:pacoteId IS NULL OR lanc.pacote.id = :pacoteId) "
+            + "AND (:atendimentoId IS NULL OR lanc.atendimento.id = :atendimentoId) "
+            + "AND (lanc.tipoLancamento.id IN (:tiposLancamentoId)) "
+            + "AND (:pacienteId IS NULL OR lanc.paciente.id = :pacienteId) "
+            + "AND (:formaPagamentoId IS NULL OR lanc.formaPagamento.id = :formaPagamentoId) "
             + "AND (:categoriaAtendimentoId IS NULL OR ca.id = :categoriaAtendimentoId) "
             + "AND (:usuarioId IS NULL OR lanc.usuario.id = :usuarioId) "
-            + "AND (:categoriaLancamentoId IS NULL OR cl.id = :categoriaLancamentoId) "
+            + "AND (:categoriaLancamentoId IS NULL OR lanc.categoriaLancamento.id = :categoriaLancamentoId) "
             + "AND (CAST(:dataInicio AS date) IS NULL OR lanc.data >= :dataInicio) "
             + "AND (CAST(:dataFim AS date) IS NULL OR lanc.data <= :dataFim)")
     Page<Lancamento> findByFilter(
             final Long tipoAtendimentoId,
             final Long pacoteId,
             final Long atendimentoId,
-            final Long tipoLancamentoId,
+            final List<Long> tiposLancamentoId,
             final Long pacienteId,
             final Long formaPagamentoId,
             final Long categoriaAtendimentoId,
@@ -46,4 +42,21 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
             final LocalDate dataFim,
             final Pageable pageable);
 
+    @Query("SELECT " +
+            "SUM(CASE lanc.tipoLancamento.id " +
+            "WHEN '4' " +
+            "THEN (lanc.valor * -1) " +
+            "ELSE lanc.valor " +
+            "END) " +
+            "FROM Lancamento lanc " +
+            "WHERE lanc.tipoLancamento.id IN ('3', '4') " +
+            "AND lanc.paciente.id = :id")
+    BigDecimal findPatientBalance(final Long id);
+
+    @Query("SELECT lanc FROM Lancamento lanc "
+            + "LEFT JOIN lanc.paciente pac "
+            + "WHERE lanc.tipoLancamento.id IN ('3', '4') "
+            + "AND pac.id = :id "
+            + "ORDER BY lanc.data DESC")
+    List<Lancamento> findExtractByPatient(final Long id);
 }
