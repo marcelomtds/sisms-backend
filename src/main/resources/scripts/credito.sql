@@ -56,7 +56,3 @@ $do$
             END LOOP;
     END
 $do$;
-
--- Adiciona obrigatoriedade na coluna id_paciente
-ALTER TABLE lancamento
-    ALTER COLUMN id_paciente SET NOT NULL;
