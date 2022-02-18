@@ -29,6 +29,8 @@ public class PacoteDTO implements Serializable {
 
     private String pacienteNomeCompleto;
 
+    private String pacienteSexoId;
+
     private Long usuarioId;
 
     private String usuarioNomeCompleto;
