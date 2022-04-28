@@ -57,7 +57,6 @@ public class AgendaService {
         } else {
             entity = mapper.toEntity(dtoSource);
         }
-        removeFromReserva(entity.getPaciente().getId());
         return mapper.toDTO(repository.save(entity));
     }
 
@@ -78,9 +77,4 @@ public class AgendaService {
             throw new BusinessException(MessageEnum.MSG0061.toString());
         }
     }
-
-    private void removeFromReserva(final Long pacienteId) {
-        reservaService.deleteByPacienteId(pacienteId);
-    }
-
 }

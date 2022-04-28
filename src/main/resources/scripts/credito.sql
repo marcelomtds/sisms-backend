@@ -3,7 +3,7 @@ INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (36, 'Crédito', '
 INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (37, 'Buscar', 'fa fa-search', null, 36);
 INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (38, 'Cadastrar', 'fa fa-plus', '/incluir', 36);
 
--- Altera a quantidade de caracteres da coluna descricao
+-- Altera a quantidade de caracteres da coluna descrição
 ALTER TABLE forma_pagamento ALTER COLUMN descricao TYPE CHARACTER VARYING(50);
 
 -- Adiciona opção de forma de pagamento
@@ -13,7 +13,7 @@ INSERT INTO forma_pagamento (id, descricao) VALUES (7, 'Utilização de Crédito
 INSERT INTO tipo_lancamento (id, descricao) VALUES (3, 'Entrada de Crédito');
 INSERT INTO tipo_lancamento (id, descricao) VALUES (4, 'Utilização de Crédito');
 
--- Cria a coluna id_paciente na tabela lancamento
+-- Cria a coluna id_paciente na tabela lançamento
 ALTER TABLE lancamento
     ADD COLUMN id_paciente BIGINT
         CONSTRAINT fk_lancamento_paciente_id

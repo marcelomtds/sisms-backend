@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalTime;
 
 @Data
 @Entity
@@ -17,9 +18,26 @@ public class Reserva implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reserva_generator")
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "id_paciente", nullable = false, updatable = false, unique = true)
-    private Paciente paciente;
+    @Column(name = "paciente_nome_completo", length = 200, nullable = false)
+    private String pacienteNomeCompleto;
+
+    @Column(length = 20)
+    private String telefone;
+
+    @ManyToOne
+    @JoinColumn(name = "id_categoria_atendimento")
+    private CategoriaAtendimento categoriaAtendimento;
+
+    @ManyToOne
+    @JoinColumn(name = "id_periodo")
+    private Periodo periodo;
+
+    @Column
+    private LocalTime horario;
+
+    @ManyToOne
+    @JoinColumn(name = "id_dia_semana")
+    private DiaSemana diaSemana;
 
     @Column(length = 1000)
     private String observacao;
