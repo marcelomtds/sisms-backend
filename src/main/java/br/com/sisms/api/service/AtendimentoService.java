@@ -7,6 +7,7 @@ import br.com.sisms.api.model.dto.PacoteDTO;
 import br.com.sisms.api.model.entity.Atendimento;
 import br.com.sisms.api.model.entity.TipoAtendimento;
 import br.com.sisms.api.model.entity.Usuario;
+import br.com.sisms.api.model.enums.CategoriaAtendimentoEnum;
 import br.com.sisms.api.model.enums.MessageEnum;
 import br.com.sisms.api.model.enums.PerfilEnum;
 import br.com.sisms.api.model.enums.TipoAtendimentoEnum;
@@ -162,6 +163,11 @@ public class AtendimentoService {
     @Transactional(readOnly = true)
     public List<AtendimentoDTO> findByPacote(final Long id) {
         return mapper.toDTO(repository.findByPacote(id));
+    }
+
+    @Transactional(readOnly = true)
+    public AtendimentoDTO findLastByPaciente(final Long id) {
+        return mapper.toDTO(repository.findFirstByPacienteIdAndCategoriaAtendimentoIdOrderByPreAtendimentoDataDesc(id, CategoriaAtendimentoEnum.DRENAGEM_LINFATICA.getTipoAtendimento()));
     }
 
     private void validatePeriod(final LocalDateTime startDateTime, final LocalDateTime endDateTime, final String message) {
