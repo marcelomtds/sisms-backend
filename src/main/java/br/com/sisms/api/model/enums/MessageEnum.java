@@ -52,7 +52,7 @@ public enum MessageEnum {
     MSG0065("Essa categoria de exame já existe na base de dados."),
     MSG0066("Exame não encontrado."),
     MSG0074("Reserva não encontrada."),
-    MSG0075("Esse paciente já está cadastrado na reserva."),
+    MSG0075("Já existe uma reserva cadastrada para esse paciente."),
     MSG0076("As senhas não coincidem."),
     MSG0077("CPF inválido."),
     MSG0078("O número máximo de atendimento para esse pacote já foi atingido."),
@@ -63,7 +63,8 @@ public enum MessageEnum {
     MSG0083("Não é possível excluir pacote que contém lançamento(s)."),
     MSG0084("O valor informado é maior do que o valor do saldo disponível."),
     MSG0086("Não é possível excluir esse lançamento pois o saldo do paciente ficará negativo."),
-    MSG0087("Com o valor informado o paciente ficará com o saldo negativo. Informe um valor maior ou igual a R$ %s.");
+    MSG0087("Com o valor informado o paciente ficará com o saldo negativo. Informe um valor maior ou igual a R$ %s."),
+    MSG0088("Período não encontrado");
 
     private final String codigo;
 

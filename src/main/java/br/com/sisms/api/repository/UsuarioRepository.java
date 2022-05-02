@@ -21,10 +21,11 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
             + "AND (:sexoId IS NULL OR u.sexo.id = :sexoId) "
             + "AND (:localidadeId IS NULL OR u.endereco.localidade.id = :localidadeId) "
             + "AND (:ufId IS NULL OR u.endereco.localidade.uf.id = :ufId) "
-            + "AND (:celular IS NULL OR :celular = '' OR u.contato.celular = :celular) "
-            + "AND (:celularRecado IS NULL OR :celularRecado = '' OR u.contato.celularRecado = :celularRecado) "
-            + "AND (:residencial IS NULL OR :residencial = '' OR u.contato.residencial = :residencial) "
-            + "AND (:comercial IS NULL OR :comercial = '' OR u.contato.comercial = :comercial)")
+            + "AND (:telefone IS NULL OR :telefone = '' "
+                + "OR u.contato.telefone1 = :telefone "
+                + "OR u.contato.telefone2 = :telefone "
+                + "OR u.contato.telefone3 = :telefone "
+                + "OR u.contato.telefone4 = :telefone)")
     Page<Usuario> findByFilter(
             final String nomeCompleto,
             final String cpf,
@@ -32,10 +33,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
             final Long sexoId,
             final Long localidadeId,
             final Long ufId,
-            final String celular,
-            final String celularRecado,
-            final String residencial,
-            final String comercial,
+            final String telefone,
             Pageable pageable);
 
     Usuario findByCpf(final String cpf);

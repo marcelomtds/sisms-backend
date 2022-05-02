@@ -20,10 +20,11 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
             + "AND (:sexoId IS NULL OR p.sexo.id = :sexoId) "
             + "AND (:localidadeId IS NULL OR p.endereco.localidade.id = :localidadeId) "
             + "AND (:ufId IS NULL OR p.endereco.localidade.uf.id = :ufId) "
-            + "AND (:celular IS NULL OR :celular = '' OR p.contato.celular = :celular) "
-            + "AND (:celularRecado IS NULL OR :celularRecado = '' OR p.contato.celularRecado = :celularRecado) "
-            + "AND (:residencial IS NULL OR :residencial = '' OR p.contato.residencial = :residencial) "
-            + "AND (:comercial IS NULL OR :comercial = '' OR p.contato.comercial = :comercial)")
+            + "AND (:telefone IS NULL OR :telefone = '' "
+                + "OR p.contato.telefone1 = :telefone "
+                + "OR p.contato.telefone2 = :telefone "
+                + "OR p.contato.telefone3 = :telefone "
+                + "OR p.contato.telefone4 = :telefone)")
     Page<Paciente> findByFilter(
             final String nomeCompleto,
             final String cpf,
@@ -31,10 +32,7 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
             final Long sexoId,
             final Long localidadeId,
             final Long ufId,
-            final String celular,
-            final String celularRecado,
-            final String residencial,
-            final String comercial,
+            final String telefone,
             Pageable pageable);
 
     List<Paciente> findAllByAtivoIsTrueOrderByNomeCompletoAsc();
@@ -46,10 +44,4 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
             "AND FUNCTION ('DATE_PART', 'MONTH', p.dataNascimento) = FUNCTION ('DATE_PART', 'MONTH', CURRENT_DATE) " +
             "ORDER BY p.dataNascimento ASC")
     List<Paciente> findAllBirthdaysMonth();
-
-    @Query("SELECT p FROM Paciente AS p " +
-            "WHERE p.id NOT IN (SELECT r.paciente.id FROM Reserva AS r) " +
-            "AND p.id NOT IN (SELECT a.paciente.id FROM Agenda AS a) " +
-            "ORDER BY p.nomeCompleto ASC")
-    List<Paciente> findAllWithoutBondWithReservation();
 }
