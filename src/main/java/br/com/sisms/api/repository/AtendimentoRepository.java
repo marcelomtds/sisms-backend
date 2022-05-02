@@ -58,4 +58,9 @@ public interface AtendimentoRepository extends JpaRepository<Atendimento, Long> 
             + "LEFT JOIN a.pacote pac "
             + " WHERE pac.id = :id ORDER BY a.numero ASC")
     List<Atendimento> findByPacote(final Long id);
+
+    /*@Query("SELECT a FROM atendimento "
+            + "WHERE a.paciente.id = :pacienteId "
+            + "ORDER BY a.id DESC")*/
+    Atendimento findFirstByPacienteIdAndCategoriaAtendimentoIdOrderByPreAtendimentoDataDesc(final Long pacienteId, final Long categoriaAtendimentoId);
 }

@@ -8,10 +8,10 @@ public enum TipoAtendimentoEnum {
     SESSAO(1L),
     PACOTE(2L);
 
-    private Long perfil;
+    private Long tipoAtendimento;
 
     public Long getTipoAtendimento() {
-        return perfil;
+        return tipoAtendimento;
     }
 
 }
