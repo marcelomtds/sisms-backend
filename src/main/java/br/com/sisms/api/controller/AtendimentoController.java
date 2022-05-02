@@ -75,4 +75,11 @@ public class AtendimentoController {
         return ResponseEntity.ok().body(new Response(service.findByPacote(id), MessageEnum.MSG0028.toString()));
     }
 
+    @ApiOperation(value = "Retorna o último atendimento de Drenagem Linfática pelo id do paciente.")
+    @GetMapping(path = "/findLastByPaciente/{id}")
+    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
+    public ResponseEntity<Response<AtendimentoDTO>> findLastByPaciente(@PathVariable final Long id) {
+        return ResponseEntity.ok().body(new Response(service.findLastByPaciente(id), MessageEnum.MSG0028.toString()));
+    }
+
 }
