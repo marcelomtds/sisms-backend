@@ -17,17 +17,17 @@ public class Contato implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contato_generator")
     private Long id;
 
-    @Column(length = 20)
-    private String celular;
+    @Column(name = "telefone_1", length = 20)
+    private String telefone1;
 
-    @Column(name = "celular_recado", length = 20)
-    private String celularRecado;
+    @Column(name = "telefone_2", length = 20)
+    private String telefone2;
 
-    @Column(length = 20)
-    private String residencial;
+    @Column(name = "telefone_3", length = 20)
+    private String telefone3;
 
-    @Column(length = 20)
-    private String comercial;
+    @Column(name = "telefone_4", length = 20)
+    private String telefone4;
 
     @Column(length = 100)
     private String email;

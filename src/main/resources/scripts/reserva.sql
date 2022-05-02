@@ -50,3 +50,9 @@ ALTER TABLE reserva ALTER COLUMN paciente_nome_completo SET NOT NULL;
 -- Remove a coluna id_paciente na tabela reserva
 ALTER TABLE reserva
     DROP COLUMN id_paciente;
+
+-- Altera o nome das colunas de telefones na tabela contato
+ALTER TABLE contato RENAME celular TO telefone_1;
+ALTER TABLE contato RENAME celular_recado TO telefone_2;
+ALTER TABLE contato RENAME comercial TO telefone_3;
+ALTER TABLE contato RENAME residencial TO telefone_4;

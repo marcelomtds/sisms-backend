@@ -13,13 +13,13 @@ public class ContatoDTO implements Serializable {
 
     private Long id;
 
-    private String celular;
+    private String telefone1;
 
-    private String celularRecado;
+    private String telefone2;
 
-    private String residencial;
+    private String telefone3;
 
-    private String comercial;
+    private String telefone4;
 
     private String email;
 
