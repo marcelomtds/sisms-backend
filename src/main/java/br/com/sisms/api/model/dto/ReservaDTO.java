@@ -1,11 +1,13 @@
 package br.com.sisms.api.model.dto;
 
+import br.com.sisms.api.validation.constraint.Telefone;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -15,12 +17,27 @@ public class ReservaDTO implements Serializable {
 
     private Long id;
 
-    @NotNull(message = "{paciente.vazio}")
-    private Long pacienteId;
-
+    @NotBlank(message = "{nome.completo.vazio}")
+    @Size(max = 200, message = "{nome.completo.tamanho}")
     private String pacienteNomeCompleto;
 
-    @Size(max = 1000, message = "{exame.observacao}")
-    private String observacao;
+    @Telefone(message = "{telefone.invalido}")
+    private String telefone;
 
+    private Long categoriaAtendimentoId;
+
+    private String categoriaAtendimentoDescricao;
+
+    private Long periodoId;
+
+    private String periodoDescricao;
+
+    private LocalTime horario;
+
+    private Long diaSemanaId;
+
+    private String diaSemanaDescricao;
+
+    @Size(max = 1000, message = "{reserva.observacao}")
+    private String observacao;
 }

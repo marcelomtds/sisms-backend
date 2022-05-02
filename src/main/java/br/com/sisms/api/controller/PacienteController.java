@@ -81,14 +81,4 @@ public class PacienteController {
     public ResponseEntity<Response<List<PacienteDTO>>> findAllBirthdaysMonth() {
         return ResponseEntity.ok().body(new Response(service.findAllBirthdaysMonth(), MessageEnum.MSG0028.toString()));
     }
-
-    @ApiOperation(value = "Retorna uma lista com todos pacientes que não estão associados a uma reserva.")
-    @GetMapping(path = "/findAllWithoutBondWithReservation")
-    @PreAuthorize("hasAnyRole(T(br.com.sisms.api.model.enums.RoleEnum).ADMINISTRADOR.toString(), T(br.com.sisms.api.model.enums.RoleEnum).USUARIO.toString())")
-    public ResponseEntity<Response<List<PacienteDTO>>> findAllWithoutBondWithReservation() {
-        return ResponseEntity.ok().body(new Response(service.findAllWithoutBondWithReservation(), MessageEnum.MSG0028.toString()));
-    }
-
 }
-
-

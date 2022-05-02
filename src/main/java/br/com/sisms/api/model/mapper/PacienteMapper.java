@@ -24,10 +24,10 @@ public interface PacienteMapper extends BaseMapper<Paciente, PacienteDTO> {
     @Mapping(target = "enderecoLocalidadeUFId", source = "endereco.localidade.uf.id")
     @Mapping(target = "enderecoLocalidadeUFDescricao", source = "endereco.localidade.uf.descricao")
     @Mapping(target = "contatoId", source = "contato.id")
-    @Mapping(target = "contatoCelular", source = "contato.celular")
-    @Mapping(target = "contatoCelularRecado", source = "contato.celularRecado")
-    @Mapping(target = "contatoResidencial", source = "contato.residencial")
-    @Mapping(target = "contatoComercial", source = "contato.comercial")
+    @Mapping(target = "contatoTelefone1", source = "contato.telefone1")
+    @Mapping(target = "contatoTelefone2", source = "contato.telefone2")
+    @Mapping(target = "contatoTelefone3", source = "contato.telefone3")
+    @Mapping(target = "contatoTelefone4", source = "contato.telefone4")
     @Mapping(target = "contatoEmail", source = "contato.email")
     PacienteDTO toDTO(Paciente entity);
 
@@ -47,10 +47,10 @@ public interface PacienteMapper extends BaseMapper<Paciente, PacienteDTO> {
     @Mapping(source = "enderecoLocalidadeUFId", target = "endereco.localidade.uf.id")
     @Mapping(source = "enderecoLocalidadeUFDescricao", target = "endereco.localidade.uf.descricao")
     @Mapping(source = "contatoId", target = "contato.id")
-    @Mapping(source = "contatoCelular", target = "contato.celular")
-    @Mapping(source = "contatoCelularRecado", target = "contato.celularRecado")
-    @Mapping(source = "contatoResidencial", target = "contato.residencial")
-    @Mapping(source = "contatoComercial", target = "contato.comercial")
+    @Mapping(source = "contatoTelefone1", target = "contato.telefone1")
+    @Mapping(source = "contatoTelefone2", target = "contato.telefone2")
+    @Mapping(source = "contatoTelefone3", target = "contato.telefone3")
+    @Mapping(source = "contatoTelefone4", target = "contato.telefone4")
     @Mapping(source = "contatoEmail", target = "contato.email")
     Paciente toEntity(PacienteDTO dto);
 

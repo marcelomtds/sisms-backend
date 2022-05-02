@@ -131,10 +131,7 @@ public class UsuarioService {
                 filter.getFilter().getSexoId(),
                 filter.getFilter().getLocalidadeId(),
                 filter.getFilter().getUfId(),
-                filter.getFilter().getCelular(),
-                filter.getFilter().getCelularRecado(),
-                filter.getFilter().getResidencial(),
-                filter.getFilter().getComercial(),
+                filter.getFilter().getTelefone(),
                 pageable).map(mapper::toDTO);
     }
 
@@ -183,8 +180,8 @@ public class UsuarioService {
     }
 
     private void validateContato(final UsuarioDTO dto) {
-        if (StringUtils.isBlank(dto.getContatoCelular()) && StringUtils.isBlank(dto.getContatoCelularRecado())
-                && StringUtils.isBlank(dto.getContatoResidencial()) && StringUtils.isBlank(dto.getContatoComercial())) {
+        if (StringUtils.isBlank(dto.getContatoTelefone1()) && StringUtils.isBlank(dto.getContatoTelefone2())
+                && StringUtils.isBlank(dto.getContatoTelefone3()) && StringUtils.isBlank(dto.getContatoTelefone4())) {
             throw new BusinessException(MessageEnum.MSG0007.toString());
         }
     }

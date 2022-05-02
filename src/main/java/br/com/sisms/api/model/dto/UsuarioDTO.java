@@ -1,6 +1,9 @@
 package br.com.sisms.api.model.dto;
 
-import br.com.sisms.api.validation.constraint.*;
+import br.com.sisms.api.validation.constraint.CEP;
+import br.com.sisms.api.validation.constraint.CPF;
+import br.com.sisms.api.validation.constraint.Senha;
+import br.com.sisms.api.validation.constraint.Telefone;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -97,17 +100,17 @@ public class UsuarioDTO implements Serializable {
 
     private Long contatoId;
 
-    @Celular(message = "{celular.invalido}")
-    private String contatoCelular;
+    @Telefone(message = "{telefone.principal.invalido}")
+    private String contatoTelefone1;
 
-    @Celular(message = "{celular.recado.invalido}")
-    private String contatoCelularRecado;
+    @Telefone(message = "{telefone.2.invalido}")
+    private String contatoTelefone2;
 
-    @Fixo(message = "{residencial.invalido}")
-    private String contatoResidencial;
+    @Telefone(message = "{telefone.3.invalido}")
+    private String contatoTelefone3;
 
-    @Fixo(message = "{comercial.invalido}")
-    private String contatoComercial;
+    @Telefone(message = "{telefone.4.invalido}")
+    private String contatoTelefone4;
 
     @Email(message = "{email.invalido}")
     @Size(max = 100, message = "{email.tamanho}")

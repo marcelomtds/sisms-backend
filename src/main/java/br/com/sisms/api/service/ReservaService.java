@@ -10,6 +10,7 @@ import br.com.sisms.api.model.mapper.ReservaMapper;
 import br.com.sisms.api.repository.ReservaRepository;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,15 +27,13 @@ public class ReservaService {
 
     private final ReservaRepository repository;
     private final ReservaMapper mapper;
-    private final PacienteService pacienteService;
 
     public ReservaDTO createOrUpdate(final Long id, final ReservaDTO dtoSource) {
-        validateResources(dtoSource);
-        validateDuplicityByPaciente(dtoSource, id);
+        validateDuplicityByPaciente(dtoSource);
         final Reserva entity;
         if (Objects.nonNull(id)) {
             final ReservaDTO dtoTarget = findById(id);
-            dtoTarget.setObservacao(dtoSource.getObservacao());
+            BeanUtils.copyProperties(dtoSource, dtoTarget, "id");
             entity = mapper.toEntity(dtoTarget);
         } else {
             entity = mapper.toEntity(dtoSource);
@@ -63,17 +62,9 @@ public class ReservaService {
         repository.deleteById(id);
     }
 
-    public void deleteByPacienteId(final Long pacienteId) {
-        repository.deleteByPacienteId(pacienteId);
-    }
-
-    private void validateResources(final ReservaDTO dto) {
-        pacienteService.findById(dto.getPacienteId());
-    }
-
-    private void validateDuplicityByPaciente(final ReservaDTO dto, final Long id) {
-        Reserva entity = repository.findByPacienteId(dto.getPacienteId());
-        if (Objects.nonNull(entity) && !entity.getId().equals(id)) {
+    private void validateDuplicityByPaciente(final ReservaDTO dto) {
+        final Reserva entity = repository.findByPacienteNomeCompletoIgnoreCase(dto.getPacienteNomeCompleto());
+        if (Objects.nonNull(entity) && !entity.getId().equals(dto.getId())) {
             throw new BusinessException(MessageEnum.MSG0075.toString());
         }
     }

@@ -8,12 +8,19 @@ import org.mapstruct.Mapping;
 @Mapper(uses = {PacienteMapper.class})
 public interface ReservaMapper extends BaseMapper<Reserva, ReservaDTO> {
 
-    @Mapping(target = "pacienteId", source = "paciente.id")
-    @Mapping(target = "pacienteNomeCompleto", source = "paciente.nomeCompleto")
-    ReservaDTO toDTO(Reserva entity);
-
-    @Mapping(source = "pacienteId", target = "paciente.id")
-    @Mapping(source = "pacienteNomeCompleto", target = "paciente.nomeCompleto")
+    @Mapping(source = "categoriaAtendimentoId", target = "categoriaAtendimento.id")
+    @Mapping(source = "categoriaAtendimentoDescricao", target = "categoriaAtendimento.descricao")
+    @Mapping(source = "diaSemanaId", target = "diaSemana.id")
+    @Mapping(source = "diaSemanaDescricao", target = "diaSemana.descricao")
+    @Mapping(source = "periodoId", target = "periodo.id")
+    @Mapping(source = "periodoDescricao", target = "periodo.descricao")
     Reserva toEntity(ReservaDTO dto);
 
+    @Mapping(target = "categoriaAtendimentoId", source = "categoriaAtendimento.id")
+    @Mapping(target = "categoriaAtendimentoDescricao", source = "categoriaAtendimento.descricao")
+    @Mapping(target = "diaSemanaId", source = "diaSemana.id")
+    @Mapping(target = "diaSemanaDescricao", source = "diaSemana.descricao")
+    @Mapping(target = "periodoId", source = "periodo.id")
+    @Mapping(target = "periodoDescricao", source = "periodo.descricao")
+    ReservaDTO toDTO(Reserva entity);
 }

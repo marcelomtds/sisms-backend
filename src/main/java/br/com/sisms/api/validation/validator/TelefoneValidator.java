@@ -1,15 +1,15 @@
 package br.com.sisms.api.validation.validator;
 
-import br.com.sisms.api.validation.constraint.Celular;
+import br.com.sisms.api.validation.constraint.Telefone;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class CelularValidator implements ConstraintValidator<Celular, String> {
+public class TelefoneValidator implements ConstraintValidator<Telefone, String> {
 
     @Override
-    public void initialize(Celular value) {
+    public void initialize(Telefone value) {
     }
 
     @Override
@@ -17,7 +17,7 @@ public class CelularValidator implements ConstraintValidator<Celular, String> {
         if (StringUtils.isBlank(value)) {
             return true;
         }
-        return value.length() == 11;
+        return value.length() == 10 || value.length() == 11;
     }
 
 }
