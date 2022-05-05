@@ -89,6 +89,9 @@ INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (36, 'Crédito', '
 INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (37, 'Buscar', 'fa fa-search', null, 36);
 INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (38, 'Cadastrar', 'fa fa-plus', '/incluir', 36);
 
+INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (39, 'Relatório', 'fa fa-bar-chart', '/relatorio', null);
+INSERT INTO menu (id, descricao, icone, rota, id_menu) VALUES (40, 'Quantidade de Atendimento por Período', 'fa fa-search', '/atendimento-periodo', 39);
+
 INSERT INTO uf (id, descricao) VALUES (1, 'São Paulo');
 
 INSERT INTO localidade (id, descricao, id_uf) VALUES (1, 'Trabiju', 1);

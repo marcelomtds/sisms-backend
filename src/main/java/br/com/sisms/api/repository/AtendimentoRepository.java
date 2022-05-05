@@ -1,7 +1,7 @@
 package br.com.sisms.api.repository;
 
 import br.com.sisms.api.model.entity.Atendimento;
-import br.com.sisms.api.model.entity.Usuario;
+import br.com.sisms.api.model.interfaces.IRelatorioItemSerie;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -56,11 +56,44 @@ public interface AtendimentoRepository extends JpaRepository<Atendimento, Long> 
             + "LEFT JOIN a.preAtendimento pre "
             + "LEFT JOIN a.posAtendimento pos "
             + "LEFT JOIN a.pacote pac "
-            + " WHERE pac.id = :id ORDER BY a.numero ASC")
+            + "WHERE pac.id = :id ORDER BY a.numero ASC")
     List<Atendimento> findByPacote(final Long id);
 
-    /*@Query("SELECT a FROM atendimento "
-            + "WHERE a.paciente.id = :pacienteId "
-            + "ORDER BY a.id DESC")*/
     Atendimento findFirstByPacienteIdAndCategoriaAtendimentoIdOrderByPreAtendimentoDataDesc(final Long pacienteId, final Long categoriaAtendimentoId);
+
+    @Query(value = "SELECT "
+            + "COUNT(at) AS value, "
+            + "ca.descricao AS name "
+            + "FROM atendimento at "
+            + "INNER JOIN pre_atendimento pre ON pre.id = at.id_pre_atendimento "
+            + "INNER JOIN pos_atendimento pos ON pos.id = at.id_pos_atendimento "
+            + "INNER JOIN categoria_atendimento ca ON ca.id = at.id_categoria_atendimento "
+            + "WHERE pre.data >= :dataInicio "
+            + "AND pos.data <= :dataFim "
+            + "AND ca.id IN (:categoriasAtendimentoId) "
+            + "GROUP BY ca.descricao "
+            + "ORDER BY value DESC", nativeQuery = true)
+    List<IRelatorioItemSerie> reportServiceByFilter(
+            final LocalDateTime dataInicio,
+            final LocalDateTime dataFim,
+            final List<Long> categoriasAtendimentoId);
+
+    @Query(value = "SELECT "
+            + "COUNT(at) AS value, "
+            + "ca.descricao AS name, "
+            + "EXTRACT(MONTH FROM pre.data) AS mes, "
+            + "EXTRACT(YEAR FROM pre.data) AS ano "
+            + "FROM atendimento at "
+            + "INNER JOIN pre_atendimento pre ON pre.id = at.id_pre_atendimento "
+            + "INNER JOIN pos_atendimento pos ON pos.id = at.id_pos_atendimento "
+            + "INNER JOIN categoria_atendimento ca ON ca.id = at.id_categoria_atendimento "
+            + "WHERE pre.data >= :dataInicio "
+            + "AND pos.data <= :dataFim "
+            + "AND ca.id IN (:categoriasAtendimentoId) "
+            + "GROUP BY ca.descricao, mes, ano "
+            + "ORDER BY ano DESC", nativeQuery = true)
+    List<IRelatorioItemSerie> reportGroupedServiceByFilter(
+            final LocalDateTime dataInicio,
+            final LocalDateTime dataFim,
+            final List<Long> categoriasAtendimentoId);
 }
