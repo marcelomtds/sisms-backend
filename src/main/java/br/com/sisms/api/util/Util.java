@@ -3,6 +3,7 @@ package br.com.sisms.api.util;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 
 public final class Util {
@@ -68,4 +69,38 @@ public final class Util {
         return endTime.isBefore(startTime);
     }
 
+    public static String findMonthNameByNumber(final int value) {
+        switch (value) {
+            case 1:
+                return "Jan";
+            case 2:
+                return "Fev";
+            case 3:
+                return "Mar";
+            case 4:
+                return "Abr";
+            case 5:
+                return "Mai";
+            case 6:
+                return "Jun";
+            case 7:
+                return "Jul";
+            case 8:
+                return "Ago";
+            case 9:
+                return "Set";
+            case 10:
+                return "Out";
+            case 11:
+                return "Nov";
+            case 12:
+                return "Dez";
+            default:
+                return "";
+        }
+    }
+
+    public static String formatDateTimeToString(final LocalDate date) {
+        return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    }
 }
