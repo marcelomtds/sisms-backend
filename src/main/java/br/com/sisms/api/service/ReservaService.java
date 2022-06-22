@@ -38,6 +38,15 @@ public class ReservaService {
         } else {
             entity = mapper.toEntity(dtoSource);
         }
+        if (Objects.isNull(entity.getCategoriaAtendimento().getId())) {
+            entity.setCategoriaAtendimento(null);
+        }
+        if (Objects.isNull(entity.getPeriodo().getId())) {
+            entity.setPeriodo(null);
+        }
+        if (Objects.isNull(entity.getDiaSemana().getId())) {
+            entity.setDiaSemana(null);
+        }
         return mapper.toDTO(repository.save(entity));
     }
 
