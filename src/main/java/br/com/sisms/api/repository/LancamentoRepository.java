@@ -57,6 +57,6 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
             + "LEFT JOIN lanc.paciente pac "
             + "WHERE lanc.tipoLancamento.id IN ('3', '4') "
             + "AND pac.id = :id "
-            + "ORDER BY lanc.data DESC")
+            + "ORDER BY lanc.data, lanc.id ASC")
     List<Lancamento> findExtractByPatient(final Long id);
 }
