@@ -23,6 +23,8 @@ INSERT INTO forma_pagamento (id, descricao) VALUES (4, 'Cartão de Débito');
 INSERT INTO forma_pagamento (id, descricao) VALUES (5, 'Cheque');
 INSERT INTO forma_pagamento (id, descricao) VALUES (6, 'Outros');
 INSERT INTO forma_pagamento (id, descricao) VALUES (7, 'Utilização de Crédito');
+INSERT INTO forma_pagamento (id, descricao) VALUES (8, 'PIX');
+INSERT INTO forma_pagamento (id, descricao) VALUES (9, 'Transferência Eletrônica');
 
 INSERT INTO perfil (id, descricao, role) VALUES (1, 'Administrador', 'ROLE_ADMINISTRADOR');
 INSERT INTO perfil (id, descricao, role) VALUES (2, 'Usuário', 'ROLE_USUARIO');
